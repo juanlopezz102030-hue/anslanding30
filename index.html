@@ -576,7 +576,7 @@ body{ background:#140026 !important; }
   <script>
     // ===== WhatsApp number & message (EDIT HERE) =====
       const WHATSAPP_NUMBER = "59898483835"; // <-- Reemplazá por tu número con código de país, sin + ni 00
-    const PREFILL_TEXT = "Hola, quiero mas informacion"; // Mensaje inicial
+    const PREFILL_TEXT = "Hola, me gustarìa saber mas"; // Mensaje inicial
 
     // Build WA link
     const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(PREFILL_TEXT)}`;
@@ -787,7 +787,7 @@ body{ background:#140026 !important; }
 (function(){
   try{
     var WHATSAPP_NUMBER = "59898483835";
-    var PREFILL_TEXT = (typeof window.PREFILL_TEXT!=='undefined') ? window.PREFILL_TEXT : "Hola, me gustaria recibir mas informacion";
+    var PREFILL_TEXT = (typeof window.PREFILL_TEXT!=='undefined') ? window.PREFILL_TEXT : "Hola, me gustarìa saber mas";
     function createWaLink(){
       var base = "https://wa.me/" + WHATSAPP_NUMBER;
       var url = new URL(base);
