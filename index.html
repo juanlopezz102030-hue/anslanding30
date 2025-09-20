@@ -831,5 +831,16 @@ body{ background:#140026 !important; }
 <script>
 </script>
 
+
+<script>
+  document.querySelectorAll('a[href*="wa.me"]').forEach(function(el){
+    el.addEventListener('click', function(){
+      fbq('trackCustom', 'WhatsappClick', {
+        phone: '59898483835'
+      });
+    });
+  });
+</script>
+
 </body>
 </html>
