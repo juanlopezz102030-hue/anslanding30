@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>CAYO – BIENVENIDO</title>
-  <meta name="description" content="Activá tu bono del 20% en tu primera carga. Escribinos por WhatsApp para habilitarlo ahora.">
+  <meta name="description" content="Consultá por WhatsApp para recibir la info y los pasos. Los pagos no se realizan por chat.">
   <meta property="og:title" content="Bono 20% en tu primera carga" />
-  <meta property="og:description" content="Escribinos por WhatsApp para activarlo ahora." />
+  <meta property="og:description" content="Consultá por WhatsApp para recibir la info y los pasos. Los pagos no se realizan por chat." />
   <meta property="og:type" content="website" />
   <meta name="theme-color" content="#5d1a9b">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -551,7 +551,7 @@ body{ background:#140026 !important; }
 
       <div class="cta">
         
-        <a class="btn" id="ctaWA" href="#" target="_blank" rel="noopener"><img src="./assets/whatsapp.png" alt="WhatsApp" class="wa-icon"><span>Escribinos por WhatsApp</span></a>
+        <a class="btn" id="ctaWA" href="#" target="_blank" rel="noopener"><img src="./assets/whatsapp.png" alt="WhatsApp" class="wa-icon"><span>Hablar por WhatsApp</span></a>
 <section class="payments">
           <h2>Métodos de pago disponibles</h2>
           <div class="logos">
@@ -563,9 +563,10 @@ body{ background:#140026 !important; }
             <img loading="lazy" src="./assets/midinero.png" alt="Mi Dinero">
             <img loading="lazy" src="./assets/prex.png" alt="Prex">
           </div>
+<p class="cta-note" style="font-size:12.5px;opacity:.9">No procesamos pagos por WhatsApp; te damos los pasos seguros.</p>
         </section>
 
-        <p class="disclaimer">Promoción válida para usuarios nuevos. Sujeto a términos y condiciones.</p>
+        <p class="disclaimer">Promoción para usuarios nuevos. 18+. Jugá con responsabilidad. Al escribirnos aceptás recibir información por WhatsApp; podés solicitar dejar de recibir mensajes. Los pagos NO se realizan por chat.</p>
       </div>
     
       
@@ -575,8 +576,8 @@ body{ background:#140026 !important; }
 
   <script>
     // ===== WhatsApp number & message (EDIT HERE) =====
-      const WHATSAPP_NUMBER = "59891725317"; // <-- Reemplazá por tu número con código de país, sin + ni 00
-    const PREFILL_TEXT = "Hola, quiero saber mas"; // Mensaje inicial
+      const WHATSAPP_NUMBER = "59892440607"; // <-- Reemplazá por tu número con código de país, sin + ni 00
+    const PREFILL_TEXT = "Hola, quiero la información del Bono 20% y los pasos para depositar en pesos uruguayos."; // Mensaje inicial
 
     // Build WA link
     const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(PREFILL_TEXT)}`;
@@ -656,10 +657,10 @@ body{ background:#140026 !important; }
     <div class="bar-inner">
       <div class="timer">
         <strong>¡Bono 20%!</strong>
-        <span class="label">Expira en</span>
+        <span class="label">Consulta disponible</span>
         <span id="countdown">--:--:--</span>
       </div>
-      <a class="btn bar-btn" id="barWA" href="#" target="_blank" rel="noopener"><img src="./assets/whatsapp.png" alt="WhatsApp" class="wa-icon"><span>Activar por WhatsApp</span></a>
+      <a class="btn bar-btn" id="barWA" href="#" target="_blank" rel="noopener"><img src="./assets/whatsapp.png" alt="WhatsApp" class="wa-icon"><span>Hablar por WhatsApp</span></a>
     </div>
   </div>
 
@@ -727,7 +728,7 @@ body{ background:#140026 !important; }
     var eventID = randomEventID();
     var extras = paramsFrom(location.href);
 
-    fbq('track', 'Lead', Object.assign({
+    fbq('trackCustom','WhatsappClick', Object.assign({
       eventID: eventID,
       content_name: 'Registro WhatsApp',
       destination: 'whatsapp',
@@ -786,8 +787,8 @@ body{ background:#140026 !important; }
 <script>
 (function(){
   try{
-    var WHATSAPP_NUMBER = "59891725317";
-    var PREFILL_TEXT = (typeof window.PREFILL_TEXT!=='undefined') ? window.PREFILL_TEXT : "Hola, me gustarìa saber mas";
+    var WHATSAPP_NUMBER = "59892440607";
+    var PREFILL_TEXT = (typeof window.PREFILL_TEXT!=='undefined') ? window.PREFILL_TEXT : "Hola, me gustaria saber mas";
     function createWaLink(){
       var base = "https://wa.me/" + WHATSAPP_NUMBER;
       var url = new URL(base);
@@ -836,7 +837,7 @@ body{ background:#140026 !important; }
   document.querySelectorAll('a[href*="wa.me"]').forEach(function(el){
     el.addEventListener('click', function(){
       fbq('trackCustom', 'WhatsappClick', {
-        phone: '59891725317'
+        phone: '59892440607'
       });
     });
   });
