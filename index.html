@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>CAYO – BIENVENIDO</title>
-  <meta name="description" content="Consultá por WhatsApp para recibir la info y los pasos. Los pagos no se realizan por chat.">
+  <meta name="description" content="Activá tu bono del 20% en tu primera carga. Escribinos por WhatsApp para habilitarlo ahora.">
   <meta property="og:title" content="Bono 20% en tu primera carga" />
-  <meta property="og:description" content="Consultá por WhatsApp para recibir la info y los pasos. Los pagos no se realizan por chat." />
+  <meta property="og:description" content="Escribinos por WhatsApp para activarlo ahora." />
   <meta property="og:type" content="website" />
   <meta name="theme-color" content="#5d1a9b">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -518,6 +518,22 @@ body{ background:#140026 !important; }
 .cta{ margin-top:8px !important; }
 </style>
 
+
+<style id="layout-air-overrides">
+/* === Remove header band & add breathing room === */
+header{display:none !important;}
+.wrap{padding-top: clamp(6px,2vw,12px) !important;}
+/* Headline padding so text doesn't feel cramped */
+.headline{padding: 22px 16px 22px !important;}
+.headline h1{margin-bottom: 12px !important;}
+.headline .sub{margin-top: 10px !important;}
+/* Separate CTA from text and payments */
+.cta{margin-top: 12px !important; gap: 12px !important;}
+.payments{margin-top: 12px !important;}
+/* Slightly slimmer sticky bar to reduce competition with main CTA */
+:root{ --sticky-h: 54px; }
+</style>
+
 </head>
 <body>
   <noscript><img height="1" width="1" style="display:none"
@@ -551,7 +567,7 @@ body{ background:#140026 !important; }
 
       <div class="cta">
         
-        <a class="btn" id="ctaWA" href="#" target="_blank" rel="noopener"><img src="./assets/whatsapp.png" alt="WhatsApp" class="wa-icon"><span>Hablar por WhatsApp</span></a>
+        <a class="btn" id="ctaWA" href="#" target="_blank" rel="noopener"><img src="./assets/whatsapp.png" alt="WhatsApp" class="wa-icon"><span>Escribinos por WhatsApp</span></a>
 <section class="payments">
           <h2>Métodos de pago disponibles</h2>
           <div class="logos">
@@ -563,10 +579,9 @@ body{ background:#140026 !important; }
             <img loading="lazy" src="./assets/midinero.png" alt="Mi Dinero">
             <img loading="lazy" src="./assets/prex.png" alt="Prex">
           </div>
-<p class="cta-note" style="font-size:12.5px;opacity:.9">No procesamos pagos por WhatsApp; te damos los pasos seguros.</p>
         </section>
 
-        <p class="disclaimer">Promoción para usuarios nuevos. 18+. Jugá con responsabilidad. Al escribirnos aceptás recibir información por WhatsApp; podés solicitar dejar de recibir mensajes. Los pagos NO se realizan por chat.</p>
+        <p class="disclaimer">Promoción válida para usuarios nuevos. Sujeto a términos y condiciones.</p>
       </div>
     
       
@@ -577,7 +592,7 @@ body{ background:#140026 !important; }
   <script>
     // ===== WhatsApp number & message (EDIT HERE) =====
       const WHATSAPP_NUMBER = "59892440607"; // <-- Reemplazá por tu número con código de país, sin + ni 00
-    const PREFILL_TEXT = "Hola, quiero la información del Bono 20% y los pasos para depositar en pesos uruguayos."; // Mensaje inicial
+    const PREFILL_TEXT = "Hola, me gustaria saber mas"; // Mensaje inicial
 
     // Build WA link
     const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(PREFILL_TEXT)}`;
@@ -657,10 +672,10 @@ body{ background:#140026 !important; }
     <div class="bar-inner">
       <div class="timer">
         <strong>¡Bono 20%!</strong>
-        <span class="label">Consulta disponible</span>
+        <span class="label">Expira en</span>
         <span id="countdown">--:--:--</span>
       </div>
-      <a class="btn bar-btn" id="barWA" href="#" target="_blank" rel="noopener"><img src="./assets/whatsapp.png" alt="WhatsApp" class="wa-icon"><span>Hablar por WhatsApp</span></a>
+      <a class="btn bar-btn" id="barWA" href="#" target="_blank" rel="noopener"><img src="./assets/whatsapp.png" alt="WhatsApp" class="wa-icon"><span>Activar por WhatsApp</span></a>
     </div>
   </div>
 
@@ -728,7 +743,7 @@ body{ background:#140026 !important; }
     var eventID = randomEventID();
     var extras = paramsFrom(location.href);
 
-    fbq('trackCustom','WhatsappClick', Object.assign({
+    fbq('track', 'Lead', Object.assign({
       eventID: eventID,
       content_name: 'Registro WhatsApp',
       destination: 'whatsapp',
