@@ -229,7 +229,7 @@
     }
   </style>
 
-  <!-- Meta Pixel Code -->
+  <!-- Meta Pixel Code (copiado de A) -->
   <script>
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -315,7 +315,7 @@
   <!-- CTA WhatsApp -->
   <div class="wa-cta-wrap">
     <a class="wa-cta"
-       href="https://api.whatsapp.com/send?phone=59891994768&text=Hola%20quiero%20mi%20bono%20del%2020%%20para%20jugar"
+       href="https://api.whatsapp.com/send?phone=59899194848&text=Hola%20quiero%20mi%20bono%20del%2020%%20para%20jugar"
        target="_blank"
        rel="noopener"
        aria-label="Escribinos por WhatsApp"
@@ -454,7 +454,39 @@
     })();
   </script>
 
-  <!-- Tracking click WhatsApp -->
+  <!-- Rotación de números de WhatsApp (copiada/configurada como en A) -->
+  <script>
+  (function() {
+    var btn = document.getElementById('waCta');
+    if (!btn) return;
+
+    var numbers = ['59899109046'];
+    var ROTATE_MS = 7 * 60 * 1000; // 7 minutos
+    var idx = 0;
+
+    function applyPhone(phone) {
+      try {
+        var url = new URL(btn.href);
+        url.searchParams.set('phone', phone);
+        btn.href = url.toString();
+      } catch (e) {
+        btn.href = 'https://api.whatsapp.com/send?phone=' + phone +
+          '&text=Hola%20quiero%20mi%20bono%20del%2020%%20para%20jugar';
+      }
+      btn.setAttribute('data-phone', phone);
+    }
+
+    // inicial
+    applyPhone(numbers[0]);
+
+    setInterval(function() {
+      idx = (idx + 1) % numbers.length;
+      applyPhone(numbers[idx]);
+    }, ROTATE_MS);
+  })();
+  </script>
+
+  <!-- Tracking click WhatsApp + envío a backend -->
   <script>
   (function() {
     var btn = document.getElementById('waCta');
@@ -469,8 +501,19 @@
           ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','fbclid'].forEach(function(k){
             if (qs.get(k)) utm.set(k, qs.get(k));
           });
+
+          // número activo en este momento
+          var phone = btn.getAttribute('data-phone');
+          if (!phone) {
+            try {
+              var hrefUrl = new URL(btn.href);
+              phone = hrefUrl.searchParams.get('phone') || '';
+            } catch(e){}
+          }
+          if (!phone) phone = '59899194848';
+
           utm.set('name','WhatsAppClick');
-          utm.set('dest','59891994768');
+          utm.set('dest', phone);
           utm.set('event_id', eventId);
           var url = 'https://backend-1-x8dd.onrender.com/track/custom?' + utm.toString();
           if (navigator.sendBeacon) { navigator.sendBeacon(url); }
