@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CAYO URUGUAY - BIENVENIDO</title>
-
   <style>
     :root {
       --card-height: 55vh;
@@ -23,10 +22,25 @@
       color: #fff;
     }
 
-    @keyframes pagePulse {
-      0% { transform: translate3d(0,0,0) scale(1); opacity:.85 }
-      50% { transform: translate3d(0,-2%,0) scale(1.03); opacity:1 }
-      100% { transform: translate3d(0,1.5%,0) scale(1.02); opacity:.92 }
+    .page-aura {
+      position: fixed;
+      inset: -40vh -10vw;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(255,0,198,0.36), transparent 65%),
+        radial-gradient(circle at 100% 0%, rgba(0,210,255,0.35), transparent 65%),
+        radial-gradient(circle at 50% 100%, rgba(102,0,255,0.22), transparent 70%);
+      opacity: 0.82;
+      pointer-events: none;
+      filter: blur(32px);
+      transform: translate3d(0,0,0);
+      animation: pageAuraPulse 16s ease-in-out infinite alternate;
+      z-index: -1;
+    }
+
+    @keyframes pageAuraPulse {
+      0% { transform: translate3d(0,0,0) scale(1); opacity:0.7; }
+      50% { transform: translate3d(0,-2%,0) scale(1.05); opacity:0.95; }
+      100% { transform: translate3d(0,1.5%,0) scale(1.02); opacity:0.8; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -99,6 +113,10 @@
       display:block;
     }
 
+    .hero-video {
+      background:#000;
+    }
+
     /* Aviso scroller */
     .notice-wrap{
       position: relative;
@@ -129,7 +147,7 @@
       .notice-item{ font-size:14px; line-height:26px }
     }
 
-    /* CTA WhatsApp */
+    /* CTA WhatsApp debajo del slideshow (centrado, ancho, animado) */
     .wa-cta-wrap{
       display:flex;
       justify-content:center;
@@ -151,20 +169,8 @@
       box-shadow: 0 8px 22px rgba(37,211,102,.35);
       animation: floatCTA 3s ease-in-out infinite, glowPulse 2.6s ease-in-out infinite;
     }
+    .wa-cta .wa-logo{ height:24px; width:auto; display:inline-block; }
     .wa-cta .wa-text{ flex:1; text-align:center; white-space:nowrap; }
-
-    .wa-cta .wa-logo {
-      width:26px;
-      height:26px;
-      border-radius:50%;
-      background:#0b2b13;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:16px;
-      font-weight:900;
-      color:#25D366;
-    }
 
     @keyframes floatCTA { 0%{transform:translateY(0)} 50%{transform:translateY(-6px)} 100%{transform:translateY(0)} }
     @keyframes glowPulse {
@@ -176,7 +182,7 @@
     @media (min-width: 768px){
       .wa-cta-wrap{ margin:64px 0 48px }
       .wa-cta{ width:min(80vw,760px); font-size:17px; }
-      .wa-cta .wa-logo{ width:28px; height:28px; }
+      .wa-cta .wa-logo{ height:26px; }
     }
 
     /* Fades laterales para notice */
@@ -188,36 +194,57 @@
       mask-repeat: no-repeat;
     }
   </style>
+
+  <!-- Meta Pixel Code -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '767728059169192');
+     fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=767728059169192&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
+
 </head>
 <body>
   <div class="page-aura" aria-hidden="true"></div>
 
   <div id="carousel" aria-label="Promociones destacadas">
-    <!-- Primer slide: se carga video de inmediato -->
     <div class="card-wrapper">
       <div class="aura" aria-hidden="true"></div>
-      <div class="card" data-video="bet30-preview.mp4" data-poster="bet30-preview.jpg">
-        <img src="bet30-preview.jpg" alt="Promo CAYO Uruguay 1" loading="eager">
+      <div class="card">
+        <video class="hero-video" autoplay loop muted playsinline poster="bet30-preview.jpg">
+          <source data-src="bet30-preview.mp4" type="video/mp4" />
+        </video>
       </div>
     </div>
-
-    <!-- Estos dos se convierten en video sólo cuando el user los ve -->
     <div class="card-wrapper">
       <div class="aura" aria-hidden="true"></div>
-      <div class="card" data-video="ganamos-preview.mp4" data-poster="ganamos-preview.jpg">
-        <img src="ganamos-preview.jpg" alt="Promo CAYO Uruguay 2" loading="lazy">
+      <div class="card">
+        <video class="hero-video" autoplay loop muted playsinline poster="ganamos-preview.jpg">
+          <source data-src="ganamos-preview.mp4" type="video/mp4" />
+        </video>
       </div>
     </div>
-
     <div class="card-wrapper">
       <div class="aura" aria-hidden="true"></div>
-      <div class="card" data-video="rhinoplay-preview.mp4" data-poster="rhinoplay-preview.jpg">
-        <img src="rhinoplay-preview.jpg" alt="Promo CAYO Uruguay 3" loading="lazy">
+      <div class="card">
+        <video class="hero-video" autoplay loop muted playsinline poster="rhinoplay-preview.jpg">
+          <source data-src="rhinoplay-preview.mp4" type="video/mp4" />
+        </video>
       </div>
     </div>
   </div>
 
-  <!-- Aviso -->
+  <!-- Aviso con fade (scroll) -->
   <div class="notice-wrap" aria-label="Aviso importante">
     <div class="notice-rail">
       <span class="notice-item">CAYÓ URUGUAY<span class="notice-dot">•</span><span class="dim">MÍNIMO 300 UYU</span><span class="notice-dot">•</span>RETIROS 12:00 A 23:30</span>
@@ -233,95 +260,159 @@
     </div>
   </div>
 
-  <!-- CTA WhatsApp -->
+  <!-- CTA WhatsApp debajo del slideshow -->
   <div class="wa-cta-wrap">
-    <a class="wa-cta"
-       href="https://api.whatsapp.com/send?phone=59891994768"
-       target="_blank"
-       rel="noopener"
-       aria-label="Escribinos por WhatsApp"
-       onclick="if (window.fbq) fbq('track','WhatsappClick');">
-      <div class="wa-logo">W</div>
-      <span class="wa-text">ESCRIBINOS POR WHATSAPP</span>
+    <a class="wa-cta" href="https://api.whatsapp.com/send?phone=59891994768&text=Hola%20quiero%20mi%20bono%20del%2020%%20para%20jugar" target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" onclick="(window.fbq) fbq('track','WhatsappClick'); return true;" id="waCta">
+      <img class="wa-logo" src="whatsapp.png" loading="lazy" alt="WhatsApp" />
+      <span class="wa-text">Escribinos por WhatsApp</span>
     </a>
   </div>
 
-  <!-- Meta Pixel: se inicializa después del load para no frenar el FCP -->
+  <!-- Lazy load de videos del carrusel -->
   <script>
-    window.addEventListener('load', function () {
-      !function(f,b,e,v,n,t,s){
-        if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)
-      }(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    // Lazy load de videos del carrusel manteniendo la estructura original
+    document.addEventListener('DOMContentLoaded', function () {
+      var videos = document.querySelectorAll('#carousel .card video.hero-video');
+      if (!videos.length) return;
 
-      fbq('init', '767728059169192');
-      fbq('track', 'PageView');
-    });
-  </script>
+      function loadVideo(video) {
+        if (!video || video.dataset.loaded) return;
+        var source = video.querySelector('source[data-src]');
+        if (!source) return;
 
-  <!-- Lazy-video: carga solo el primero y el resto cuando entran en pantalla -->
-  <script>
-    (function(){
-      const carousel = document.getElementById('carousel');
-      const cards = document.querySelectorAll('.card[data-video]');
-      if (!cards.length) return;
-
-      function loadVideo(card) {
-        if (card.dataset.loaded) return;
-        const video = document.createElement('video');
-        video.autoplay = true;
-        video.loop = true;
-        video.muted = true;
-        video.playsInline = true;
-        video.poster = card.dataset.poster || '';
-        video.preload = 'auto';
-
-        const source = document.createElement('source');
-        source.src = card.dataset.video;
-        source.type = 'video/mp4';
-        video.appendChild(source);
-
-        card.innerHTML = '';
-        card.appendChild(video);
-        card.dataset.loaded = '1';
+        // Si ya tiene src no volvemos a cargarlo
+        if (!source.src) {
+          source.src = source.dataset.src;
+        }
+        video.load();
+        // Intentar reproducir; si el navegador bloquea autoplay no pasa nada
+        var playPromise = video.play && video.play();
+        if (playPromise && typeof playPromise.then === 'function') {
+          playPromise.catch(function(){});
+        }
+        video.dataset.loaded = '1';
       }
 
-      // Primer slide: video al toque
-      loadVideo(cards[0]);
+      // Cargar de inmediato el primer video (hero)
+      loadVideo(videos[0]);
 
-      // Resto: sólo cuando se ven
+      // El resto sólo cuando entran en viewport
       if ('IntersectionObserver' in window) {
-        const io = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
             if (entry.isIntersecting) {
               loadVideo(entry.target);
               io.unobserve(entry.target);
             }
           });
         }, {
-          root: carousel,
+          root: document.getElementById('carousel'),
           threshold: 0.6
         });
 
-        for (let i = 1; i < cards.length; i++) {
-          io.observe(cards[i]);
+        for (var i = 1; i < videos.length; i++) {
+          io.observe(videos[i]);
         }
       } else {
-        // Fallback: si no hay IO, cargamos todos
-        for (let i = 1; i < cards.length; i++) {
-          loadVideo(cards[i]);
+        // Fallback: cargar todos los videos si el navegador es muy viejo
+        for (var j = 1; j < videos.length; j++) {
+          loadVideo(videos[j]);
         }
       }
+    });
+  </script>
+
+  <!-- Auto-slide del carrusel -->
+  <script>
+    (function(){
+      const carousel = document.getElementById('carousel');
+      if (!carousel) return;
+      const STEP_MS = 4000;       // tiempo entre slides
+      const SCROLL_BEHAVIOR = 'smooth';
+      let timer = null;
+      let pausedUntil = 0;
+
+      function cardStep() {
+        const firstCard = carousel.querySelector('.card-wrapper');
+        if (!firstCard) return 0;
+        const style = getComputedStyle(firstCard);
+        const marginL = parseFloat(style.marginLeft) || 0;
+        const marginR = parseFloat(style.marginRight) || 0;
+        return firstCard.getBoundingClientRect().width + marginL + marginR;
+      }
+
+      function next() {
+        const step = cardStep();
+        if (!step) return;
+        const { scrollLeft, scrollWidth, clientWidth } = carousel;
+        // Si estamos cerca del final, volvemos al inicio
+        if (scrollLeft + clientWidth >= scrollWidth - step * 0.6) {
+          carousel.scrollTo({ left: 0, behavior: SCROLL_BEHAVIOR });
+        } else {
+          carousel.scrollTo({ left: scrollLeft + step, behavior: SCROLL_BEHAVIOR });
+        }
+      }
+
+      function start() {
+        stop();
+        timer = setInterval(() => {
+          const now = Date.now();
+          if (now < pausedUntil) return; // respetar pausa por interacción
+          next();
+        }, STEP_MS);
+      }
+      function stop() { if (timer) { clearInterval(timer); timer = null; } }
+
+      // Pausar en interacción del usuario y reanudar luego
+      ['pointerdown','touchstart','mouseenter','focusin'].forEach(evt => {
+        carousel.addEventListener(evt, () => { pausedUntil = Date.now() + 7000; }, { passive: true });
+      });
+
+      // Recalcular al rotar / cambiar tamaño
+      window.addEventListener('resize', () => { pausedUntil = Date.now() + 1000; }, { passive: true });
+
+      // Iniciar cuando el carrusel esté en viewport (por si se carga abajo)
+      const startWhenVisible = () => {
+        const rect = carousel.getBoundingClientRect();
+        if (rect.bottom > 0 && rect.top < innerHeight) {
+          start();
+          document.removeEventListener('scroll', startWhenVisible, true);
+        }
+      };
+      document.addEventListener('scroll', startWhenVisible, true);
+      startWhenVisible();
+      // fallback por si no se dispara scroll
+      setTimeout(start, 1000);
     })();
   </script>
 
-  <noscript>
-    <img height="1" width="1" style="display:none"
-         src="https://www.facebook.com/tr?id=767728059169192&ev=PageView&noscript=1" alt="">
-  </noscript>
+  <!-- Tracking click WhatsApp -->
+  <script>
+  (function() {
+    var btn = document.getElementById('waCta');
+    if (!btn) return;
+    btn.addEventListener('click', function() {
+      try {
+        var eventId = 'wa_click_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+        if (typeof fbq === 'function') { fbq('trackCustom', 'WhatsAppClick', {}, { eventID: eventId }); }
+        // Optional: backend mirror for CAPI si lo usás
+        try {
+          var qs = new URLSearchParams(window.location.search);
+          var utm = new URLSearchParams();
+          ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','fbclid'].forEach(function(k){
+            if (qs.get(k)) utm.set(k, qs.get(k));
+          });
+          utm.set('name','WhatsAppClick');
+          utm.set('dest','59891994768');
+          utm.set('event_id', eventId);
+          var url = 'https://backend-1-x8dd.onrender.com/track/custom?' + utm.toString();
+          if (navigator.sendBeacon) { navigator.sendBeacon(url); }
+          else { fetch(url, { method:'GET', mode:'no-cors', keepalive:true }).catch(function(){}); }
+        } catch(e){}
+      } catch(e) {}
+    }, false);
+  })();
+  </script>
+
 </body>
 </html>
