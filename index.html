@@ -6,16 +6,9 @@
   <title>CAYO URUGUAY - BIENVENIDO</title>
 
   <!-- Preload del LCP: poster + video principal -->
-  <link rel="preload"
-        href="bet30-preview.jpg"
-        as="image"
-        fetchpriority="high">
-  <link rel="preload"
-        href="bet30-preview.mp4"
-        as="video"
-        fetchpriority="high">
-
-  <!-- Preload de los otros videos (para que carguen aunque aún no se vean) -->
+  <link rel="preload" href="bet30-preview.jpg" as="image" fetchpriority="high">
+  <link rel="preload" href="bet30-preview.mp4" as="video" fetchpriority="high">
+  <!-- Preload de los otros videos para que descarguen desde el inicio -->
   <link rel="preload" href="ganamos-preview.mp4" as="video">
   <link rel="preload" href="rhinoplay-preview.mp4" as="video">
 
@@ -111,24 +104,39 @@
 
     .card {
       position: relative;
-      width:100%;
-      height:100%;
-      border-radius:var(--card-radius);
-      overflow:hidden;
-      box-shadow:0 4px 20px rgba(0,0,0,.6);
-      z-index:1;
-      background:#0b0b12;
+      width: 100%;
+      height: 100%;
+      border-radius: var(--card-radius);
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,.6);
+      z-index: 1;
+      background: #0b0b12;
     }
 
-    .card video {
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
+    .card video,
+    .card img.card-poster {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .card img.card-poster {
+      z-index: 2;
+      transition: opacity .28s ease-out;
       background:#000;
     }
 
-    .hero-video { background:#000; }
+    .card.card-playing img.card-poster {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .hero-video {
+      background:#000;
+    }
 
     /* Aviso scroller */
     .notice-wrap{
@@ -160,7 +168,7 @@
       .notice-item{ font-size:14px; line-height:26px }
     }
 
-    /* CTA WhatsApp debajo del slideshow (centrado, ancho, animado) */
+    /* CTA WhatsApp */
     .wa-cta-wrap{
       display:flex;
       justify-content:center;
@@ -182,8 +190,23 @@
       box-shadow: 0 8px 22px rgba(37,211,102,.35);
       animation: floatCTA 3s ease-in-out infinite, glowPulse 2.6s ease-in-out infinite;
     }
-    .wa-cta .wa-logo{ height:24px; width:auto; display:inline-block; }
-    .wa-cta .wa-text{ flex:1; text-align:center; white-space:nowrap; }
+    .wa-text{ flex:1; text-align:center; white-space:nowrap; }
+
+    .wa-logo{
+      width:26px;
+      height:26px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      flex-shrink:0;
+    }
+    .wa-logo svg{
+      width:100%;
+      height:100%;
+      display:block;
+    }
 
     @keyframes floatCTA { 0%{transform:translateY(0)} 50%{transform:translateY(-6px)} 100%{transform:translateY(0)} }
     @keyframes glowPulse {
@@ -195,11 +218,9 @@
     @media (min-width: 768px){
       .wa-cta-wrap{ margin:64px 0 48px }
       .wa-cta{ width:min(80vw,760px); font-size:17px; }
-      .wa-cta .wa-logo{ height:26px; }
+      .wa-logo{ width:28px; height:28px; }
     }
 
-    /* Fades laterales para notice */
-    .notice-wrap{ background: transparent; }
     .notice-rail{
       -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 90%, rgba(0,0,0,0) 100%);
       mask-image: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 90%, rgba(0,0,0,0) 100%);
@@ -231,30 +252,28 @@
   <div class="page-aura" aria-hidden="true"></div>
 
   <div id="carousel" aria-label="Promociones destacadas">
-    <!-- HERO: autoplay inmediato -->
     <div class="card-wrapper">
       <div class="aura" aria-hidden="true"></div>
       <div class="card">
+        <img class="card-poster" src="bet30-preview.jpg" alt="Promo CAYO Uruguay 1" loading="eager">
         <video class="hero-video"
                autoplay
                loop
                muted
                playsinline
-               poster="bet30-preview.jpg"
                preload="auto">
           <source src="bet30-preview.mp4" type="video/mp4" />
         </video>
       </div>
     </div>
 
-    <!-- Segundo: muestra poster y se reproduce al verlo -->
     <div class="card-wrapper">
       <div class="aura" aria-hidden="true"></div>
       <div class="card">
+        <img class="card-poster" src="ganamos-preview.jpg" alt="Promo CAYO Uruguay 2" loading="lazy">
         <video class="hero-video"
                muted
                playsinline
-               poster="ganamos-preview.jpg"
                preload="auto"
                data-autoplay-visible="true">
           <source src="ganamos-preview.mp4" type="video/mp4" />
@@ -262,14 +281,13 @@
       </div>
     </div>
 
-    <!-- Tercero: igual que el segundo -->
     <div class="card-wrapper">
       <div class="aura" aria-hidden="true"></div>
       <div class="card">
+        <img class="card-poster" src="rhinoplay-preview.jpg" alt="Promo CAYO Uruguay 3" loading="lazy">
         <video class="hero-video"
                muted
                playsinline
-               poster="rhinoplay-preview.jpg"
                preload="auto"
                data-autoplay-visible="true">
           <source src="rhinoplay-preview.mp4" type="video/mp4" />
@@ -278,7 +296,7 @@
     </div>
   </div>
 
-  <!-- Aviso con fade (scroll) -->
+  <!-- Aviso -->
   <div class="notice-wrap" aria-label="Aviso importante">
     <div class="notice-rail">
       <span class="notice-item">CAYÓ URUGUAY<span class="notice-dot">•</span><span class="dim">MÍNIMO 300 UYU</span><span class="notice-dot">•</span>RETIROS 12:00 A 23:30</span>
@@ -294,57 +312,81 @@
     </div>
   </div>
 
-  <!-- CTA WhatsApp debajo del slideshow -->
+  <!-- CTA WhatsApp -->
   <div class="wa-cta-wrap">
-    <a class="wa-cta" href="https://api.whatsapp.com/send?phone=59891994768&text=Hola%20quiero%20mi%20bono%20del%2020%%20para%20jugar" target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp" onclick="(window.fbq) fbq('track','WhatsappClick'); return true;" id="waCta">
-      <img class="wa-logo" src="whatsapp.png" loading="lazy" alt="WhatsApp" />
+    <a class="wa-cta"
+       href="https://api.whatsapp.com/send?phone=59891994768&text=Hola%20quiero%20mi%20bono%20del%2020%%20para%20jugar"
+       target="_blank"
+       rel="noopener"
+       aria-label="Escribinos por WhatsApp"
+       onclick="(window.fbq) && fbq('track','WhatsappClick'); return true;"
+       id="waCta">
+      <span class="wa-logo" aria-hidden="true">
+        <!-- Icono WhatsApp SVG inline -->
+        <svg viewBox="0 0 32 32">
+          <defs>
+            <linearGradient id="waGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#61fd7d"/>
+              <stop offset="100%" stop-color="#21c960"/>
+            </linearGradient>
+          </defs>
+          <path fill="#E5E5E5" d="M16 1.6C8.76 1.6 2.9 7.46 2.9 14.7c0 2.26.61 4.46 1.77 6.4L2 30l9.09-2.6c1.82.54 3.6.82 5.37.82 7.24 0 13.1-5.86 13.1-13.1C29.56 7.46 23.7 1.6 16 1.6z"/>
+          <circle cx="16" cy="15.9" r="11.5" fill="url(#waGrad)"/>
+          <path fill="#FFF" d="M13.2 9.9c-.27-.61-.55-.62-.8-.63l-.68-.01c-.24 0-.63.09-.96.45-.33.36-1.27 1.24-1.27 3.02 0 1.78 1.3 3.5 1.48 3.74.18.24 2.51 4.02 6.19 5.48 3.06 1.21 3.69.97 4.36.91.67-.06 2.15-.88 2.45-1.73.3-.85.3-1.57.21-1.73-.09-.15-.33-.24-.68-.42-.36-.18-2.15-1.06-2.48-1.18-.33-.12-.57-.18-.8.18-.24.36-.92 1.18-1.13 1.42-.21.24-.42.27-.78.09-.36-.18-1.51-.56-2.87-1.78-1.06-.95-1.78-2.12-1.99-2.48-.21-.36-.02-.55.16-.73.17-.17.4-.45.6-.67.2-.22.27-.36.4-.6.12-.24.06-.45-.03-.63-.09-.18-.8-2.0-1.1-2.72z"/>
+        </svg>
+      </span>
       <span class="wa-text">Escribinos por WhatsApp</span>
     </a>
   </div>
 
-  <!-- Script: autoplay de videos visibles (evita pantallas negras) -->
+  <!-- Script: posters + autoplay -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const carousel = document.getElementById('carousel');
-      const videos = document.querySelectorAll('#carousel .card video.hero-video');
+      const videos = Array.from(document.querySelectorAll('#carousel .card video.hero-video'));
       if (!videos.length) return;
 
-      // Asegurar que el primer video intente reproducirse
+      // cuando un video empieza a reproducirse, ocultamos su poster
+      videos.forEach(function(video){
+        const card = video.closest('.card');
+        if (!card) return;
+        video.addEventListener('playing', function(){
+          card.classList.add('card-playing');
+        });
+      });
+
+      // primer video: reproducir al toque
       const first = videos[0];
       if (first) {
-        const p = first.play && first.play();
-        if (p && typeof p.then === 'function') p.catch(function(){});
+        try {
+          const p = first.play();
+          if (p && typeof p.then === 'function') p.catch(function(){});
+        } catch(e) {}
       }
 
-      const others = Array.prototype.slice.call(videos, 1)
-        .filter(v => v.hasAttribute('data-autoplay-visible'));
+      const others = videos.slice(1).filter(v => v.hasAttribute('data-autoplay-visible'));
 
-      // Cuando un video es visible, empezamos a reproducirlo (la imagen de poster ya está)
-      function autoplayVideo(v) {
+      function autoplayVideo(v){
         if (!v || v.dataset.autoplayed) return;
-        const playPromise = v.play && v.play();
-        if (playPromise && typeof playPromise.then === 'function') {
-          playPromise.catch(function(){});
-        }
         v.dataset.autoplayed = '1';
+        try {
+          const p = v.play();
+          if (p && typeof p.then === 'function') p.catch(function(){});
+        } catch(e){}
       }
 
       if ('IntersectionObserver' in window) {
-        const io = new IntersectionObserver(function (entries) {
-          entries.forEach(function (entry) {
+        const io = new IntersectionObserver(function(entries){
+          entries.forEach(function(entry){
             if (entry.isIntersecting) {
               autoplayVideo(entry.target);
               io.unobserve(entry.target);
             }
           });
-        }, {
-          root: carousel,
-          threshold: 0.6
-        });
+        }, { root: carousel, threshold: 0.6 });
 
         others.forEach(v => io.observe(v));
       } else {
-        // Fallback para navegadores viejos
         others.forEach(autoplayVideo);
       }
     });
@@ -355,7 +397,7 @@
     (function(){
       const carousel = document.getElementById('carousel');
       if (!carousel) return;
-      const STEP_MS = 1900;       // tiempo entre slides (1.9s)
+      const STEP_MS = 1900;
       const SCROLL_BEHAVIOR = 'smooth';
       let timer = null;
       let pausedUntil = 0;
@@ -372,8 +414,10 @@
       function next() {
         const step = cardStep();
         if (!step) return;
-        const { scrollLeft, scrollWidth, clientWidth } = carousel;
-        // Si estamos cerca del final, volvemos al inicio
+        const scrollLeft = carousel.scrollLeft;
+        const scrollWidth = carousel.scrollWidth;
+        const clientWidth = carousel.clientWidth;
+
         if (scrollLeft + clientWidth >= scrollWidth - step * 0.6) {
           carousel.scrollTo({ left: 0, behavior: SCROLL_BEHAVIOR });
         } else {
@@ -383,24 +427,21 @@
 
       function start() {
         stop();
-        timer = setInterval(() => {
+        timer = setInterval(function(){
           const now = Date.now();
-          if (now < pausedUntil) return; // respetar pausa por interacción
+          if (now < pausedUntil) return;
           next();
         }, STEP_MS);
       }
       function stop() { if (timer) { clearInterval(timer); timer = null; } }
 
-      // Pausar en interacción del usuario y reanudar luego
-      ['pointerdown','touchstart','mouseenter','focusin'].forEach(evt => {
-        carousel.addEventListener(evt, () => { pausedUntil = Date.now() + 7000; }, { passive: true });
+      ['pointerdown','touchstart','mouseenter','focusin'].forEach(function(evt){
+        carousel.addEventListener(evt, function(){ pausedUntil = Date.now() + 7000; }, { passive: true });
       });
 
-      // Recalcular al rotar / cambiar tamaño
-      window.addEventListener('resize', () => { pausedUntil = Date.now() + 1000; }, { passive: true });
+      window.addEventListener('resize', function(){ pausedUntil = Date.now() + 1000; }, { passive: true });
 
-      // Iniciar cuando el carrusel esté en viewport (por si se carga abajo)
-      const startWhenVisible = () => {
+      const startWhenVisible = function(){
         const rect = carousel.getBoundingClientRect();
         if (rect.bottom > 0 && rect.top < innerHeight) {
           start();
@@ -409,7 +450,6 @@
       };
       document.addEventListener('scroll', startWhenVisible, true);
       startWhenVisible();
-      // fallback por si no se dispara scroll
       setTimeout(start, 1000);
     })();
   </script>
@@ -443,3 +483,4 @@
 
 </body>
 </html>
+
