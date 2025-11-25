@@ -4,6 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CAYO URUGUAY - BIENVENIDO</title>
+
+  <!-- Preload del LCP: poster + video principal -->
+  <link rel="preload"
+        href="bet30-preview.jpg"
+        as="image"
+        fetchpriority="high">
+
+  <link rel="preload"
+        href="bet30-preview.mp4"
+        as="video"
+        fetchpriority="high">
+
   <style>
     :root {
       --card-height: 55vh;
@@ -218,14 +230,23 @@
   <div class="page-aura" aria-hidden="true"></div>
 
   <div id="carousel" aria-label="Promociones destacadas">
+    <!-- HERO: ahora con src directo + preload="auto" -->
     <div class="card-wrapper">
       <div class="aura" aria-hidden="true"></div>
       <div class="card">
-        <video class="hero-video" autoplay loop muted playsinline poster="bet30-preview.jpg">
-          <source data-src="bet30-preview.mp4" type="video/mp4" />
+        <video class="hero-video"
+               autoplay
+               loop
+               muted
+               playsinline
+               poster="bet30-preview.jpg"
+               preload="auto">
+          <source src="bet30-preview.mp4" type="video/mp4" />
         </video>
       </div>
     </div>
+
+    <!-- Siguen los otros dos con data-src para lazy-load -->
     <div class="card-wrapper">
       <div class="aura" aria-hidden="true"></div>
       <div class="card">
@@ -293,9 +314,7 @@
         video.dataset.loaded = '1';
       }
 
-      // Cargar de inmediato el primer video (hero)
-      loadVideo(videos[0]);
-
+      // No tocamos el primer video (ya tiene src + preload="auto")
       // El resto sólo cuando entran en viewport
       if ('IntersectionObserver' in window) {
         var io = new IntersectionObserver(function (entries) {
