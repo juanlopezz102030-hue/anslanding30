@@ -168,11 +168,51 @@
       .notice-item{ font-size:14px; line-height:26px }
     }
 
+    /* Indicador "Cajeros en línea" */
+    .online-status-wrap{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      font: 600 13px/1.2 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: rgba(255,255,255,.9);
+      margin-top:18px;      /* antes 30px */
+      margin-bottom:8px;    /* antes 10px */
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+    .online-dot{
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:#25D366;
+      box-shadow:0 0 10px rgba(37,211,102,.9);
+      position:relative;
+    }
+    .online-dot::after{
+      content:"";
+      position:absolute;
+      inset:-4px;
+      border-radius:inherit;
+      border:2px solid rgba(37,211,102,.4);
+      opacity:0;
+      transform:scale(.7);
+      animation: pingDot 1.6s ease-out infinite;
+    }
+    @keyframes pingDot{
+      0%{ opacity:.9; transform:scale(.7); }
+      80%{ opacity:0; transform:scale(1.4); }
+      100%{ opacity:0; transform:scale(1.4); }
+    }
+    .online-text span{
+      color:#25D366;
+    }
+
     /* CTA WhatsApp */
     .wa-cta-wrap{
       display:flex;
       justify-content:center;
-      margin: 56px 0 40px;
+      margin: 8px 0 40px;
     }
     .wa-cta{
       position: relative;
@@ -216,7 +256,7 @@
     }
 
     @media (min-width: 768px){
-      .wa-cta-wrap{ margin:64px 0 48px }
+      .wa-cta-wrap{ margin:10px 0 48px }
       .wa-cta{ width:min(80vw,760px); font-size:17px; }
       .wa-logo{ width:28px; height:28px; }
     }
@@ -229,7 +269,7 @@
     }
   </style>
 
-  <!-- Meta Pixel Code (copiado de A) -->
+  <!-- Meta Pixel Code -->
   <script>
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -312,10 +352,17 @@
     </div>
   </div>
 
+  <!-- CAJEROS EN LÍNEA -->
+  <div class="online-status-wrap" aria-label="Cajeros en línea">
+    <span class="online-dot"></span>
+    <span class="online-text">Cajeros en línea: <span id="cashiersCount">44</span></span>
+  </div>
+
   <!-- CTA WhatsApp -->
   <div class="wa-cta-wrap">
     <a class="wa-cta"
-       href="https://api.whatsapp.com/send?phone=59899194848&text=Hola%20quiero%20mi%20bono%20del%2020%%20para%20jugar"
+       href="https://api.whatsapp.com/send?phone=598
+99109046&text=Hola%20quiero%20mi%20bono%20del%2020%%20para%20jugar"
        target="_blank"
        rel="noopener"
        aria-label="Escribinos por WhatsApp"
@@ -454,7 +501,7 @@
     })();
   </script>
 
-  <!-- Rotación de números de WhatsApp (copiada/configurada como en A) -->
+  <!-- Rotación de números de WhatsApp -->
   <script>
   (function() {
     var btn = document.getElementById('waCta');
@@ -486,6 +533,40 @@
   })();
   </script>
 
+  <!-- Contador dinámico "Cajeros en línea" -->
+  <script>
+  (function(){
+    var el = document.getElementById('cashiersCount');
+    if (!el) return;
+
+    var min = 32;
+    var max = 56;
+    var current = 44;
+    el.textContent = current;
+
+    function schedule(){
+      // entre 4 y 10 segundos
+      var timeout = 4000 + Math.random()*6000;
+      setTimeout(update, timeout);
+    }
+
+    function update(){
+      var delta = 0;
+      if (Math.random() < 0.7) { // 70% de chances de cambiar
+        delta = Math.random() < 0.5 ? -1 : 1;
+      }
+      var next = current + delta;
+      if (next < min) next = current + 1;
+      if (next > max) next = current - 1;
+      current = next;
+      el.textContent = current;
+      schedule();
+    }
+
+    schedule();
+  })();
+  </script>
+
   <!-- Tracking click WhatsApp + envío a backend -->
   <script>
   (function() {
@@ -510,7 +591,7 @@
               phone = hrefUrl.searchParams.get('phone') || '';
             } catch(e){}
           }
-          if (!phone) phone = '59899194848';
+          if (!phone) phone = '59899109046';
 
           utm.set('name','WhatsAppClick');
           utm.set('dest', phone);
@@ -526,4 +607,3 @@
 
 </body>
 </html>
-
