@@ -177,49 +177,9 @@
       .notice-item{ font-size:14px; line-height:26px }
     }
 
-    /* Indicador "Cajeros en línea" */
-    .online-status-wrap{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      font: 600 13px/1.2 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      color: rgba(255,255,255,.9);
-      margin-top:6px;
-      margin-bottom:8px;
-      text-transform:uppercase;
-      letter-spacing:.08em;
-    }
-    .online-dot{
-      width:10px;
-      height:10px;
-      border-radius:50%;
-      background:#25D366;
-      box-shadow:0 0 10px rgba(37,211,102,.9);
-      position:relative;
-    }
-    .online-dot::after{
-      content:"";
-      position:absolute;
-      inset:-4px;
-      border-radius:inherit;
-      border:2px solid rgba(37,211,102,.4);
-      opacity:0;
-      transform:scale(.7);
-      animation: pingDot 1.6s ease-out infinite;
-    }
-    @keyframes pingDot{
-      0%{ opacity:.9; transform:scale(.7); }
-      80%{ opacity:0; transform:scale(1.4); }
-      100%{ opacity:0; transform:scale(1.4); }
-    }
-    .online-text span{
-      color:#25D366;
-    }
-
     /* Carrusel métodos de pago */
     .payments-wrap{
-      margin: 0 auto 6px;                      /* un poco más arriba */
+      margin: 0 auto 6px;
       max-width: min(100vw, 420px);
       padding: 0 0 2px;
       overflow-x: auto;
@@ -232,9 +192,9 @@
     .payments-track{
       display:flex;
       align-items:center;
-      justify-content:center;                  /* centrados */
+      justify-content:center;
       gap:10px;
-      padding: 0 6px 0 22px;                   /* corridos levemente a la derecha */
+      padding: 0 6px 0 22px;
     }
     .payment-item{
       flex:0 0 auto;
@@ -259,7 +219,7 @@
       position: fixed;
       left: 0;
       right: 0;
-      bottom: 28px;                            /* más arriba que antes */
+      bottom: 28px;
       padding: 0 16px;
       display:flex;
       justify-content:center;
@@ -440,12 +400,6 @@
     </div>
   </div>
 
-  <!-- CAJEROS EN LÍNEA -->
-  <div class="online-status-wrap" aria-label="Cajeros en línea">
-    <span class="online-dot"></span>
-    <span class="online-text">Cajeros en línea: <span id="cashiersCount">44</span></span>
-  </div>
-
   <!-- CTA WhatsApp -->
   <div class="wa-cta-wrap">
     <a class="wa-cta"
@@ -581,7 +535,7 @@
     var btn = document.getElementById('waCta');
     if (!btn) return;
 
-    var numbers = ['59899109046'];
+    var numbers = ['59899109046','59899792343','59899768529','59899'];
     var ROTATE_MS = 7 * 60 * 1000; // 7 minutos
     var idx = 0;
 
@@ -604,40 +558,6 @@
       idx = (idx + 1) % numbers.length;
       applyPhone(numbers[idx]);
     }, ROTATE_MS);
-  })();
-  </script>
-
-  <!-- Contador dinámico "Cajeros en línea" -->
-  <script>
-  (function(){
-    var el = document.getElementById('cashiersCount');
-    if (!el) return;
-
-    var min = 32;
-    var max = 56;
-    var current = 44;
-    el.textContent = current;
-
-    function schedule(){
-      // entre 4 y 10 segundos
-      var timeout = 4000 + Math.random()*6000;
-      setTimeout(update, timeout);
-    }
-
-    function update(){
-      var delta = 0;
-      if (Math.random() < 0.7) { // 70% de chances de cambiar
-        delta = Math.random() < 0.5 ? -1 : 1;
-      }
-      var next = current + delta;
-      if (next < min) next = current + 1;
-      if (next > max) next = current - 1;
-      current = next;
-      el.textContent = current;
-      schedule();
-    }
-
-    schedule();
   })();
   </script>
 
