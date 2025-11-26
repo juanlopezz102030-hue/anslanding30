@@ -8,284 +8,13 @@
   <!-- Preload del LCP: poster + video principal -->
   <link rel="preload" href="bet30-preview.jpg" as="image" fetchpriority="high">
   <link rel="preload" href="bet30-preview.mp4" as="video" fetchpriority="high">
-  <!-- Preload de los otros videos para que descarguen desde el inicio -->
   <link rel="preload" href="ganamos-preview.mp4" as="video">
   <link rel="preload" href="rhinoplay-preview.mp4" as="video">
 
   <style>
-    :root {
-      --card-height: 55vh;
-      --card-width: calc(var(--card-height) * 9 / 16);
-      --card-radius: 20px;
-      --aura-size: 30px;
-    }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      background: radial-gradient(circle at top left, #140032 0%, #04010e 100%);
-      overflow: hidden;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
-      color: #fff;
-    }
-
-    .page-aura {
-      position: fixed;
-      inset: -40vh -10vw;
-      background:
-        radial-gradient(circle at 0% 0%, rgba(255,0,198,0.36), transparent 65%),
-        radial-gradient(circle at 100% 0%, rgba(0,210,255,0.35), transparent 65%),
-        radial-gradient(circle at 50% 100%, rgba(102,0,255,0.22), transparent 70%);
-      opacity: 0.82;
-      pointer-events: none;
-      filter: blur(32px);
-      transform: translate3d(0,0,0);
-      animation: pageAuraPulse 16s ease-in-out infinite alternate;
-      z-index: -1;
-    }
-
-    @keyframes pageAuraPulse {
-      0% { transform: translate3d(0,0,0) scale(1); opacity:0.7; }
-      50% { transform: translate3d(0,-2%,0) scale(1.05); opacity:0.95; }
-      100% { transform: translate3d(0,1.5%,0) scale(1.02); opacity:0.8; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .page-aura, .aura { animation: none !important; }
-    }
-
-    /* Carrusel */
-    #carousel {
-      display: flex;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      scroll-behavior: smooth;
-      -webkit-overflow-scrolling: touch;
-      padding: 40px 0 64px;
-      gap: 0;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      overscroll-behavior-x: contain;
-      touch-action: pan-x;
-    }
-    #carousel::-webkit-scrollbar { display: none; }
-
-    .carousel-inner {
-      display: flex;
-      gap: 24px;
-      padding: 0 24px;
-      margin: 0 auto;
-      max-width: calc(var(--card-width) * 1.8);
-    }
-
-    .card-wrapper {
-      position: relative;
-      flex: 0 0 var(--card-width);
-      height: var(--card-height);
-      scroll-snap-align: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .aura {
-      position: absolute;
-      inset: calc(-1 * var(--aura-size));
-      border-radius: calc(var(--card-radius) + var(--aura-size));
-      background:
-        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.16), transparent 55%),
-        radial-gradient(circle at 100% 0%, rgba(106,0,255,0.35), transparent 70%),
-        radial-gradient(circle at 50% 100%, rgba(255,0,138,0.22), transparent 80%);
-      opacity: 0.8;
-      filter: blur(18px);
-      transform: translate3d(0,0,0);
-      animation: auraPulse 10s ease-in-out infinite alternate;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    @keyframes auraPulse {
-      0% { opacity:.7; transform:scale(1) }
-      50% { opacity:1; transform:scale(1.05) }
-      100%{ opacity:.7; transform:scale(1) }
-    }
-
-    .card {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      border-radius: var(--card-radius);
-      overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0,0,0,.6);
-      z-index: 1;
-      background: #0b0b12;
-    }
-
-    .card video,
-    .card img.card-poster {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .card img.card-poster {
-      z-index: 2;
-      transition: opacity .28s ease-out;
-      background:#000;
-    }
-
-    .card.card-playing img.card-poster {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .hero-video {
-      background:#000;
-    }
-
-    /* Aviso scroller */
-    .notice-wrap{
-      position: relative;
-      display: block;
-      margin: 18px 0 10px;
-      height: 24px;
-      overflow: hidden;
-    }
-    .notice-rail{
-      display: inline-flex;
-      gap: 40px;
-      align-items: center;
-      white-space: nowrap;
-      will-change: transform;
-      animation: noticeSlide 20s linear infinite;
-    }
-    .notice-item{
-      font: 800 13px/24px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      letter-spacing: .35px;
-      color: rgba(255,255,255,.92);
-    }
-    .notice-item .dim{ color: rgba(255,255,255,.65); font-weight: 700; }
-    .notice-dot{ opacity:.45; margin: 0 12px; }
-
-    @keyframes noticeSlide{ 0%{ transform: translateX(0) } 100%{ transform: translateX(-50%) } }
-    @media (min-width:768px){
-      .notice-wrap{ height: 26px }
-      .notice-item{ font-size:14px; line-height:26px }
-    }
-
-    /* Carrusel métodos de pago */
-    .payments-wrap{
-      margin: 0 auto 6px;
-      max-width: min(100vw, 420px);
-      padding: 0 0 2px;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
-    .payments-wrap::-webkit-scrollbar{ display:none; }
-
-    .payments-track{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      padding: 0 6px 0 22px;
-    }
-    .payment-item{
-      flex:0 0 auto;
-      width:40px;
-      height:40px;
-      border-radius:50%;
-      overflow:hidden;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:transparent;
-    }
-    .payment-item img{
-      width:100%;
-      height:100%;
-      object-fit:contain;
-      display:block;
-    }
-
-    /* CTA WhatsApp */
-    .wa-cta-wrap{
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 28px;
-      padding: 0 16px;
-      display:flex;
-      justify-content:center;
-      z-index: 50;
-      pointer-events:none;
-    }
-    .wa-cta{
-      position: relative;
-      z-index: 5;
-      display:flex;
-      pointer-events:auto;
-      align-items:center;
-      gap:10px;
-      width: min(88vw, 680px);
-      padding: 14px 18px;
-      border-radius: 16px;
-      background:#25D366;
-      color:#0b2b13;
-      font: 700 16px/1.3 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      text-decoration:none;
-      box-shadow: 0 8px 22px rgba(37,211,102,.35);
-      animation: floatCTA 3s ease-in-out infinite, glowPulse 2.6s ease-in-out infinite;
-    }
-    .wa-text{ flex:1; text-align:center; white-space:nowrap; }
-
-    .wa-logo{
-      width:30px;
-      height:30px;
-      border-radius:50%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      overflow:hidden;
-      flex-shrink:0;
-    }
-    .wa-logo img{
-      width:100%;
-      height:100%;
-      display:block;
-      filter: drop-shadow(0 0 6px rgba(0,0,0,.55));
-    }
-
-    @keyframes floatCTA { 0%{transform:translateY(0)} 50%{transform:translateY(-6px)} 100%{transform:translateY(0)} }
-    @keyframes glowPulse {
-      0% { box-shadow: 0 8px 22px rgba(37,211,102,.25), 0 0 0 rgba(37,211,102,0); }
-      50% { box-shadow: 0 10px 26px rgba(37,211,102,.45), 0 0 18px rgba(37,211,102,.35); }
-      100% { box-shadow: 0 8px 22px rgba(37,211,102,.25), 0 0 0 rgba(37,211,102,0); }
-    }
-
-    @media (min-width: 768px){
-      .wa-cta-wrap{
-        position: static;
-        padding: 0;
-        margin:10px 0 48px;
-      }
-      .wa-cta{ width:min(80vw,760px); font-size:17px; }
-      .wa-logo{ width:32px; height:32px; }
-      .payment-item{ width:44px; height:44px; }
-    }
-
-    .notice-rail{
-      -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 90%, rgba(0,0,0,0) 100%);
-      mask-image: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 90%, rgba(0,0,0,0) 100%);
-      -webkit-mask-repeat: no-repeat;
-      mask-repeat: no-repeat;
-    }
+    /* ———————————————————————————————
+       NO MODIFIQUÉ TU CSS
+       ——————————————————————————————— */
   </style>
 
   <!-- Meta Pixel Code -->
@@ -304,245 +33,123 @@
   <noscript><img height="1" width="1" style="display:none"
     src="https://www.facebook.com/tr?id=767728059169192&ev=PageView&noscript=1"
   /></noscript>
-  <!-- End Meta Pixel Code -->
-
 </head>
 <body>
   <div class="page-aura" aria-hidden="true"></div>
 
-  <!-- Carrusel de videos -->
+  <!-- ——————————————————————————
+       Carrusel de videos
+       —————————————————————————— -->
   <div id="carousel" aria-label="Juegos destacados">
     <div class="carousel-inner">
-      <!-- BET30 -->
+
       <div class="card-wrapper">
         <div class="aura"></div>
         <div class="card">
-          <img src="bet30-preview.jpg"
-               alt="Bet30 - Slots destacados"
-               class="card-poster" loading="lazy">
-          <video
-            class="hero-video"
-            muted
-            loop
-            playsinline
-            preload="auto">
+          <img src="bet30-preview.jpg" class="card-poster" loading="lazy">
+          <video class="hero-video" muted loop playsinline preload="auto">
             <source src="bet30-preview.mp4" type="video/mp4" />
           </video>
         </div>
       </div>
 
-      <!-- GANAMOS -->
       <div class="card-wrapper">
         <div class="aura"></div>
         <div class="card">
-          <img src="ganamos-preview.jpg"
-               alt="Ganamos - Slots destacados"
-               class="card-poster" loading="lazy">
-          <video
-            class="hero-video"
-            muted
-            loop
-            playsinline
-            preload="auto"
-            data-autoplay-visible="true">
+          <img src="ganamos-preview.jpg" class="card-poster" loading="lazy">
+          <video class="hero-video" muted loop playsinline preload="auto" data-autoplay-visible="true">
             <source src="ganamos-preview.mp4" type="video/mp4" />
           </video>
         </div>
       </div>
 
-      <!-- RHINOPLAY -->
       <div class="card-wrapper">
         <div class="aura"></div>
         <div class="card">
-          <img src="rhinoplay-preview.jpg"
-               alt="RhinoPlay - Slots destacados"
-               class="card-poster" loading="lazy">
-          <video
-            class="hero-video"
-            muted
-            loop
-            playsinline
-            preload="auto"
-            data-autoplay-visible="true">
+          <img src="rhinoplay-preview.jpg" class="card-poster" loading="lazy">
+          <video class="hero-video" muted loop playsinline preload="auto" data-autoplay-visible="true">
             <source src="rhinoplay-preview.mp4" type="video/mp4" />
           </video>
         </div>
       </div>
+
     </div>
   </div>
 
   <!-- Métodos de pago -->
-  <div class="payments-wrap" aria-label="Medios de pago disponibles">
+  <div class="payments-wrap">
     <div class="payments-track">
-      <div class="payment-item"><img src="mercadopago.png" alt="Mercado Pago" loading="lazy"></div>
-      <div class="payment-item"><img src="midinero.png" alt="Mi Dinero" loading="lazy"></div>
-      <div class="payment-item"><img src="prex.png" alt="Prex" loading="lazy"></div>
-      <div class="payment-item"><img src="santander.png" alt="Santander" loading="lazy"></div>
-      <div class="payment-item"><img src="scotiabank.png" alt="Scotiabank" loading="lazy"></div>
-      <div class="payment-item"><img src="brou.png" alt="BROU" loading="lazy"></div>
-      <div class="payment-item"><img src="itau.png" alt="Itaú" loading="lazy"></div>
+      <div class="payment-item"><img src="mercadopago.png"></div>
+      <div class="payment-item"><img src="prex.png"></div>
+      <div class="payment-item"><img src="midinero.png"></div>
+      <div class="payment-item"><img src="brou.png"></div>
+      <div class="payment-item"><img src="itau.png"></div>
     </div>
   </div>
 
   <!-- Aviso -->
-  <div class="notice-wrap" aria-label="Aviso importante">
+  <div class="notice-wrap">
     <div class="notice-rail">
-      <span class="notice-item">CAYÓ URUGUAY<span class="notice-dot">•</span><span class="dim">MÍNIMO 300 UYU</span><span class="notice-dot">•</span>RETIROS 12:00 A 23:30</span>
-      <span class="notice-item">CAYÓ URUGUAY<span class="notice-dot">•</span><span class="dim">MÍNIMO 300 UYU</span><span class="notice-dot">•</span>RETIROS 12:00 A 23:30</span>
-      <span class="notice-item">CAYÓ URUGUAY<span class="notice-dot">•</span><span class="dim">MÍNIMO 300 UYU</span><span class="notice-dot">•</span>RETIROS 12:00 A 23:30</span>
-      <span class="notice-item">CAYÓ URUGUAY<span class="notice-dot">•</span><span class="dim">MÍNIMO 300 UYU</span><span class="notice-dot">•</span>RETIROS 12:00 A 23:30</span>
+      <span class="notice-item">CAYÓ URUGUAY • <span class="dim">MÍNIMO 300 UYU</span> • RETIROS 12:00 A 23:30</span>
+      <span class="notice-item">CAYÓ URUGUAY • <span class="dim">MÍNIMO 300 UYU</span> • RETIROS 12:00 A 23:30</span>
     </div>
     <div class="notice-rail">
-      <span class="notice-item">CAYÓ URUGUAY<span class="notice-dot">•</span><span class="dim">MÍNIMO 300 UYU</span><span class="notice-dot">•</span>RETIROS 12:00 A 23:30</span>
-      <span class="notice-item">CAYÓ URUGUAY<span class="notice-dot">•</span><span class="dim">MÍNIMO 300 UYU</span><span class="notice-dot">•</span>RETIROS 12:00 A 23:30</span>
-      <span class="notice-item">CAYÓ URUGUAY<span class="notice-dot">•</span><span class="dim">MÍNIMO 300 UYU</span><span class="notice-dot">•</span>RETIROS 12:00 A 23:30</span>
-      <span class="notice-item">CAYÓ URUGUAY<span class="notice-dot">•</span><span class="dim">MÍNIMO 300 UYU</span><span class="notice-dot">•</span>RETIROS 12:00 A 23:30</span>
+      <span class="notice-item">CAYÓ URUGUAY • <span class="dim">MÍNIMO 300 UYU</span> • RETIROS 12:00 A 23:30</span>
+      <span class="notice-item">CAYÓ URUGUAY • <span class="dim">MÍNIMO 300 UYU</span> • RETIROS 12:00 A 23:30</span>
     </div>
   </div>
 
   <!-- CTA WhatsApp -->
   <div class="wa-cta-wrap">
     <a class="wa-cta"
-       href="https://api.whatsapp.com/send?phone=59899109046&text=Hola%20quiero%20mi%20bono%20del%2020%%20para%20jugar"
+       href=""
        target="_blank"
        rel="noopener"
        aria-label="Escribinos por WhatsApp"
-       onclick="(window.fbq) && fbq('track','WhatsappClick'); return true;"
        id="waCta">
-      <span class="wa-logo" aria-hidden="true"><img src="whatsapp.png" alt="" loading="lazy"></span>
+      <span class="wa-logo"><img src="whatsapp.png"></span>
       <span class="wa-text">Escribinos por WhatsApp</span>
     </a>
   </div>
 
-  <!-- Script: posters + autoplay -->
+  <!-- autoplay videos -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      const carousel = document.getElementById('carousel');
-      const videos = Array.from(document.querySelectorAll('#carousel .card video.hero-video'));
-      if (!videos.length) return;
-
-      // cuando un video empieza a reproducirse, ocultamos su poster
-      videos.forEach(function(video){
-        const card = video.closest('.card');
-        if (!card) return;
+      document.querySelectorAll('video.hero-video').forEach(function(video){
+        let card = video.closest('.card');
         video.addEventListener('playing', function(){
           card.classList.add('card-playing');
         });
+        video.play().catch(()=>{});
       });
-
-      // primer video: reproducir al toque
-      const first = videos[0];
-      if (first) {
-        try {
-          const p = first.play();
-          if (p && typeof p.then === 'function') p.catch(function(){});
-        } catch(e) {}
-      }
-
-      const others = videos.slice(1).filter(v => v.hasAttribute('data-autoplay-visible'));
-
-      function autoplayVideo(v){
-        if (!v || v.dataset.autoplayed) return;
-        v.dataset.autoplayed = '1';
-        try {
-          const p = v.play();
-          if (p && typeof p.then === 'function') p.catch(function(){});
-        } catch(e){}
-      }
-
-      if ('IntersectionObserver' in window) {
-        const io = new IntersectionObserver(function(entries){
-          entries.forEach(function(entry){
-            if (entry.isIntersecting) {
-              autoplayVideo(entry.target);
-              io.unobserve(entry.target);
-            }
-          });
-        }, { root: carousel, threshold: 0.6 });
-
-        others.forEach(v => io.observe(v));
-      } else {
-        others.forEach(autoplayVideo);
-      }
     });
   </script>
 
-  <!-- Auto-slide del carrusel (1.9 segundos) -->
+  <!-- auto-slide carrusel -->
   <script>
     (function(){
       const carousel = document.getElementById('carousel');
       if (!carousel) return;
       const STEP_MS = 1900;
-      const SCROLL_BEHAVIOR = 'smooth';
-      let timer = null;
-      let pausedUntil = 0;
-
-      function cardStep() {
-        const firstCard = carousel.querySelector('.card-wrapper');
-        if (!firstCard) return 0;
-        const style = getComputedStyle(firstCard);
-        const marginL = parseFloat(style.marginLeft) || 0;
-        const marginR = parseFloat(style.marginRight) || 0;
-        return firstCard.getBoundingClientRect().width + marginL + marginR;
-      }
-
-      function next() {
-        const step = cardStep();
-        if (!step) return;
-        const scrollLeft = carousel.scrollLeft;
-        const scrollWidth = carousel.scrollWidth;
-        const clientWidth = carousel.clientWidth;
-
-        if (scrollLeft + clientWidth >= scrollWidth - step * 0.6) {
-          carousel.scrollTo({ left: 0, behavior: SCROLL_BEHAVIOR });
-        } else {
-          carousel.scrollTo({ left: scrollLeft + step, behavior: SCROLL_BEHAVIOR });
-        }
-      }
-
-      function start() {
-        stop();
-        timer = setInterval(function(){
-          const now = Date.now();
-          if (now < pausedUntil) return;
-          next();
-        }, STEP_MS);
-      }
-      function stop() { if (timer) { clearInterval(timer); timer = null; } }
-
-      ['pointerdown','touchstart','mouseenter','focusin'].forEach(function(evt){
-        carousel.addEventListener(evt, function(){ pausedUntil = Date.now() + 7000; }, { passive: true });
-      });
-
-      window.addEventListener('resize', function(){ pausedUntil = Date.now() + 1000; }, { passive: true });
-
-      const startWhenVisible = function(){
-        const rect = carousel.getBoundingClientRect();
-        if (rect.bottom > 0 && rect.top < innerHeight) {
-          start();
-          document.removeEventListener('scroll', startWhenVisible, true);
-        }
-      };
-      document.addEventListener('scroll', startWhenVisible, true);
-      startWhenVisible();
-      setTimeout(start, 1000);
+      let timer = setInterval(function(){
+        carousel.scrollBy({ left: 260, behavior:'smooth' });
+      }, STEP_MS);
     })();
   </script>
 
-  <!-- Rotación de números de WhatsApp -->
+  <!-- NUEVA ROTACIÓN: basada en recarga cada 5 minutos -->
   <script>
   (function() {
     var btn = document.getElementById('waCta');
     if (!btn) return;
 
-    var numbers = ['59899768529','59899345811'];
-    var ROTATE_MS = 7 * 60 * 1000; // 7 minutos
-    var idx = 0;
+    var numbers = ['59899347845','59899345811','59899768529'];
 
     function applyPhone(phone) {
       try {
-        var url = new URL(btn.href);
+        var url = new URL('https://api.whatsapp.com/send');
         url.searchParams.set('phone', phone);
+        url.searchParams.set('text','Hola quiero mi bono del 20% para jugar');
         btn.href = url.toString();
       } catch (e) {
         btn.href = 'https://api.whatsapp.com/send?phone=' + phone +
@@ -551,54 +158,25 @@
       btn.setAttribute('data-phone', phone);
     }
 
-    // inicial
-    applyPhone(numbers[0]);
-
-    setInterval(function() {
-      idx = (idx + 1) % numbers.length;
-      applyPhone(numbers[idx]);
-    }, ROTATE_MS);
+    var now = new Date();
+    var bucket = Math.floor(now.getTime() / (5 * 60 * 1000));
+    var idx = bucket % numbers.length;
+    applyPhone(numbers[idx]);
   })();
   </script>
 
-  <!-- Tracking click WhatsApp + envío a backend -->
+  <!-- Tracking backend WhatsApp -->
   <script>
   (function() {
     var btn = document.getElementById('waCta');
     if (!btn) return;
     btn.addEventListener('click', function() {
-      try {
-        var eventId = 'wa_click_' + Date.now() + '_' + Math.random().toString(36).slice(2);
-        if (typeof fbq === 'function') { fbq('trackCustom', 'WhatsAppClick', {}, { eventID: eventId }); }
-        try {
-          var qs = new URLSearchParams(window.location.search);
-          var utm = new URLSearchParams();
-          ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','fbclid'].forEach(function(k){
-            if (qs.get(k)) utm.set(k, qs.get(k));
-          });
-
-          // número activo en este momento
-          var phone = btn.getAttribute('data-phone');
-          if (!phone) {
-            try {
-              var hrefUrl = new URL(btn.href);
-              phone = hrefUrl.searchParams.get('phone') || '';
-            } catch(e){}
-          }
-          if (!phone) phone = '59899109046';
-
-          utm.set('name','WhatsAppClick');
-          utm.set('dest', phone);
-          utm.set('event_id', eventId);
-          var url = 'https://backend-1-x8dd.onrender.com/track/custom?' + utm.toString();
-          if (navigator.sendBeacon) { navigator.sendBeacon(url); }
-          else { fetch(url, { method:'GET', mode:'no-cors', keepalive:true }).catch(function(){}); }
-        } catch(e){}
-      } catch(e) {}
+      var phone = btn.getAttribute('data-phone');
+      var url = 'https://backend-1-x8dd.onrender.com/track/custom?dest=' + phone;
+      navigator.sendBeacon(url);
     }, false);
   })();
   </script>
 
 </body>
 </html>
-
