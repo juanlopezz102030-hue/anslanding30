@@ -1464,7 +1464,25 @@ header .logo{
 @media (prefers-reduced-motion: reduce){
   .pay-icon{ transition: none !important; opacity: 1 !important; transform: none !important; }
 }
-</style></head>
+</style><style id="compact-fit">
+/* === Compact fit: entrar todo el contenido en pantalla (mobile) === */
+@media (max-height: 850px){
+  .cyl-scene{ height: clamp(380px, 56svh, 560px) !important; }
+  .paystrip{ margin-top: -56px !important; }
+  .cta-dock{
+    bottom: calc(env(safe-area-inset-bottom) + 10px) !important;
+    gap: 10px !important;
+  }
+  .cta-btn{ height: 50px !important; font-size: 15px !important; }
+}
+@media (max-height: 760px){
+  .cyl-scene{ height: clamp(340px, 52svh, 520px) !important; perspective-origin: 50% 44% !important; }
+  .pay-icon{ width: 34px !important; height: 34px !important; }
+  .cta-btn{ height: 46px !important; font-size: 14px !important; }
+  .cta-dock{ gap: 9px !important; width: min(94vw, var(--maxw)) !important; }
+}
+</style>
+</head>
 <body>
 <noscript><img height="1" src="https://www.facebook.com/tr?id=767728059169192&amp;ev=PageView&amp;noscript=1" style="display:none" width="1"/></noscript>
 <div class="wrap">
