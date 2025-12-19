@@ -865,6 +865,12 @@ header{display:none !important;}
     100% { opacity:0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.15); filter: blur(4px); }
   }
 </style>
+
+<style id="hide-platform-labels">
+  /* Ocultar los textos/etiquetas dinámicas de plataforma (Ganamos / Bet30 / Rhino) */
+  #heroBrandFX{ display:none !important; }
+</style>
+
 <style id="hero-text-stack-fix">
 /* === FIX: textos arriba del cilindro SIN superponerse (mobile-first) ===
    - Evita overlap entre "CAYO" y "GANAMOS"
