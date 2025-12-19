@@ -1426,7 +1426,7 @@ header .logo{
 .paystrip{
   width: min(560px, 92vw);
   /* Más cerca del cilindro (sube la fila) */
-  margin: -42px auto 0;
+  margin: 12px auto 0;
   padding-bottom: 6px;
   display: flex;
   justify-content: center;
@@ -1458,7 +1458,7 @@ header .logo{
   transform: translateY(0) scale(1);
 }
 @media (max-width: 420px){
-  .paystrip{ margin-top: -34px; gap: 7px; }
+  .paystrip{ margin-top: 10px; gap: 7px; }
   .pay-icon{ width: 36px; height: 36px; }
 }
 @media (prefers-reduced-motion: reduce){
@@ -1468,7 +1468,7 @@ header .logo{
 /* === Compact fit: entrar todo el contenido en pantalla (mobile) === */
 @media (max-height: 850px){
   .cyl-scene{ height: clamp(380px, 56svh, 560px) !important; }
-  .paystrip{ margin-top: -56px !important; }
+  .paystrip{ margin-top: 10px !important; }
   .cta-dock{
     bottom: calc(env(safe-area-inset-bottom) + 10px) !important;
     gap: 10px !important;
