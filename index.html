@@ -632,6 +632,7 @@ header{display:none !important;}
 <style id="reset-only-cylinder">
   /* Empezar de 0: ocultamos/neutralizamos lo demás (por ahora) */
   .headline, .dots, .cta, .notice, .disclaimer, .payments, .methods, .marquee, .ticker { display:none !important; }
+  #heroBrandFX{ display:none !important; }
 
   /* Mantener estructura: wrap + header + main */
   .wrap{ min-height:100svh; }
@@ -652,8 +653,8 @@ header{display:none !important;}
 
   /* Escenario 3D */
   .cyl-scene{
-    width: min(560px, 92vw);
-    height: min(72svh, 680px);
+    width: min(520px, 90vw);
+    height: min(62svh, 560px);
     display:grid;
     place-items:center;
     perspective: 1300px;
@@ -679,7 +680,7 @@ header{display:none !important;}
     position:absolute;
     top:50%;
     left:50%;
-    width: clamp(240px, 62vw, 380px);
+    width: clamp(210px, 54vw, 330px);
     aspect-ratio: 9 / 16;
     transform-style: preserve-3d;
     transform:
@@ -903,16 +904,16 @@ header{display:none !important;}
 
 /* Un poco de aire entre texto y cilindro */
 .cyl-scene{
-  margin-top: 10px;
+  margin-top: -18px;
   place-items: start center !important;
   padding-top: 10px;
 
-  transform: translateY(0px);
+  transform: translateY(3px);
 }
 
 /* Ajuste fino en pantallas bajitas */
 @media (max-height: 720px){
-  .cyl-scene{ margin-top: 6px; padding-top: 6px; height: min(66svh, 620px) !important; transform: translateY(0px); }
+  .cyl-scene{ margin-top: -8px; padding-top: 6px; height: min(58svh, 520px) !important; transform: translateY(1px); }
 }
 
 
@@ -1416,8 +1417,6 @@ header .logo{
 }
 </style>
 <style>
-/* Ocultar texto dinámico (dejamos solo el texto incrustado en el video) */
-#heroBrandFX{display:none !important;}
 /* === Métodos de pago (debajo del cilindro) === */
 .paystrip{
   width: min(560px, 92vw);
@@ -1454,7 +1453,7 @@ header .logo{
   transform: translateY(0) scale(1);
 }
 @media (max-width: 420px){
-  .paystrip{ margin-top: -19px; gap: 7px; }
+  .paystrip{ margin-top: -34px; gap: 7px; }
   .pay-icon{ width: 36px; height: 36px; }
 }
 @media (prefers-reduced-motion: reduce){
