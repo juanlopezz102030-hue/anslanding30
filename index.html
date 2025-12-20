@@ -777,9 +777,9 @@ header{display:none !important;}
     text-shadow:
       0 10px 26px rgba(0,0,0,.55),
       0 0 18px rgba(255,255,255,.12);
-    opacity: 0;
-    transform: translateY(-6px);
-    filter: blur(10px);
+    opacity: 1;
+    transform: none;
+    filter: none;
     will-change: transform, opacity, filter;
     white-space: nowrap;
   }
@@ -854,6 +854,8 @@ header{display:none !important;}
 
   @keyframes heroBrandFX{
     0%   { opacity:0; transform: translateY(-8px) scale(.98); filter: blur(12px); }
+    100% { opacity:1; transform: translateY(0)   scale(1);    filter: blur(0px); }
+  }
     18%  { opacity:1; transform: translateY(0)   scale(1);    filter: blur(0px); }
     70%  { opacity:1; transform: translateY(0)   scale(1);    filter: blur(0px); }
     100% { opacity:0; transform: translateY(2px) scale(1.02); filter: blur(10px); }
@@ -865,12 +867,6 @@ header{display:none !important;}
     100% { opacity:0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.15); filter: blur(4px); }
   }
 </style>
-
-<style id="hide-platform-labels">
-  /* Ocultar los textos/etiquetas dinámicas de plataforma (Ganamos / Bet30 / Rhino) */
-  #heroBrandFX{ display:none !important; }
-</style>
-
 <style id="hero-text-stack-fix">
 /* === FIX: textos arriba del cilindro SIN superponerse (mobile-first) ===
    - Evita overlap entre "CAYO" y "GANAMOS"
@@ -1311,6 +1307,10 @@ body.is-exiting .exit-brand{
   78%{ opacity:1; transform: translateX(-50%) translateY(0); filter: blur(0); }
   100%{ opacity:0; transform: translateX(-50%) translateY(-6px); filter: blur(10px); }
 }
+  22%{ opacity:1; transform: translateY(0); filter: blur(0); }
+  78%{ opacity:1; transform: translateY(0); filter: blur(0); }
+  100%{ opacity:0; transform: translateY(-6px); filter: blur(10px); }
+}
 
 .gift-top-anim{
   width: 100%;
@@ -1427,7 +1427,7 @@ header .logo{
 .paystrip{
   width: min(560px, 92vw);
   /* Más cerca del cilindro (sube la fila) */
-  margin: 18px auto 8px;
+  margin: 12px auto 0;
   padding-bottom: 6px;
   display: flex;
   justify-content: center;
@@ -1459,7 +1459,7 @@ header .logo{
   transform: translateY(0) scale(1);
 }
 @media (max-width: 420px){
-  .paystrip{ margin-top: 16px; gap: 7px; }
+  .paystrip{ margin-top: 10px; gap: 7px; }
   .pay-icon{ width: 36px; height: 36px; }
 }
 @media (prefers-reduced-motion: reduce){
@@ -1469,7 +1469,7 @@ header .logo{
 /* === Compact fit: entrar todo el contenido en pantalla (mobile) === */
 @media (max-height: 850px){
   .cyl-scene{ height: clamp(380px, 56svh, 560px) !important; }
-  .paystrip{ margin-top: 14px !important; }
+  .paystrip{ margin-top: 10px !important; }
   .cta-dock{
     bottom: calc(env(safe-area-inset-bottom) + 10px) !important;
     gap: 10px !important;
@@ -1482,69 +1482,6 @@ header .logo{
   .cta-btn{ height: 46px !important; font-size: 14px !important; }
   .cta-dock{ gap: 9px !important; width: min(94vw, var(--maxw)) !important; }
 }
-</style>
-<style id="final-layout-fix">
-/* === FIX FINAL: evitar que .paystrip se solape con el cilindro ===
-   La causa principal era que en pantallas bajas el .cyl-scene se hacía más chico
-   que las caras 9:16, y el cilindro “se desbordaba” hacia abajo.
-   Solución: bajar el tamaño de las caras en pantallas bajas y asegurar altura mínima del scene,
-   además de agregar separación real (margin-bottom) antes de la fila de pagos.
-*/
-.cyl-scene{
-  --face-w: clamp(240px, 62vw, 380px);
-  margin-bottom: 14px !important;
-}
-.cyl-face{ width: var(--face-w) !important; }
-
-/* La separación la maneja el margin-bottom del scene */
-.paystrip{ margin-top: 0 !important; }
-
-/* Pantallas medianas/bajas */
-@media (max-height: 850px){
-  .cyl-scene{
-    height: clamp(420px, 58svh, 580px) !important;
-    --face-w: clamp(228px, 60vw, 360px);
-    margin-bottom: 16px !important;
-  }
-}
-
-/* iPhone/Android bajos */
-@media (max-height: 760px){
-  .cyl-scene{
-    height: clamp(380px, 56svh, 520px) !important;
-    --face-w: clamp(200px, 56vw, 320px);
-    margin-bottom: 18px !important;
-  }
-  .pay-icon{ width: 34px !important; height: 34px !important; }
-}
-
-/* Muy bajos (SE/Android compactos) */
-@media (max-height: 700px){
-  .cyl-scene{
-    height: clamp(360px, 54svh, 500px) !important;
-    --face-w: clamp(190px, 54vw, 300px);
-    margin-bottom: 18px !important;
-  }
-}
-<style id="no-overlap-cylinder-paystrip">
-/* === NO-OVERLAP FIX ===
-   En pantallas bajas, las caras 9:16 pueden ser más altas que el .cyl-scene y terminan "invadiendo" el área del paystrip.
-   Solución: escalar las caras (ancho) en función de la altura disponible + asegurar altura mínima del scene.
-*/
-@media (max-height: 820px){
-  .cyl-face{ width: clamp(210px, 56vw, 340px) !important; }
-}
-@media (max-height: 760px){
-  .cyl-face{ width: clamp(190px, 52vw, 320px) !important; }
-  .cyl-scene{ height: clamp(360px, 56svh, 520px) !important; }
-}
-@media (max-height: 700px){
-  .cyl-face{ width: clamp(180px, 50vw, 300px) !important; }
-  .cyl-scene{ height: clamp(340px, 54svh, 500px) !important; }
-}
-/* Separación consistente entre cilindro y métodos de pago */
-.paystrip{ margin-top: 18px !important; }
-</style>
 </style>
 </head>
 <body>
