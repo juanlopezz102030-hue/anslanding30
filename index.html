@@ -777,9 +777,9 @@ header{display:none !important;}
     text-shadow:
       0 10px 26px rgba(0,0,0,.55),
       0 0 18px rgba(255,255,255,.12);
-    opacity: 0;
-    transform: translateY(-6px);
-    filter: blur(10px);
+    opacity: 1;
+    transform: none;
+    filter: none;
     will-change: transform, opacity, filter;
     white-space: nowrap;
   }
@@ -854,6 +854,8 @@ header{display:none !important;}
 
   @keyframes heroBrandFX{
     0%   { opacity:0; transform: translateY(-8px) scale(.98); filter: blur(12px); }
+    100% { opacity:1; transform: translateY(0)   scale(1);    filter: blur(0px); }
+  }
     18%  { opacity:1; transform: translateY(0)   scale(1);    filter: blur(0px); }
     70%  { opacity:1; transform: translateY(0)   scale(1);    filter: blur(0px); }
     100% { opacity:0; transform: translateY(2px) scale(1.02); filter: blur(10px); }
@@ -865,7 +867,6 @@ header{display:none !important;}
     100% { opacity:0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.15); filter: blur(4px); }
   }
 </style>
-
 <style id="hero-text-stack-fix">
 /* === FIX: textos arriba del cilindro SIN superponerse (mobile-first) ===
    - Evita overlap entre "CAYO" y "GANAMOS"
@@ -1301,7 +1302,11 @@ body.is-exiting .exit-brand{
 
 /* === Modal: texto animado superior + león final === */
 @keyframes giftFlashInOut{
-  0%{ opacity:0; transform: translateY(10px); filter: blur(10px); }
+  0%{ opacity:0; transform: translateX(-50%) translateY(10px); filter: blur(10px); }
+  22%{ opacity:1; transform: translateX(-50%) translateY(0); filter: blur(0); }
+  78%{ opacity:1; transform: translateX(-50%) translateY(0); filter: blur(0); }
+  100%{ opacity:0; transform: translateX(-50%) translateY(-6px); filter: blur(10px); }
+}
   22%{ opacity:1; transform: translateY(0); filter: blur(0); }
   78%{ opacity:1; transform: translateY(0); filter: blur(0); }
   100%{ opacity:0; transform: translateY(-6px); filter: blur(10px); }
@@ -1478,105 +1483,6 @@ header .logo{
   .cta-dock{ gap: 9px !important; width: min(94vw, var(--maxw)) !important; }
 }
 </style>
-
-<style id="overlay-brand-and-pay">
-  /* === Overlays (texto de plataforma + métodos de pago) superpuestos al cilindro === */
-  .hero.hero-cylinder{ position: relative !important; overflow: visible !important; }
-  .cyl-scene{ position: relative; overflow: visible; }
-
-  /* Texto de plataforma (arriba del cilindro, superpuesto) */
-  #heroBrandFX{
-    position: absolute !important;
-    top: calc(env(safe-area-inset-top) + 10px);
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 80;
-    pointer-events: none;
-  }
-  /* Hacemos el texto más “overlay” (sin fondo) */
-  #heroBrandFX .hero-brandfx-pill{
-    background: transparent !important;
-    border: 0 !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    backdrop-filter: none !important;
-  }
-  #heroBrandText{
-    font-size: clamp(22px, 6.2vw, 34px);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: rgba(255,255,255,.96);
-    text-shadow: 0 14px 30px rgba(0,0,0,.65);
-    line-height: 1;
-  }
-
-  /* Métodos de pago superpuestos (abajo del cilindro) */
-  #payStack{
-    position: absolute;
-    left: 50%;
-    bottom: calc(env(safe-area-inset-bottom) + 14px);
-    transform: translateX(-50%) translateZ(calc(var(--cyl-radius) + 44px));
-    z-index: 70;
-    width: min(560px, 92vw);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    pointer-events: none;
-  }
-  #payStack .pay-title{
-    width: min(520px, 86vw);
-    height: auto;
-    display: block;
-    filter: drop-shadow(0 14px 26px rgba(0,0,0,.55));
-    user-select: none;
-    -webkit-user-drag: none;
-  }
-  #payStack .paystrip{
-    width: 100%;
-    margin: 0 !important;
-    padding: 0 !important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    overflow-y: visible;
-    -webkit-overflow-scrolling: touch;
-    background: transparent !important;
-    box-shadow: none !important;
-    border: 0 !important;
-    pointer-events: auto;
-    touch-action: pan-x;
-    scrollbar-width: none;
-  }
-  #payStack .paystrip::-webkit-scrollbar{ display:none; }
-
-  /* Íconos (sin “botón atrás”, redondos) */
-  #payStack .pay-icon{
-    width: 40px;
-    height: 40px;
-    border-radius: 999px;
-    object-fit: cover;
-    background: transparent !important;
-    box-shadow: 0 10px 22px rgba(0,0,0,.35);
-  }
-
-  @media (max-width: 420px){
-    #payStack{ bottom: calc(env(safe-area-inset-bottom) + 12px); gap: 8px; }
-    #payStack .pay-title{ width: min(420px, 82vw); }
-    #payStack .pay-icon{ width: 36px; height: 36px; }
-    #payStack .paystrip{ gap: 8px; }
-  }
-  @media (max-height: 740px){
-    #heroBrandFX{ top: calc(env(safe-area-inset-top) + 8px); }
-    #heroBrandText{ font-size: clamp(20px, 6vw, 30px); }
-    #payStack{ bottom: calc(env(safe-area-inset-bottom) + 10px); }
-    #payStack .pay-title{ width: min(380px, 78vw); }
-  }
-</style>
-
 </head>
 <body>
 <noscript><img height="1" src="https://www.facebook.com/tr?id=767728059169192&amp;ev=PageView&amp;noscript=1" style="display:none" width="1"/></noscript>
@@ -1619,17 +1525,9 @@ header .logo{
 </div>
 </div>
 </div>
-
-  <!-- Métodos de pago (superpuestos) -->
-  <div aria-label="Métodos de pago" class="paystack" id="payStack">
-    <img alt="Métodos de pago" class="pay-title" decoding="async" loading="lazy" src="medios-de-pago.png"/>
-    <div class="paystrip" role="list">
-      <img alt="BROU" class="pay-icon" decoding="async" loading="lazy" src="brou.png"/><img alt="Itaú" class="pay-icon" decoding="async" loading="lazy" src="itau.png"/><img alt="Mercado Pago" class="pay-icon" decoding="async" loading="lazy" src="mercadopago.png"/><img alt="MiDinero" class="pay-icon" decoding="async" loading="lazy" src="midinero.png"/><img alt="Prex" class="pay-icon" decoding="async" loading="lazy" src="prex.png"/><img alt="Santander" class="pay-icon" decoding="async" loading="lazy" src="santander.png"/><img alt="Scotiabank" class="pay-icon" decoding="async" loading="lazy" src="scotiabank.png"/>
-    </div>
-  </div>
-
 </div>
-<div aria-label="Accesos rápidos" class="cta-dock" id="ctaDock">
+<!-- Quick actions (thumb-friendly) -->
+<div aria-label="Métodos de pago" class="paystrip" role="list"><img alt="BROU" class="pay-icon" decoding="async" loading="lazy" src="brou.png"/><img alt="Itaú" class="pay-icon" decoding="async" loading="lazy" src="itau.png"/><img alt="Mercado Pago" class="pay-icon" decoding="async" loading="lazy" src="mercadopago.png"/><img alt="MiDinero" class="pay-icon" decoding="async" loading="lazy" src="midinero.png"/><img alt="Prex" class="pay-icon" decoding="async" loading="lazy" src="prex.png"/><img alt="Santander" class="pay-icon" decoding="async" loading="lazy" src="santander.png"/><img alt="Scotiabank" class="pay-icon" decoding="async" loading="lazy" src="scotiabank.png"/></div><div aria-label="Accesos rápidos" class="cta-dock" id="ctaDock">
 <button aria-label="WhatsApp" class="cta-btn cta-wa" id="ctaWA" type="button">
 <svg aria-hidden="true" class="cta-ic" focusable="false" viewbox="0 0 24 24">
 <path d="M12 3.8c-4.7 0-8.5 3.8-8.5 8.5 0 1.5.4 2.9 1.1 4.1L3.5 20.5l4.1-1.1c1.2.7 2.6 1.1 4.1 1.1 4.7 0 8.5-3.8 8.5-8.5S16.7 3.8 12 3.8Z" fill="currentColor" opacity=".95"></path>
@@ -1871,6 +1769,59 @@ function updateActiveFace(angOverride){
       ctx.fillRect(0,0,cw,ch);
       ctx.drawImage(vid, sx, sy, sw, sh, 0, 0, cw, ch);
     }
+    // Dibuja un label (nombre de plataforma) encima del frame, dentro del canvas.
+    // Esto evita problemas de z-index/CSS en iOS y queda "pegado" al video.
+    function drawPlatformLabel(ctx, text, cw, ch){
+      text = String(text || '').trim();
+      if(!text) return;
+
+      const t = text.toUpperCase();
+      // Tamaño responsivo según alto del canvas (9:16)
+      const fontPx = Math.max(14, Math.round(ch * 0.06));
+      ctx.save();
+      ctx.font = `900 ${fontPx}px system-ui, -apple-system, Segoe UI, Roboto, Arial`;
+      ctx.textBaseline = 'middle';
+
+      const padX = Math.round(fontPx * 0.75);
+      const padY = Math.round(fontPx * 0.55);
+      const metrics = ctx.measureText(t);
+      const textW = Math.ceil(metrics.width);
+
+      const boxW = textW + padX*2;
+      const boxH = fontPx + padY*2;
+
+      const x = Math.round((cw - boxW)/2);
+      const y = Math.round(ch * 0.10); // 10% desde arriba
+
+      const r = Math.round(boxH * 0.55);
+      // Fondo vidrio oscuro
+      ctx.fillStyle = 'rgba(0,0,0,0.28)';
+      ctx.strokeStyle = 'rgba(255,255,255,0.14)';
+      ctx.lineWidth = Math.max(1, Math.round(fontPx * 0.06));
+
+      // Rounded rect
+      ctx.beginPath();
+      const x2 = x + boxW;
+      const y2 = y + boxH;
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x2, y,  x2, y2, r);
+      ctx.arcTo(x2, y2, x,  y2, r);
+      ctx.arcTo(x,  y2, x,  y,  r);
+      ctx.arcTo(x,  y,  x2, y,  r);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      // Texto
+      ctx.fillStyle = 'rgba(255,255,255,0.95)';
+      ctx.shadowColor = 'rgba(0,0,0,0.55)';
+      ctx.shadowBlur = Math.round(fontPx * 0.7);
+      ctx.shadowOffsetY = Math.round(fontPx * 0.15);
+      ctx.fillText(t, x + padX, y + boxH/2);
+
+      ctx.restore();
+    }
+
 
     // Try autoplay; if blocked, first tap anywhere reintenta
     function tryPlayAll(){
@@ -1913,7 +1864,8 @@ function updateActiveFace(angOverride){
           const ctx = c.getContext('2d', { alpha: false, desynchronized: true });
           fitCanvasToCSS(c, card);
           drawCover(ctx, vid, c.width, c.height);
-        });
+          drawPlatformLabel(ctx, brandByIndex[i] || '', c.width, c.height);
+          });
 
         // FX: detectar cara al frente y disparar texto/partículas
         updateActiveFace(getRingAngleDeg());
