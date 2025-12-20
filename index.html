@@ -645,6 +645,8 @@ header{display:none !important;}
     place-items:center;
     min-height: calc(100svh - 110px); /* deja espacio visual para el header */
     position: relative;
+    padding-top: calc(env(safe-area-inset-top, 0px) + 18px); /* baja el cilindro para evitar corte con barra del navegador */
+    box-sizing: border-box;
   }
 
   /* Quita el degradé/overlay inferior en esta versión (tapa la parte baja del cilindro) */
@@ -656,10 +658,16 @@ header{display:none !important;}
     height: min(64svh, 600px);
     display:grid;
     place-items:center;
+    margin-top: 18px; /* separa del borde superior (iOS Safari barra) */
     perspective: 1200px;
     perspective-origin: 50% 46%;
     --cyl-radius: 220px; /* JS lo ajusta */
     overflow: visible;
+  }
+
+  /* En iPhones con notch / Safari, dar un poquito más de aire arriba */
+  @supports(padding: env(safe-area-inset-top)){
+    .cyl-scene{ margin-top: calc(env(safe-area-inset-top, 0px) + 18px); }
   }
   .cyl-ring{
     position: relative;
@@ -903,7 +911,7 @@ header{display:none !important;}
 
 /* Un poco de aire entre texto y cilindro */
 .cyl-scene{
-  margin-top: 10px;
+  margin-top: -18px;
   place-items: start center !important;
   padding-top: 10px;
 
@@ -912,13 +920,13 @@ header{display:none !important;}
 
 /* Ajuste fino en pantallas bajitas */
 @media (max-height: 720px){
-  .cyl-scene{ margin-top: 6px; padding-top: 6px; height: min(66svh, 620px) !important; transform: translateY(1px); }
+  .cyl-scene{ margin-top: -8px; padding-top: 6px; height: min(66svh, 620px) !important; transform: translateY(1px); }
 }
 
 
 /* === FIX EXTRA: subir el cilindro (las caras estaban centradas a 50%) === */
 @media (max-width: 560px){
-  .cyl-face{ top: 50% !important; }
+  .cyl-face{ top: 40% !important; }
 }
 @media (max-width: 560px) and (max-height: 740px){
   .cyl-face{ top: 36% !important; }
@@ -1299,10 +1307,10 @@ body.is-exiting .exit-brand{
 
 /* === Modal: texto animado superior + león final === */
 @keyframes giftFlashInOut{
-  0%{ opacity:0; transform: translateX(-50%) translateY(10px); filter: blur(10px); }
-  22%{ opacity:1; transform: translateX(-50%) translateY(0);  filter: blur(0); }
-  78%{ opacity:1; transform: translateX(-50%) translateY(0);  filter: blur(0); }
-  100%{ opacity:0; transform: translateX(-50%) translateY(-6px); filter: blur(10px); }
+  0%{ opacity:0; transform: translateY(10px); filter: blur(10px); }
+  22%{ opacity:1; transform: translateY(0); filter: blur(0); }
+  78%{ opacity:1; transform: translateY(0); filter: blur(0); }
+  100%{ opacity:0; transform: translateY(-6px); filter: blur(10px); }
 }
 
 .gift-top-anim{
