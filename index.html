@@ -903,16 +903,16 @@ header{display:none !important;}
 
 /* Un poco de aire entre texto y cilindro */
 .cyl-scene{
-  margin-top: -18px;
+  margin-top: 10px;
   place-items: start center !important;
   padding-top: 10px;
 
-  transform: translateY(3px);
+  transform: translateY(0px);
 }
 
 /* Ajuste fino en pantallas bajitas */
 @media (max-height: 720px){
-  .cyl-scene{ margin-top: -8px; padding-top: 6px; height: min(66svh, 620px) !important; transform: translateY(1px); }
+  .cyl-scene{ margin-top: 6px; padding-top: 6px; height: min(66svh, 620px) !important; transform: translateY(0px); }
 }
 
 
@@ -1416,11 +1416,13 @@ header .logo{
 }
 </style>
 <style>
+/* Ocultar texto dinámico (dejamos solo el texto incrustado en el video) */
+#heroBrandFX{display:none !important;}
 /* === Métodos de pago (debajo del cilindro) === */
 .paystrip{
-width: min(560px, 92vw);
+  width: min(560px, 92vw);
   /* Más cerca del cilindro (sube la fila) */
-  margin: 15px auto 0;
+  margin: -27px auto 0;
   padding-bottom: 6px;
   display: flex;
   justify-content: center;
@@ -1452,7 +1454,7 @@ width: min(560px, 92vw);
   transform: translateY(0) scale(1);
 }
 @media (max-width: 420px){
-  .paystrip{ margin-top: -34px; gap: 7px; }
+  .paystrip{ margin-top: -19px; gap: 7px; }
   .pay-icon{ width: 36px; height: 36px; }
 }
 @media (prefers-reduced-motion: reduce){
@@ -1466,9 +1468,12 @@ width: min(560px, 92vw);
 <section aria-label="Cilindro de plataformas" class="hero hero-cylinder" id="hero" role="region">
 <!-- Título superior (entre los corchetes rojos) -->
 <!-- Marca activa (texto arriba del cilindro, NO sobre los videos) -->
-
-<!-- heroBrandFX removed (texto por plataforma desactivado) -->
-
+<div aria-label="Plataforma activa" aria-live="polite" class="hero-brandfx" id="heroBrandFX">
+<img alt="" aria-hidden="true" class="hero-brandfx-icon" id="heroBrandIconL" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAtFBMVEUyBkgyBUgyBUgyBUgxBEcwAEchAD05Ek+3tbCenJgsAEQRCj3IxMPi4d73+fSTjpDW0tOwX9nHp9pwYHsoAEFYQmevesyaSb+xnrPNzciqjLCoTdeHW5NQAWrCu8Ovrqo8FlhxLYpfBX9/c4SLTaaTJcyec7RiAJWmpaFoWHNIKFyHg4V/fnq4mMVgHG55MpuJOridObhqZ2eZNJuCDcB+AKQAAABUK3B8CnRgXl5xRX6gi6FSiPbmAAAABXRSTlMMyP/JDBl0OZgAAAFYSURBVHgBddIDkgRBEAXQUbVtc9g273+uNZo/WPHKmYfD8bST8+VwPu3meJiOAASB6XiKAEZQDOwgTpAUDW0jRDMsR/LCFmIiIbGyoorYFP8O1HTWMC3bASuEUNrVOcX0CBoDCxR89Hq6MdbVM2wf+sfvA+27Lj+YJ2OYPvoSpgicp63rgcA9LcpyQ1rEJiiEKsu6J+ehERTJPZ6RA/4QeyGxLidplt3jPFadAuWxfyzI9Frmss5Wt6pWokYt/hCcQtV0PzB1Ey+T73RjFQH4RThiQOK2eFB2pmJqL5zo//CE9WQbBE7bDomncaPZIsXkTD60AtMzhydtmFVlosXkQifIRxF+8In4RSn3Oxr5wvSHhBf9fNqqdCMZxI7mP/SxswALtHXLJfIFCdiqnoJvX7uujicFnRQbGUeFsGI1FDbQR78SvjZWfhz7nUmbHE+7OR/2W/54eQe0uycMkQt95QAAAABJRU5ErkJggg=="/>
+<div class="hero-brandfx-text" id="heroBrandText"></div>
+<img alt="" aria-hidden="true" class="hero-brandfx-icon" id="heroBrandIconR" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAtFBMVEUyBkgyBUgyBUgyBUgxBEcwAEchAD05Ek+3tbCenJgsAEQRCj3IxMPi4d73+fSTjpDW0tOwX9nHp9pwYHsoAEFYQmevesyaSb+xnrPNzciqjLCoTdeHW5NQAWrCu8Ovrqo8FlhxLYpfBX9/c4SLTaaTJcyec7RiAJWmpaFoWHNIKFyHg4V/fnq4mMVgHG55MpuJOridObhqZ2eZNJuCDcB+AKQAAABUK3B8CnRgXl5xRX6gi6FSiPbmAAAABXRSTlMMyP/JDBl0OZgAAAFYSURBVHgBddIDkgRBEAXQUbVtc9g273+uNZo/WPHKmYfD8bST8+VwPu3meJiOAASB6XiKAEZQDOwgTpAUDW0jRDMsR/LCFmIiIbGyoorYFP8O1HTWMC3bASuEUNrVOcX0CBoDCxR89Hq6MdbVM2wf+sfvA+27Lj+YJ2OYPvoSpgicp63rgcA9LcpyQ1rEJiiEKsu6J+ehERTJPZ6RA/4QeyGxLidplt3jPFadAuWxfyzI9Frmss5Wt6pWokYt/hCcQtV0PzB1Ey+T73RjFQH4RThiQOK2eFB2pmJqL5zo//CE9WQbBE7bDomncaPZIsXkTD60AtMzhydtmFVlosXkQifIRxF+8In4RSn3Oxr5wvSHhBf9fNqqdCMZxI7mP/SxswALtHXLJfIFCdiqnoJvX7uujicFnRQbGUeFsGI1FDbQR78SvjZWfhz7nUmbHE+7OR/2W/54eQe0uycMkQt95QAAAABJRU5ErkJggg=="/>
+<div aria-hidden="true" class="hero-brandfx-particles" id="heroBrandParticles"></div>
+</div>
 <!-- Fuentes de video (ocultas). Canvas dibuja los frames para que el 3D sea consistente en móviles -->
 <video class="cyl-src" data-i="0" loop="" muted="" playsinline="" preload="auto" style="display:none">
 <source src="./bet30-preview.mp4" type="video/mp4"/>
@@ -1786,7 +1791,7 @@ function updateActiveFace(angOverride){
         });
 
         // FX: detectar cara al frente y disparar texto/partículas
-        // brand FX disabled (solo texto incrustado en video)
+        updateActiveFace(getRingAngleDeg());
       }
 
       requestAnimationFrame(loop);
