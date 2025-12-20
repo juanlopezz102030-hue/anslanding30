@@ -518,6 +518,7 @@ fbq('init', '767728059169192');
 })();
 </script>
 <!-- End Meta Pixel Code -->
+<link as="image" href="./assets/hero.jpg" rel="preload"/>
 <style>
 .hero{ position:relative; overflow:hidden; isolation:isolate; min-height:58dvh; touch-action: pan-y; }
 .hero::after{ content:""; position:absolute; inset:0; z-index:0; background: linear-gradient(180deg, rgba(27,0,48,0) 35%, rgba(27,0,48,.55) 65%, rgba(27,0,48,.85) 100%); }
@@ -864,12 +865,6 @@ header{display:none !important;}
     100% { opacity:0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.15); filter: blur(4px); }
   }
 </style>
-
-<style id="hide-platform-labels">
-  /* Ocultar los textos/etiquetas dinámicas de plataforma (Ganamos / Bet30 / Rhino) */
-  #heroBrandFX{ display:none !important; }
-</style>
-
 <style id="hero-text-stack-fix">
 /* === FIX: textos arriba del cilindro SIN superponerse (mobile-first) ===
    - Evita overlap entre "CAYO" y "GANAMOS"
@@ -923,11 +918,10 @@ header{display:none !important;}
 
 /* === FIX EXTRA: subir el cilindro (las caras estaban centradas a 50%) === */
 @media (max-width: 560px){
-  /* Bajamos un poco las caras para reducir el “hueco” inferior sin tocar el paystrip */
-  .cyl-face{ top: 46% !important; }
+  .cyl-face{ top: 40% !important; }
 }
 @media (max-width: 560px) and (max-height: 740px){
-  .cyl-face{ top: 42% !important; }
+  .cyl-face{ top: 36% !important; }
 }
 
 
@@ -1424,9 +1418,9 @@ header .logo{
 <style>
 /* === Métodos de pago (debajo del cilindro) === */
 .paystrip{
-  width: min(560px, 92vw);
+width: min(560px, 92vw);
   /* Más cerca del cilindro (sube la fila) */
-  margin: 12px auto 0;
+  margin: 15px auto 0;
   padding-bottom: 6px;
   display: flex;
   justify-content: center;
@@ -1458,97 +1452,23 @@ header .logo{
   transform: translateY(0) scale(1);
 }
 @media (max-width: 420px){
-  .paystrip{ margin-top: 10px; gap: 7px; }
+  .paystrip{ margin-top: -34px; gap: 7px; }
   .pay-icon{ width: 36px; height: 36px; }
 }
 @media (prefers-reduced-motion: reduce){
   .pay-icon{ transition: none !important; opacity: 1 !important; transform: none !important; }
 }
-</style><style id="compact-fit">
-/* === Compact fit: entrar todo el contenido en pantalla (mobile) === */
-@media (max-height: 850px){
-  .cyl-scene{ height: clamp(380px, 56svh, 560px) !important; }
-  .paystrip{ margin-top: 10px !important; }
-  .cta-dock{
-    bottom: calc(env(safe-area-inset-bottom) + 10px) !important;
-    gap: 10px !important;
-  }
-  .cta-btn{ height: 50px !important; font-size: 15px !important; }
-}
-@media (max-height: 760px){
-  .cyl-scene{ height: clamp(340px, 52svh, 520px) !important; perspective-origin: 50% 44% !important; }
-  .pay-icon{ width: 34px !important; height: 34px !important; }
-  .cta-btn{ height: 46px !important; font-size: 14px !important; }
-  .cta-dock{ gap: 9px !important; width: min(94vw, var(--maxw)) !important; }
-}
-</style>
-
-<style id="fix-iphone-no-overlap-v3">
-/* === FIX iPhone: textos arriba del cilindro + paystrip debajo SIN solaparse === */
-
-/* 1) Asegurar que el label de plataforma sea visible (aunque existan estilos viejos que lo oculten) */
-#heroBrandFX{
-  display:flex !important;
-  position:relative !important;
-  opacity:1 !important;
-  visibility:visible !important;
-  pointer-events:none !important;
-  margin: 8px auto 10px !important;
-  z-index: 6 !important;
-}
-
-/* 2) Reservar espacio real para el cilindro: tamaño de caras basado en altura (vh) para evitar overflow hacia el paystrip */
-.hero.hero-cylinder{
-  --faceW: clamp(210px, 30vh, 340px);
-}
-
-/* caras 9:16 => altura ~ 1.78 * width */
-.cyl-face{
-  width: var(--faceW) !important;
-  top: 50% !important; /* centrado estable */
-}
-
-/* el escenario debe tener altura suficiente para contener las caras */
-.cyl-scene{
-  height: min(64svh, 640px) !important;
-  margin-top: 6px !important;     /* elimina márgenes negativos previos */
-  padding-top: 8px !important;
-  place-items: center !important; /* centra correctamente */
-}
-
-/* 3) Paystrip: siempre debajo del cilindro, con aire y sin “subirse” */
-.paystrip{
-  margin-top: 29px !important;
-  margin-bottom: 6px !important;
-  z-index: 4 !important;
-}
-
-/* 4) Ajuste en pantallas más bajas: achicar un poco caras y escena */
-@media (max-height: 760px){
-  .hero.hero-cylinder{ --faceW: clamp(200px, 28vh, 320px); }
-  .cyl-scene{ height: min(60svh, 560px) !important; }
-  .paystrip{ margin-top: 12px !important; }
-}
-@media (max-height: 700px){
-  .hero.hero-cylinder{ --faceW: clamp(190px, 26vh, 300px); }
-  .cyl-scene{ height: min(58svh, 520px) !important; }
-}
-
-/* 5) Evita cualquier regla vieja que oculte el bloque */
-#hide-platform-labels, #hide-platform-labels * { display: initial !important; }
-
-/* Final overrides (auto) */
-#heroBrandFX{ display:none !important; }
-.paystrip{ margin-top: 29px !important; }
-@media (max-height: 760px){ .paystrip{ margin-top: 27px !important; } }
-</style>
-</head>
+</style></head>
 <body>
 <noscript><img height="1" src="https://www.facebook.com/tr?id=767728059169192&amp;ev=PageView&amp;noscript=1" style="display:none" width="1"/></noscript>
 <div class="wrap">
 <main class="card">
 <section aria-label="Cilindro de plataformas" class="hero hero-cylinder" id="hero" role="region">
 <!-- Título superior (entre los corchetes rojos) -->
+<!-- Marca activa (texto arriba del cilindro, NO sobre los videos) -->
+
+<!-- heroBrandFX removed (texto por plataforma desactivado) -->
+
 <!-- Fuentes de video (ocultas). Canvas dibuja los frames para que el 3D sea consistente en móviles -->
 <video class="cyl-src" data-i="0" loop="" muted="" playsinline="" preload="auto" style="display:none">
 <source src="./bet30-preview.mp4" type="video/mp4"/>
@@ -1626,7 +1546,67 @@ header .logo{
     
 
 
+// FX dentro del HERO (texto arriba del cilindro)
+const heroBrandFX = document.getElementById('heroBrandFX');
+const heroBrandText = document.getElementById('heroBrandText');
+const heroBrandParticles = document.getElementById('heroBrandParticles');
+const heroBrandIconL = document.getElementById('heroBrandIconL');
+const heroBrandIconR = document.getElementById('heroBrandIconR');
+const LOGO_GANAMOS = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAtFBMVEUyBkgyBUgyBUgyBUgxBEcwAEchAD05Ek+3tbCenJgsAEQRCj3IxMPi4d73+fSTjpDW0tOwX9nHp9pwYHsoAEFYQmevesyaSb+xnrPNzciqjLCoTdeHW5NQAWrCu8Ovrqo8FlhxLYpfBX9/c4SLTaaTJcyec7RiAJWmpaFoWHNIKFyHg4V/fnq4mMVgHG55MpuJOridObhqZ2eZNJuCDcB+AKQAAABUK3B8CnRgXl5xRX6gi6FSiPbmAAAABXRSTlMMyP/JDBl0OZgAAAFYSURBVHgBddIDkgRBEAXQUbVtc9g273+uNZo/WPHKmYfD8bST8+VwPu3meJiOAASB6XiKAEZQDOwgTpAUDW0jRDMsR/LCFmIiIbGyoorYFP8O1HTWMC3bASuEUNrVOcX0CBoDCxR89Hq6MdbVM2wf+sfvA+27Lj+YJ2OYPvoSpgicp63rgcA9LcpyQ1rEJiiEKsu6J+ehERTJPZ6RA/4QeyGxLidplt3jPFadAuWxfyzI9Frmss5Wt6pWokYt/hCcQtV0PzB1Ey+T73RjFQH4RThiQOK2eFB2pmJqL5zo//CE9WQbBE7bDomncaPZIsXkTD60AtMzhydtmFVlosXkQifIRxF+8In4RSn3Oxr5wvSHhBf9fNqqdCMZxI7mP/SxswALtHXLJfIFCdiqnoJvX7uujicFnRQbGUeFsGI1FDbQR78SvjZWfhz7nUmbHE+7OR/2W/54eQe0uycMkQt95QAAAABJRU5ErkJggg==';
+const LOGO_RHINO   = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAIAAAD9b0jDAAADFElEQVR4AcSVA4ytMRCF+2zbtm3bxtq2bdu2bdu2bW/wbJ6s4qT7OGkm0+bPd6edM3PJy5cvb9y4Qf6QAQUgoSfSc8n/sSUrp0twrbDn3+Yle1yQefmcRdN+ETR1xpRtmxdz3Nvopb49K3C3kejipYScn0m8FTeVhh4IcT/AzrR+45ZZ+IyWyH5mubPgpkjj6zrsW48vmYyTvXuPBTn5mGrp7SBTrpCZcmcWBmttKA3aFCS7VIV9NRVUl3EdIdOdWM/qHt51a+lyJVH9toSaFl/JH+15hUWFB5YtvrJqrfOlRy58SgjApbq4Ids+BN48Z/2PL3gweWGhW3SklH5n6rHeWI0fr7uiQ3wvElJ7/lKjvtUhMgMp45VpoRtXL3ZXlGU/fNb4KWeaugGgdabnW/2tzB6dsz6177Wruvi9B6DjlWlKN33o+uQ5r3xofHNmUZ/gTYUQNvavDTcLNVe4n1wfqSSKfIdbBplSQonMzcVjRCxpFqNSc9Mv3fdehu3tMtYYJg77q6cu0kJRaxQnPDAnJzwnxDbKUsGjyk5hsGDj17pNn2JcUa7XxUUfS6N+vGlD3SBhKmEhTU1BPeBCjRzhgc42uDsMfWl4FVAkXmsiAC4WNyc7obH7TxSRqey1B1igBxobQLbdUUu7HOf1aC/KlWA3vHgmhPk6Hhc3gHhpocLPJKDB/Ut24UHBVbqxA1XyuE/SGNcACkmIrN6M6mFBA1TQPftvP77HA+KaZRuQMn7gMFnMsW0e2hREqApb6Bf5Cu3ZvZTQ2nRwQUQE+nDWUA8oeESIF80KHA4REHoDcRhKwD1xU+ryBfQrZO8k/BBNgRgn6FcyXoP6hrUCytUDezFl8LIIcALc0qHeG9/cQ9dXntmF/kEAj7jmyUH4xmPrhwMcIoanR0/H7IGAssU2o+itWhuhJMTDAdbw1vraFgSnt86jhWL2oP/gsTAx4TGnx7aYpPgjgMcWHxNK+zkxJAaw0ELmAjMCMJQZKATAegVYOwGrACACOt/ZVJCBKgDoNGDRBaxdEG6kP6BJY4ImzR4AaAVuMXscadYAAAAASUVORK5CYII=';
+const LOGO_BET30   = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAaCAMAAACTisy7AAAAeFBMVEUAAAAGAgNbFiYdBw0ADh8AGDUAHD4AChYABQ0AHUAnCxP/RHL/Qm9dFB8AL2gAQIwAPYYAJVEkCxL/QW3MM1auK0kADyMAFC0AOX0AMWsAPYUAKlwAH0WfKEPtO2RQFCIANHPYNluDITjLMFC5Lk7GMlQSAAAALmVsclohAAAAiElEQVR4Ae1OhQGAQAjEbuVtv2zdf0O7dvDoBk78UNQVGuiGaVoAtunor6Lr+Z7vB2GEiLaxqog8xTjxIfWz3ChKzCvKOKXvYiJkUgNjtIESTRvRfhfbRKpQVbS0j6L1Wdv57eo1yFe2EF8P+euk3zeUUjQIrrp5itowjIOYyBzOHIDPFbtLPxY2iAolHh+Q/wAAAABJRU5ErkJggg==';
 
+
+function burstHeroParticles(){
+  if(!heroBrandFX || !heroBrandParticles) return;
+  heroBrandParticles.innerHTML = '';
+  const rect = heroBrandFX.getBoundingClientRect();
+  const spread = Math.min(Math.max(rect.width, 220), 340) * 0.55;
+  const count = 18;
+
+  for(let k=0;k<count;k++){
+    const p = document.createElement('span');
+    const ang = Math.random() * Math.PI * 2;
+    const r = (0.25 + Math.random()*0.75) * spread;
+    const dx = Math.cos(ang) * r;
+    const dy = Math.sin(ang) * r;
+    const size = 4 + Math.random() * 8;
+
+    p.style.setProperty('--dx', dx.toFixed(1) + 'px');
+    p.style.setProperty('--dy', dy.toFixed(1) + 'px');
+    p.style.width = size.toFixed(1) + 'px';
+    p.style.height = size.toFixed(1) + 'px';
+    p.style.animationDelay = (Math.random() * 120).toFixed(0) + 'ms';
+
+    heroBrandParticles.appendChild(p);
+  }
+}
+
+function triggerHeroFX(idx){
+  const name = (brandByIndex[idx] || '').trim();
+  const lower = name.toLowerCase();
+  let logo = null;
+  if (lower === 'ganamos')   logo = LOGO_GANAMOS;
+  else if (lower === 'bet30')     logo = LOGO_BET30;
+  else if (lower === 'rhinoplay') logo = LOGO_RHINO;
+
+  const hasLogo = !!logo;
+  if (heroBrandFX) heroBrandFX.classList.toggle('show-logos', hasLogo);
+  if (heroBrandIconL && heroBrandIconR) {
+    if (hasLogo) { heroBrandIconL.src = logo; heroBrandIconR.src = logo; }
+  }
+  if (heroBrandText) heroBrandText.textContent = name;
+if(!heroBrandFX) return;
+  heroBrandFX.classList.remove('on');
+  // reinicia animación
+  void heroBrandFX.offsetWidth;
+  heroBrandFX.classList.add('on');
+
+  burstHeroParticles();
+
+  clearTimeout(heroBrandFX._fxTO);
+  heroBrandFX._fxTO = setTimeout(()=>{ heroBrandFX.classList.remove('on'); }, 1550);
+}
 
 function burstHeaderParticles(){
       if(!brandFX || !brandParticles) return;
@@ -1806,7 +1786,7 @@ function updateActiveFace(angOverride){
         });
 
         // FX: detectar cara al frente y disparar texto/partículas
-        updateActiveFace(getRingAngleDeg());
+        // brand FX disabled (solo texto incrustado en video)
       }
 
       requestAnimationFrame(loop);
