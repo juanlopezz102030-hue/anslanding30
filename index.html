@@ -656,6 +656,8 @@ header{display:none !important;}
     height: min(72svh, 680px);
     display:grid;
     place-items:center;
+    position: relative;
+    z-index: 2;
     perspective: 1300px;
     perspective-origin: 50% 46%;
     --cyl-radius: 220px; /* JS lo ajusta */
@@ -1433,8 +1435,8 @@ header .logo{
 /* === Métodos de pago (debajo del cilindro) === */
 .paystrip{
   width: min(560px, 92vw);
-  /* Más cerca del cilindro (sube la fila) */
-  margin: 12px auto 0;
+  /* Separación extra para que NO se solape con el cilindro (iPhone / notch) */
+  margin: clamp(26px, 3.2svh, 54px) auto 0;
   padding-bottom: 6px;
   display: flex;
   justify-content: center;
@@ -1445,7 +1447,7 @@ header .logo{
   overflow-y: visible;
   -webkit-overflow-scrolling: touch;
   position: relative;
-  z-index: 3;
+  z-index: 1;
   scrollbar-width: none; /* Firefox */
 }
 .paystrip::-webkit-scrollbar{ display:none; }
@@ -1476,7 +1478,7 @@ header .logo{
 /* === Compact fit: entrar todo el contenido en pantalla (mobile) === */
 @media (max-height: 850px){
   .cyl-scene{ height: clamp(380px, 56svh, 560px) !important; }
-  .paystrip{ margin-top: 10px !important; }
+  .paystrip{ margin-top: clamp(18px, 2.6svh, 34px) !important; }
   .cta-dock{
     bottom: calc(env(safe-area-inset-bottom) + 10px) !important;
     gap: 10px !important;
