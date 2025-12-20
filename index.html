@@ -24,7 +24,9 @@
       --shadow: 0 10px 30px rgba(0,0,0,.35);
       --radius: 22px;
       --maxw: 520px;
-    }
+    
+  --paystripExtra: 30px; /* ajusta este valor para bajar/subir los métodos */
+}
     *{box-sizing:border-box}
     html,body{height:100% overflow-y:auto !important; }
     body{
@@ -1436,7 +1438,7 @@ header .logo{
 .paystrip{
   width: min(560px, 92vw);
   /* Separación extra para que NO se solape con el cilindro (iPhone / notch) */
-  margin: calc(clamp(26px, 3.2svh, 54px) + 12px) auto 0;
+  margin: calc(clamp(26px, 3.2svh, 54px) + var(--paystripExtra)) auto 0;
   padding-bottom: 6px;
   display: flex;
   justify-content: center;
