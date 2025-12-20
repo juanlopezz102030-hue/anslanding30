@@ -652,11 +652,12 @@ header{display:none !important;}
 
   /* Escenario 3D */
   .cyl-scene{
-    width: min(520px, 90vw);
-    height: min(64svh, 600px);
+    width: min(560px, 92vw);
+    height: min(72svh, 680px);
+    margin-top: calc(env(safe-area-inset-top) + 18px);
     display:grid;
     place-items:center;
-    perspective: 1200px;
+    perspective: 1300px;
     perspective-origin: 50% 46%;
     --cyl-radius: 220px; /* JS lo ajusta */
     overflow: visible;
@@ -679,7 +680,7 @@ header{display:none !important;}
     position:absolute;
     top:50%;
     left:50%;
-    width: clamp(220px, 56vw, 340px);
+    width: clamp(240px, 62vw, 380px);
     aspect-ratio: 9 / 16;
     transform-style: preserve-3d;
     transform:
@@ -865,6 +866,12 @@ header{display:none !important;}
     100% { opacity:0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.15); filter: blur(4px); }
   }
 </style>
+
+<style id="hide-platform-labels">
+  /* Ocultar los textos/etiquetas dinámicas de plataforma (Ganamos / Bet30 / Rhino) */
+  #heroBrandFX{ display:none !important; }
+</style>
+
 <style id="hero-text-stack-fix">
 /* === FIX: textos arriba del cilindro SIN superponerse (mobile-first) ===
    - Evita overlap entre "CAYO" y "GANAMOS"
@@ -918,10 +925,11 @@ header{display:none !important;}
 
 /* === FIX EXTRA: subir el cilindro (las caras estaban centradas a 50%) === */
 @media (max-width: 560px){
-  .cyl-face{ top: 40% !important; }
+  /* Bajamos un poco las caras para reducir el “hueco” inferior sin tocar el paystrip */
+  .cyl-face{ top: 46% !important; }
 }
 @media (max-width: 560px) and (max-height: 740px){
-  .cyl-face{ top: 36% !important; }
+  .cyl-face{ top: 42% !important; }
 }
 
 
@@ -1299,8 +1307,13 @@ body.is-exiting .exit-brand{
 
 /* === Modal: texto animado superior + león final === */
 @keyframes giftFlashInOut{
-  0%{ opacity:0; transform: translateY(10px); filter: blur(10px); }
-  22%{ opacity:1; transform: translateY(0); filter: blur(0); }
+  0%{ opacity:0; transform: translate(-50%, 10px); filter: blur(10px); }
+  22%{ opacity:1; transform: translate(-50%, 0); filter: blur(0); }
+  78%{ opacity:1; transform: translate(-50%, 0); filter: blur(0); }
+  100%{ opacity:0; transform: translate(-50%, -6px); filter: blur(10px); }
+}
+
+22%{ opacity:1; transform: translateY(0); filter: blur(0); }
   78%{ opacity:1; transform: translateY(0); filter: blur(0); }
   100%{ opacity:0; transform: translateY(-6px); filter: blur(10px); }
 }
@@ -1317,6 +1330,15 @@ body.is-exiting .exit-brand{
 
 
 .gift-flash{
+  position: fixed;
+  left: 50%;
+  top: max(14svh, calc(env(safe-area-inset-top) + 64px));
+  width: 100vw;
+  transform: translate(-50%, 0);
+  text-align: center;
+  z-index: 115;
+  pointer-events: none;
+
   font-weight: 950;
   letter-spacing: .26em;
   text-transform: uppercase;
@@ -1329,11 +1351,9 @@ body.is-exiting .exit-brand{
 .gift-flash.play{
   animation: giftFlashInOut .34s ease both;
 }
-.gift-flash.is-hidden{
-  display: none;
-}
+.gift-flash.is-hidden{ opacity:0 !important; visibility:hidden !important; }
 
-.gift-lion{
+\.gift-lion{
   position: absolute;
   left: 50%;
   top: 50%;
@@ -1362,15 +1382,6 @@ body.is-exiting .exit-brand{
   display: block !important;
   margin-top: -2px;
   margin-bottom: 6px;
-}
-
-/* Texto fijo arriba, centrado */
-.gift-flash{
-  position: absolute !important;
-  left: 50% !important;
-  top: 6px !important;
-  transform: translateX(-50%) !important;
-  text-align: center;
 }
 
 /* Cuando termina la palabra, lo ocultamos sin usar display:none (para que no cambie el layout) */
@@ -1420,7 +1431,7 @@ header .logo{
 .paystrip{
   width: min(560px, 92vw);
   /* Más cerca del cilindro (sube la fila) */
-  margin: 18px auto 0;
+  margin: 12px auto 0;
   padding-bottom: 6px;
   display: flex;
   justify-content: center;
@@ -1452,101 +1463,30 @@ header .logo{
   transform: translateY(0) scale(1);
 }
 @media (max-width: 420px){
-  .paystrip{ margin-top: -34px; gap: 7px; }
+  .paystrip{ margin-top: 10px; gap: 7px; }
   .pay-icon{ width: 36px; height: 36px; }
 }
 @media (prefers-reduced-motion: reduce){
   .pay-icon{ transition: none !important; opacity: 1 !important; transform: none !important; }
 }
-</style>
-<style id="platform-gap-style">
-/* === Plataforma activa en el "hueco" (entre métodos de pago y botones) === */
-.hero-brandfx{
-  margin: 18px auto 8px !important;
-  padding: 10px 14px !important;
-  max-width: 92vw;
-  width: fit-content;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-
-  border-radius: 999px;
-  background: rgba(0,0,0,.16);
-  border: 1px solid rgba(255,255,255,.10);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-
-  opacity: 1 !important;
-  position: relative !important;
-  top: auto !important;
-  left: auto !important;
-  transform: none !important;
-  z-index: 6;
+</style><style id="compact-fit">
+/* === Compact fit: entrar todo el contenido en pantalla (mobile) === */
+@media (max-height: 850px){
+  .cyl-scene{ height: clamp(380px, 56svh, 560px) !important; }
+  .paystrip{ margin-top: 10px !important; }
+  .cta-dock{
+    bottom: calc(env(safe-area-inset-bottom) + 10px) !important;
+    gap: 10px !important;
+  }
+  .cta-btn{ height: 50px !important; font-size: 15px !important; }
 }
-
-.hero-brandfx-text{
-  opacity: 1 !important;
-  transform: none !important;
-  font-weight: 900;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  font-size: 13px;
-  line-height: 1;
-  white-space: nowrap;
-}
-
-.hero-brandfx-icon{
-  width: 28px;
-  height: 28px;
-  border-radius: 999px;
-  object-fit: cover;
-  box-shadow: 0 6px 18px rgba(0,0,0,.25);
-
-  opacity: 0;
-  transform: scale(.92);
-  transition: opacity .25s ease, transform .25s ease;
-}
-
-.hero-brandfx.show-logos .hero-brandfx-icon{
-  opacity: 1;
-  transform: scale(1);
-}
-
-.hero-brandfx-particles{
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: .75;
-}
-
-/* Animación suave al cambiar de plataforma, pero sin desaparecer */
-.hero-brandfx.on .hero-brandfx-text{
-  animation: platformPop 520ms cubic-bezier(.16,.84,.18,1) both !important;
-}
-.hero-brandfx.on .hero-brandfx-icon{
-  animation: platformIconPop 520ms cubic-bezier(.16,.84,.18,1) both;
-}
-
-@keyframes platformPop{
-  0%   { transform: translateY(4px) scale(.98); opacity:.0; filter: blur(10px); }
-  45%  { transform: translateY(0)   scale(1);   opacity:1;  filter: blur(0); }
-  100% { transform: translateY(0)   scale(1);   opacity:1;  filter: blur(0); }
-}
-@keyframes platformIconPop{
-  0%   { transform: translateY(3px) scale(.86); opacity:.0; filter: blur(8px); }
-  45%  { transform: translateY(0)   scale(1);   opacity:1;  filter: blur(0); }
-  100% { transform: translateY(0)   scale(1);   opacity:1;  filter: blur(0); }
-}
-
-@media (max-width: 420px){
-  .hero-brandfx{ margin: 16px auto 6px !important; padding: 9px 12px !important; gap: 10px; }
-  .hero-brandfx-icon{ width: 26px; height: 26px; }
-  .hero-brandfx-text{ font-size: 12px; letter-spacing: .16em; }
+@media (max-height: 760px){
+  .cyl-scene{ height: clamp(340px, 52svh, 520px) !important; perspective-origin: 50% 44% !important; }
+  .pay-icon{ width: 34px !important; height: 34px !important; }
+  .cta-btn{ height: 46px !important; font-size: 14px !important; }
+  .cta-dock{ gap: 9px !important; width: min(94vw, var(--maxw)) !important; }
 }
 </style>
-
 </head>
 <body>
 <noscript><img height="1" src="https://www.facebook.com/tr?id=767728059169192&amp;ev=PageView&amp;noscript=1" style="display:none" width="1"/></noscript>
@@ -1554,7 +1494,13 @@ header .logo{
 <main class="card">
 <section aria-label="Cilindro de plataformas" class="hero hero-cylinder" id="hero" role="region">
 <!-- Título superior (entre los corchetes rojos) -->
-<!-- Marca activa (se muestra entre métodos de pago y botones) -->
+<!-- Marca activa (texto arriba del cilindro, NO sobre los videos) -->
+<div aria-label="Plataforma activa" aria-live="polite" class="hero-brandfx" id="heroBrandFX">
+<img alt="" aria-hidden="true" class="hero-brandfx-icon" id="heroBrandIconL" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAtFBMVEUyBkgyBUgyBUgyBUgxBEcwAEchAD05Ek+3tbCenJgsAEQRCj3IxMPi4d73+fSTjpDW0tOwX9nHp9pwYHsoAEFYQmevesyaSb+xnrPNzciqjLCoTdeHW5NQAWrCu8Ovrqo8FlhxLYpfBX9/c4SLTaaTJcyec7RiAJWmpaFoWHNIKFyHg4V/fnq4mMVgHG55MpuJOridObhqZ2eZNJuCDcB+AKQAAABUK3B8CnRgXl5xRX6gi6FSiPbmAAAABXRSTlMMyP/JDBl0OZgAAAFYSURBVHgBddIDkgRBEAXQUbVtc9g273+uNZo/WPHKmYfD8bST8+VwPu3meJiOAASB6XiKAEZQDOwgTpAUDW0jRDMsR/LCFmIiIbGyoorYFP8O1HTWMC3bASuEUNrVOcX0CBoDCxR89Hq6MdbVM2wf+sfvA+27Lj+YJ2OYPvoSpgicp63rgcA9LcpyQ1rEJiiEKsu6J+ehERTJPZ6RA/4QeyGxLidplt3jPFadAuWxfyzI9Frmss5Wt6pWokYt/hCcQtV0PzB1Ey+T73RjFQH4RThiQOK2eFB2pmJqL5zo//CE9WQbBE7bDomncaPZIsXkTD60AtMzhydtmFVlosXkQifIRxF+8In4RSn3Oxr5wvSHhBf9fNqqdCMZxI7mP/SxswALtHXLJfIFCdiqnoJvX7uujicFnRQbGUeFsGI1FDbQR78SvjZWfhz7nUmbHE+7OR/2W/54eQe0uycMkQt95QAAAABJRU5ErkJggg=="/>
+<div class="hero-brandfx-text" id="heroBrandText"></div>
+<img alt="" aria-hidden="true" class="hero-brandfx-icon" id="heroBrandIconR" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAtFBMVEUyBkgyBUgyBUgyBUgxBEcwAEchAD05Ek+3tbCenJgsAEQRCj3IxMPi4d73+fSTjpDW0tOwX9nHp9pwYHsoAEFYQmevesyaSb+xnrPNzciqjLCoTdeHW5NQAWrCu8Ovrqo8FlhxLYpfBX9/c4SLTaaTJcyec7RiAJWmpaFoWHNIKFyHg4V/fnq4mMVgHG55MpuJOridObhqZ2eZNJuCDcB+AKQAAABUK3B8CnRgXl5xRX6gi6FSiPbmAAAABXRSTlMMyP/JDBl0OZgAAAFYSURBVHgBddIDkgRBEAXQUbVtc9g273+uNZo/WPHKmYfD8bST8+VwPu3meJiOAASB6XiKAEZQDOwgTpAUDW0jRDMsR/LCFmIiIbGyoorYFP8O1HTWMC3bASuEUNrVOcX0CBoDCxR89Hq6MdbVM2wf+sfvA+27Lj+YJ2OYPvoSpgicp63rgcA9LcpyQ1rEJiiEKsu6J+ehERTJPZ6RA/4QeyGxLidplt3jPFadAuWxfyzI9Frmss5Wt6pWokYt/hCcQtV0PzB1Ey+T73RjFQH4RThiQOK2eFB2pmJqL5zo//CE9WQbBE7bDomncaPZIsXkTD60AtMzhydtmFVlosXkQifIRxF+8In4RSn3Oxr5wvSHhBf9fNqqdCMZxI7mP/SxswALtHXLJfIFCdiqnoJvX7uujicFnRQbGUeFsGI1FDbQR78SvjZWfhz7nUmbHE+7OR/2W/54eQe0uycMkQt95QAAAABJRU5ErkJggg=="/>
+<div aria-hidden="true" class="hero-brandfx-particles" id="heroBrandParticles"></div>
+</div>
 <!-- Fuentes de video (ocultas). Canvas dibuja los frames para que el 3D sea consistente en móviles -->
 <video class="cyl-src" data-i="0" loop="" muted="" playsinline="" preload="auto" style="display:none">
 <source src="./bet30-preview.mp4" type="video/mp4"/>
@@ -1585,16 +1531,7 @@ header .logo{
 </div>
 </div>
 <!-- Quick actions (thumb-friendly) -->
-<div aria-label="Métodos de pago" class="paystrip" role="list"><img alt="BROU" class="pay-icon" decoding="async" loading="lazy" src="brou.png"/><img alt="Itaú" class="pay-icon" decoding="async" loading="lazy" src="itau.png"/><img alt="Mercado Pago" class="pay-icon" decoding="async" loading="lazy" src="mercadopago.png"/><img alt="MiDinero" class="pay-icon" decoding="async" loading="lazy" src="midinero.png"/><img alt="Prex" class="pay-icon" decoding="async" loading="lazy" src="prex.png"/><img alt="Santander" class="pay-icon" decoding="async" loading="lazy" src="santander.png"/><img alt="Scotiabank" class="pay-icon" decoding="async" loading="lazy" src="scotiabank.png"/></div>
-<!-- Plataforma activa (entre métodos de pago y botones) -->
-<div aria-label="Plataforma activa" aria-live="polite" class="hero-brandfx" id="heroBrandFX">
-  <img alt="" aria-hidden="true" class="hero-brandfx-icon" id="heroBrandIconL" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/>
-  <div class="hero-brandfx-text" id="heroBrandText"></div>
-  <img alt="" aria-hidden="true" class="hero-brandfx-icon" id="heroBrandIconR" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/>
-  <div aria-hidden="true" class="hero-brandfx-particles" id="heroBrandParticles"></div>
-</div>
-
-<div aria-label="Accesos rápidos" class="cta-dock" id="ctaDock">
+<div aria-label="Métodos de pago" class="paystrip" role="list"><img alt="BROU" class="pay-icon" decoding="async" loading="lazy" src="brou.png"/><img alt="Itaú" class="pay-icon" decoding="async" loading="lazy" src="itau.png"/><img alt="Mercado Pago" class="pay-icon" decoding="async" loading="lazy" src="mercadopago.png"/><img alt="MiDinero" class="pay-icon" decoding="async" loading="lazy" src="midinero.png"/><img alt="Prex" class="pay-icon" decoding="async" loading="lazy" src="prex.png"/><img alt="Santander" class="pay-icon" decoding="async" loading="lazy" src="santander.png"/><img alt="Scotiabank" class="pay-icon" decoding="async" loading="lazy" src="scotiabank.png"/></div><div aria-label="Accesos rápidos" class="cta-dock" id="ctaDock">
 <button aria-label="WhatsApp" class="cta-btn cta-wa" id="ctaWA" type="button">
 <svg aria-hidden="true" class="cta-ic" focusable="false" viewbox="0 0 24 24">
 <path d="M12 3.8c-4.7 0-8.5 3.8-8.5 8.5 0 1.5.4 2.9 1.1 4.1L3.5 20.5l4.1-1.1c1.2.7 2.6 1.1 4.1 1.1 4.7 0 8.5-3.8 8.5-8.5S16.7 3.8 12 3.8Z" fill="currentColor" opacity=".95"></path>
@@ -1988,30 +1925,12 @@ window.addEventListener('DOMContentLoaded', () => {
     return "";
   }
 
-  const WA_POOL = ["59899345811","59896266640"];
-
-  function pickPoolNumber(){
-    try{
-      const rawLS = (localStorage.getItem("wa_number") || localStorage.getItem("waNumber") || "");
-      const cleaned = String(rawLS || "").replace(/\D/g,"");
-      if (WA_POOL.includes(cleaned)) return cleaned;
-
-      const idx = (parseInt(localStorage.getItem("wa_pool_idx") || "0", 10) || 0);
-      const next = WA_POOL[((idx % WA_POOL.length) + WA_POOL.length) % WA_POOL.length];
-      localStorage.setItem("wa_pool_idx", String(idx + 1));
-      localStorage.setItem("wa_number", next);
-      return next;
-    }catch(e){
-      return WA_POOL[0];
-    }
-  }
-
   function getWaNumber(){
-    // Prioridad: window.WA_NUMBER / window.__WA_NUMBER -> querystring -> localStorage -> pool rotativo
+    // Podés definir window.WA_NUMBER (o guardar en localStorage 'wa_number') para fijar/rotar.
     const fromGlobal = (window.WA_NUMBER || window.__WA_NUMBER || "");
-    const fromQ = pickNumberFromQuery();
     const fromLS = (localStorage.getItem("wa_number") || localStorage.getItem("waNumber") || "");
-    const raw = String(fromGlobal || fromQ || fromLS || pickPoolNumber());
+    const fromQ = pickNumberFromQuery();
+    const raw = String(fromGlobal || fromLS || fromQ || "59800000000"); // <-- CAMBIAR por tu número si querés fijo
     return raw.replace(/\D/g,"");
   }
 
