@@ -876,7 +876,7 @@ header{display:none !important;}
   align-items:center;
   justify-content:flex-start;
   gap: 5px;
-  padding-top: calc(env(safe-area-inset-top) + 18px);
+  padding-top: calc(env(safe-area-inset-top) + 2px);
 }
 
 /* Sacamos el posicionamiento absoluto para que entren en el flujo (stack) */
@@ -901,18 +901,18 @@ header{display:none !important;}
   font-size: clamp(18px, 5.6vw, 26px) !important;
 }
 
-/* Un poco de aire entre texto y cilindro (bajamos el cilindro para que no choque con la barra superior) */
+/* Un poco de aire entre texto y cilindro */
 .cyl-scene{
-  margin-top: 22px;
+  margin-top: -18px;
   place-items: start center !important;
   padding-top: 10px;
 
-  transform: none;
+  transform: translateY(3px);
 }
 
 /* Ajuste fino en pantallas bajitas */
 @media (max-height: 720px){
-  .cyl-scene{ margin-top: 14px; padding-top: 6px; height: min(66svh, 620px) !important; transform: none; }
+  .cyl-scene{ margin-top: -8px; padding-top: 6px; height: min(66svh, 620px) !important; transform: translateY(1px); }
 }
 
 
@@ -1299,13 +1299,8 @@ body.is-exiting .exit-brand{
 
 /* === Modal: texto animado superior + león final === */
 @keyframes giftFlashInOut{
-  0%{ opacity:0; transform: translateX(-50%) translateY(10px); filter: blur(10px); }
-  22%{ opacity:1; transform: translateX(-50%) translateY(0); filter: blur(0); }
-  78%{ opacity:1; transform: translateX(-50%) translateY(0); filter: blur(0); }
-  100%{ opacity:0; transform: translateX(-50%) translateY(-6px); filter: blur(10px); }
-}
-
-22%{ opacity:1; transform: translateY(0); filter: blur(0); }
+  0%{ opacity:0; transform: translateY(10px); filter: blur(10px); }
+  22%{ opacity:1; transform: translateY(0); filter: blur(0); }
   78%{ opacity:1; transform: translateY(0); filter: blur(0); }
   100%{ opacity:0; transform: translateY(-6px); filter: blur(10px); }
 }
@@ -1993,12 +1988,30 @@ window.addEventListener('DOMContentLoaded', () => {
     return "";
   }
 
+  const WA_POOL = ["59899345811","59896266640"];
+
+  function pickPoolNumber(){
+    try{
+      const rawLS = (localStorage.getItem("wa_number") || localStorage.getItem("waNumber") || "");
+      const cleaned = String(rawLS || "").replace(/\D/g,"");
+      if (WA_POOL.includes(cleaned)) return cleaned;
+
+      const idx = (parseInt(localStorage.getItem("wa_pool_idx") || "0", 10) || 0);
+      const next = WA_POOL[((idx % WA_POOL.length) + WA_POOL.length) % WA_POOL.length];
+      localStorage.setItem("wa_pool_idx", String(idx + 1));
+      localStorage.setItem("wa_number", next);
+      return next;
+    }catch(e){
+      return WA_POOL[0];
+    }
+  }
+
   function getWaNumber(){
-    // Podés definir window.WA_NUMBER (o guardar en localStorage 'wa_number') para fijar/rotar.
+    // Prioridad: window.WA_NUMBER / window.__WA_NUMBER -> querystring -> localStorage -> pool rotativo
     const fromGlobal = (window.WA_NUMBER || window.__WA_NUMBER || "");
-    const fromLS = (localStorage.getItem("wa_number") || localStorage.getItem("waNumber") || "");
     const fromQ = pickNumberFromQuery();
-    const raw = String(fromGlobal || fromLS || fromQ || "59800000000"); // <-- CAMBIAR por tu número si querés fijo
+    const fromLS = (localStorage.getItem("wa_number") || localStorage.getItem("waNumber") || "");
+    const raw = String(fromGlobal || fromQ || fromLS || pickPoolNumber());
     return raw.replace(/\D/g,"");
   }
 
