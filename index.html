@@ -645,8 +645,6 @@ header{display:none !important;}
     place-items:center;
     min-height: calc(100svh - 110px); /* deja espacio visual para el header */
     position: relative;
-    padding-top: calc(env(safe-area-inset-top, 0px) + 18px); /* baja el cilindro para evitar corte con barra del navegador */
-    box-sizing: border-box;
   }
 
   /* Quita el degradé/overlay inferior en esta versión (tapa la parte baja del cilindro) */
@@ -658,16 +656,10 @@ header{display:none !important;}
     height: min(64svh, 600px);
     display:grid;
     place-items:center;
-    margin-top: 18px; /* separa del borde superior (iOS Safari barra) */
     perspective: 1200px;
     perspective-origin: 50% 46%;
     --cyl-radius: 220px; /* JS lo ajusta */
     overflow: visible;
-  }
-
-  /* En iPhones con notch / Safari, dar un poquito más de aire arriba */
-  @supports(padding: env(safe-area-inset-top)){
-    .cyl-scene{ margin-top: calc(env(safe-area-inset-top, 0px) + 18px); }
   }
   .cyl-ring{
     position: relative;
@@ -884,7 +876,7 @@ header{display:none !important;}
   align-items:center;
   justify-content:flex-start;
   gap: 5px;
-  padding-top: calc(env(safe-area-inset-top) + 2px);
+  padding-top: calc(env(safe-area-inset-top) + 18px);
 }
 
 /* Sacamos el posicionamiento absoluto para que entren en el flujo (stack) */
@@ -909,18 +901,18 @@ header{display:none !important;}
   font-size: clamp(18px, 5.6vw, 26px) !important;
 }
 
-/* Un poco de aire entre texto y cilindro */
+/* Un poco de aire entre texto y cilindro (bajamos el cilindro para que no choque con la barra superior) */
 .cyl-scene{
-  margin-top: -18px;
+  margin-top: 22px;
   place-items: start center !important;
   padding-top: 10px;
 
-  transform: translateY(3px);
+  transform: none;
 }
 
 /* Ajuste fino en pantallas bajitas */
 @media (max-height: 720px){
-  .cyl-scene{ margin-top: -8px; padding-top: 6px; height: min(66svh, 620px) !important; transform: translateY(1px); }
+  .cyl-scene{ margin-top: 14px; padding-top: 6px; height: min(66svh, 620px) !important; transform: none; }
 }
 
 
@@ -1307,8 +1299,13 @@ body.is-exiting .exit-brand{
 
 /* === Modal: texto animado superior + león final === */
 @keyframes giftFlashInOut{
-  0%{ opacity:0; transform: translateY(10px); filter: blur(10px); }
-  22%{ opacity:1; transform: translateY(0); filter: blur(0); }
+  0%{ opacity:0; transform: translateX(-50%) translateY(10px); filter: blur(10px); }
+  22%{ opacity:1; transform: translateX(-50%) translateY(0); filter: blur(0); }
+  78%{ opacity:1; transform: translateX(-50%) translateY(0); filter: blur(0); }
+  100%{ opacity:0; transform: translateX(-50%) translateY(-6px); filter: blur(10px); }
+}
+
+22%{ opacity:1; transform: translateY(0); filter: blur(0); }
   78%{ opacity:1; transform: translateY(0); filter: blur(0); }
   100%{ opacity:0; transform: translateY(-6px); filter: blur(10px); }
 }
