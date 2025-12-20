@@ -518,7 +518,6 @@ fbq('init', '767728059169192');
 })();
 </script>
 <!-- End Meta Pixel Code -->
-<link as="image" href="./assets/hero.jpg" rel="preload"/>
 <style>
 .hero{ position:relative; overflow:hidden; isolation:isolate; min-height:58dvh; touch-action: pan-y; }
 .hero::after{ content:""; position:absolute; inset:0; z-index:0; background: linear-gradient(180deg, rgba(27,0,48,0) 35%, rgba(27,0,48,.55) 65%, rgba(27,0,48,.85) 100%); }
@@ -777,9 +776,9 @@ header{display:none !important;}
     text-shadow:
       0 10px 26px rgba(0,0,0,.55),
       0 0 18px rgba(255,255,255,.12);
-    opacity: 1;
-    transform: none;
-    filter: none;
+    opacity: 0;
+    transform: translateY(-6px);
+    filter: blur(10px);
     will-change: transform, opacity, filter;
     white-space: nowrap;
   }
@@ -854,8 +853,6 @@ header{display:none !important;}
 
   @keyframes heroBrandFX{
     0%   { opacity:0; transform: translateY(-8px) scale(.98); filter: blur(12px); }
-    100% { opacity:1; transform: translateY(0)   scale(1);    filter: blur(0px); }
-  }
     18%  { opacity:1; transform: translateY(0)   scale(1);    filter: blur(0px); }
     70%  { opacity:1; transform: translateY(0)   scale(1);    filter: blur(0px); }
     100% { opacity:0; transform: translateY(2px) scale(1.02); filter: blur(10px); }
@@ -867,6 +864,12 @@ header{display:none !important;}
     100% { opacity:0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.15); filter: blur(4px); }
   }
 </style>
+
+<style id="hide-platform-labels">
+  /* Ocultar los textos/etiquetas dinámicas de plataforma (Ganamos / Bet30 / Rhino) */
+  #heroBrandFX{ display:none !important; }
+</style>
+
 <style id="hero-text-stack-fix">
 /* === FIX: textos arriba del cilindro SIN superponerse (mobile-first) ===
    - Evita overlap entre "CAYO" y "GANAMOS"
@@ -1302,11 +1305,7 @@ body.is-exiting .exit-brand{
 
 /* === Modal: texto animado superior + león final === */
 @keyframes giftFlashInOut{
-  0%{ opacity:0; transform: translateX(-50%) translateY(10px); filter: blur(10px); }
-  22%{ opacity:1; transform: translateX(-50%) translateY(0); filter: blur(0); }
-  78%{ opacity:1; transform: translateX(-50%) translateY(0); filter: blur(0); }
-  100%{ opacity:0; transform: translateX(-50%) translateY(-6px); filter: blur(10px); }
-}
+  0%{ opacity:0; transform: translateY(10px); filter: blur(10px); }
   22%{ opacity:1; transform: translateY(0); filter: blur(0); }
   78%{ opacity:1; transform: translateY(0); filter: blur(0); }
   100%{ opacity:0; transform: translateY(-6px); filter: blur(10px); }
@@ -1483,6 +1482,66 @@ header .logo{
   .cta-dock{ gap: 9px !important; width: min(94vw, var(--maxw)) !important; }
 }
 </style>
+
+<style id="fix-iphone-no-overlap-v3">
+/* === FIX iPhone: textos arriba del cilindro + paystrip debajo SIN solaparse === */
+
+/* 1) Asegurar que el label de plataforma sea visible (aunque existan estilos viejos que lo oculten) */
+#heroBrandFX{
+  display:flex !important;
+  position:relative !important;
+  opacity:1 !important;
+  visibility:visible !important;
+  pointer-events:none !important;
+  margin: 8px auto 10px !important;
+  z-index: 6 !important;
+}
+
+/* 2) Reservar espacio real para el cilindro: tamaño de caras basado en altura (vh) para evitar overflow hacia el paystrip */
+.hero.hero-cylinder{
+  --faceW: clamp(210px, 30vh, 340px);
+}
+
+/* caras 9:16 => altura ~ 1.78 * width */
+.cyl-face{
+  width: var(--faceW) !important;
+  top: 50% !important; /* centrado estable */
+}
+
+/* el escenario debe tener altura suficiente para contener las caras */
+.cyl-scene{
+  height: min(64svh, 640px) !important;
+  margin-top: 6px !important;     /* elimina márgenes negativos previos */
+  padding-top: 8px !important;
+  place-items: center !important; /* centra correctamente */
+}
+
+/* 3) Paystrip: siempre debajo del cilindro, con aire y sin “subirse” */
+.paystrip{
+  margin-top: 29px !important;
+  margin-bottom: 6px !important;
+  z-index: 4 !important;
+}
+
+/* 4) Ajuste en pantallas más bajas: achicar un poco caras y escena */
+@media (max-height: 760px){
+  .hero.hero-cylinder{ --faceW: clamp(200px, 28vh, 320px); }
+  .cyl-scene{ height: min(60svh, 560px) !important; }
+  .paystrip{ margin-top: 12px !important; }
+}
+@media (max-height: 700px){
+  .hero.hero-cylinder{ --faceW: clamp(190px, 26vh, 300px); }
+  .cyl-scene{ height: min(58svh, 520px) !important; }
+}
+
+/* 5) Evita cualquier regla vieja que oculte el bloque */
+#hide-platform-labels, #hide-platform-labels * { display: initial !important; }
+
+/* Final overrides (auto) */
+#heroBrandFX{ display:none !important; }
+.paystrip{ margin-top: 29px !important; }
+@media (max-height: 760px){ .paystrip{ margin-top: 27px !important; } }
+</style>
 </head>
 <body>
 <noscript><img height="1" src="https://www.facebook.com/tr?id=767728059169192&amp;ev=PageView&amp;noscript=1" style="display:none" width="1"/></noscript>
@@ -1490,13 +1549,6 @@ header .logo{
 <main class="card">
 <section aria-label="Cilindro de plataformas" class="hero hero-cylinder" id="hero" role="region">
 <!-- Título superior (entre los corchetes rojos) -->
-<!-- Marca activa (texto arriba del cilindro, NO sobre los videos) -->
-<div aria-label="Plataforma activa" aria-live="polite" class="hero-brandfx" id="heroBrandFX">
-<img alt="" aria-hidden="true" class="hero-brandfx-icon" id="heroBrandIconL" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAtFBMVEUyBkgyBUgyBUgyBUgxBEcwAEchAD05Ek+3tbCenJgsAEQRCj3IxMPi4d73+fSTjpDW0tOwX9nHp9pwYHsoAEFYQmevesyaSb+xnrPNzciqjLCoTdeHW5NQAWrCu8Ovrqo8FlhxLYpfBX9/c4SLTaaTJcyec7RiAJWmpaFoWHNIKFyHg4V/fnq4mMVgHG55MpuJOridObhqZ2eZNJuCDcB+AKQAAABUK3B8CnRgXl5xRX6gi6FSiPbmAAAABXRSTlMMyP/JDBl0OZgAAAFYSURBVHgBddIDkgRBEAXQUbVtc9g273+uNZo/WPHKmYfD8bST8+VwPu3meJiOAASB6XiKAEZQDOwgTpAUDW0jRDMsR/LCFmIiIbGyoorYFP8O1HTWMC3bASuEUNrVOcX0CBoDCxR89Hq6MdbVM2wf+sfvA+27Lj+YJ2OYPvoSpgicp63rgcA9LcpyQ1rEJiiEKsu6J+ehERTJPZ6RA/4QeyGxLidplt3jPFadAuWxfyzI9Frmss5Wt6pWokYt/hCcQtV0PzB1Ey+T73RjFQH4RThiQOK2eFB2pmJqL5zo//CE9WQbBE7bDomncaPZIsXkTD60AtMzhydtmFVlosXkQifIRxF+8In4RSn3Oxr5wvSHhBf9fNqqdCMZxI7mP/SxswALtHXLJfIFCdiqnoJvX7uujicFnRQbGUeFsGI1FDbQR78SvjZWfhz7nUmbHE+7OR/2W/54eQe0uycMkQt95QAAAABJRU5ErkJggg=="/>
-<div class="hero-brandfx-text" id="heroBrandText"></div>
-<img alt="" aria-hidden="true" class="hero-brandfx-icon" id="heroBrandIconR" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAtFBMVEUyBkgyBUgyBUgyBUgxBEcwAEchAD05Ek+3tbCenJgsAEQRCj3IxMPi4d73+fSTjpDW0tOwX9nHp9pwYHsoAEFYQmevesyaSb+xnrPNzciqjLCoTdeHW5NQAWrCu8Ovrqo8FlhxLYpfBX9/c4SLTaaTJcyec7RiAJWmpaFoWHNIKFyHg4V/fnq4mMVgHG55MpuJOridObhqZ2eZNJuCDcB+AKQAAABUK3B8CnRgXl5xRX6gi6FSiPbmAAAABXRSTlMMyP/JDBl0OZgAAAFYSURBVHgBddIDkgRBEAXQUbVtc9g273+uNZo/WPHKmYfD8bST8+VwPu3meJiOAASB6XiKAEZQDOwgTpAUDW0jRDMsR/LCFmIiIbGyoorYFP8O1HTWMC3bASuEUNrVOcX0CBoDCxR89Hq6MdbVM2wf+sfvA+27Lj+YJ2OYPvoSpgicp63rgcA9LcpyQ1rEJiiEKsu6J+ehERTJPZ6RA/4QeyGxLidplt3jPFadAuWxfyzI9Frmss5Wt6pWokYt/hCcQtV0PzB1Ey+T73RjFQH4RThiQOK2eFB2pmJqL5zo//CE9WQbBE7bDomncaPZIsXkTD60AtMzhydtmFVlosXkQifIRxF+8In4RSn3Oxr5wvSHhBf9fNqqdCMZxI7mP/SxswALtHXLJfIFCdiqnoJvX7uujicFnRQbGUeFsGI1FDbQR78SvjZWfhz7nUmbHE+7OR/2W/54eQe0uycMkQt95QAAAABJRU5ErkJggg=="/>
-<div aria-hidden="true" class="hero-brandfx-particles" id="heroBrandParticles"></div>
-</div>
 <!-- Fuentes de video (ocultas). Canvas dibuja los frames para que el 3D sea consistente en móviles -->
 <video class="cyl-src" data-i="0" loop="" muted="" playsinline="" preload="auto" style="display:none">
 <source src="./bet30-preview.mp4" type="video/mp4"/>
@@ -1574,67 +1626,7 @@ header .logo{
     
 
 
-// FX dentro del HERO (texto arriba del cilindro)
-const heroBrandFX = document.getElementById('heroBrandFX');
-const heroBrandText = document.getElementById('heroBrandText');
-const heroBrandParticles = document.getElementById('heroBrandParticles');
-const heroBrandIconL = document.getElementById('heroBrandIconL');
-const heroBrandIconR = document.getElementById('heroBrandIconR');
-const LOGO_GANAMOS = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAtFBMVEUyBkgyBUgyBUgyBUgxBEcwAEchAD05Ek+3tbCenJgsAEQRCj3IxMPi4d73+fSTjpDW0tOwX9nHp9pwYHsoAEFYQmevesyaSb+xnrPNzciqjLCoTdeHW5NQAWrCu8Ovrqo8FlhxLYpfBX9/c4SLTaaTJcyec7RiAJWmpaFoWHNIKFyHg4V/fnq4mMVgHG55MpuJOridObhqZ2eZNJuCDcB+AKQAAABUK3B8CnRgXl5xRX6gi6FSiPbmAAAABXRSTlMMyP/JDBl0OZgAAAFYSURBVHgBddIDkgRBEAXQUbVtc9g273+uNZo/WPHKmYfD8bST8+VwPu3meJiOAASB6XiKAEZQDOwgTpAUDW0jRDMsR/LCFmIiIbGyoorYFP8O1HTWMC3bASuEUNrVOcX0CBoDCxR89Hq6MdbVM2wf+sfvA+27Lj+YJ2OYPvoSpgicp63rgcA9LcpyQ1rEJiiEKsu6J+ehERTJPZ6RA/4QeyGxLidplt3jPFadAuWxfyzI9Frmss5Wt6pWokYt/hCcQtV0PzB1Ey+T73RjFQH4RThiQOK2eFB2pmJqL5zo//CE9WQbBE7bDomncaPZIsXkTD60AtMzhydtmFVlosXkQifIRxF+8In4RSn3Oxr5wvSHhBf9fNqqdCMZxI7mP/SxswALtHXLJfIFCdiqnoJvX7uujicFnRQbGUeFsGI1FDbQR78SvjZWfhz7nUmbHE+7OR/2W/54eQe0uycMkQt95QAAAABJRU5ErkJggg==';
-const LOGO_RHINO   = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAIAAAD9b0jDAAADFElEQVR4AcSVA4ytMRCF+2zbtm3bxtq2bdu2bdu2bW/wbJ6s4qT7OGkm0+bPd6edM3PJy5cvb9y4Qf6QAQUgoSfSc8n/sSUrp0twrbDn3+Yle1yQefmcRdN+ETR1xpRtmxdz3Nvopb49K3C3kejipYScn0m8FTeVhh4IcT/AzrR+45ZZ+IyWyH5mubPgpkjj6zrsW48vmYyTvXuPBTn5mGrp7SBTrpCZcmcWBmttKA3aFCS7VIV9NRVUl3EdIdOdWM/qHt51a+lyJVH9toSaFl/JH+15hUWFB5YtvrJqrfOlRy58SgjApbq4Ids+BN48Z/2PL3gweWGhW3SklH5n6rHeWI0fr7uiQ3wvElJ7/lKjvtUhMgMp45VpoRtXL3ZXlGU/fNb4KWeaugGgdabnW/2tzB6dsz6177Wruvi9B6DjlWlKN33o+uQ5r3xofHNmUZ/gTYUQNvavDTcLNVe4n1wfqSSKfIdbBplSQonMzcVjRCxpFqNSc9Mv3fdehu3tMtYYJg77q6cu0kJRaxQnPDAnJzwnxDbKUsGjyk5hsGDj17pNn2JcUa7XxUUfS6N+vGlD3SBhKmEhTU1BPeBCjRzhgc42uDsMfWl4FVAkXmsiAC4WNyc7obH7TxSRqey1B1igBxobQLbdUUu7HOf1aC/KlWA3vHgmhPk6Hhc3gHhpocLPJKDB/Ut24UHBVbqxA1XyuE/SGNcACkmIrN6M6mFBA1TQPftvP77HA+KaZRuQMn7gMFnMsW0e2hREqApb6Bf5Cu3ZvZTQ2nRwQUQE+nDWUA8oeESIF80KHA4REHoDcRhKwD1xU+ryBfQrZO8k/BBNgRgn6FcyXoP6hrUCytUDezFl8LIIcALc0qHeG9/cQ9dXntmF/kEAj7jmyUH4xmPrhwMcIoanR0/H7IGAssU2o+itWhuhJMTDAdbw1vraFgSnt86jhWL2oP/gsTAx4TGnx7aYpPgjgMcWHxNK+zkxJAaw0ELmAjMCMJQZKATAegVYOwGrACACOt/ZVJCBKgDoNGDRBaxdEG6kP6BJY4ImzR4AaAVuMXscadYAAAAASUVORK5CYII=';
-const LOGO_BET30   = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAaCAMAAACTisy7AAAAeFBMVEUAAAAGAgNbFiYdBw0ADh8AGDUAHD4AChYABQ0AHUAnCxP/RHL/Qm9dFB8AL2gAQIwAPYYAJVEkCxL/QW3MM1auK0kADyMAFC0AOX0AMWsAPYUAKlwAH0WfKEPtO2RQFCIANHPYNluDITjLMFC5Lk7GMlQSAAAALmVsclohAAAAiElEQVR4Ae1OhQGAQAjEbuVtv2zdf0O7dvDoBk78UNQVGuiGaVoAtunor6Lr+Z7vB2GEiLaxqog8xTjxIfWz3ChKzCvKOKXvYiJkUgNjtIESTRvRfhfbRKpQVbS0j6L1Wdv57eo1yFe2EF8P+euk3zeUUjQIrrp5itowjIOYyBzOHIDPFbtLPxY2iAolHh+Q/wAAAABJRU5ErkJggg==';
 
-
-function burstHeroParticles(){
-  if(!heroBrandFX || !heroBrandParticles) return;
-  heroBrandParticles.innerHTML = '';
-  const rect = heroBrandFX.getBoundingClientRect();
-  const spread = Math.min(Math.max(rect.width, 220), 340) * 0.55;
-  const count = 18;
-
-  for(let k=0;k<count;k++){
-    const p = document.createElement('span');
-    const ang = Math.random() * Math.PI * 2;
-    const r = (0.25 + Math.random()*0.75) * spread;
-    const dx = Math.cos(ang) * r;
-    const dy = Math.sin(ang) * r;
-    const size = 4 + Math.random() * 8;
-
-    p.style.setProperty('--dx', dx.toFixed(1) + 'px');
-    p.style.setProperty('--dy', dy.toFixed(1) + 'px');
-    p.style.width = size.toFixed(1) + 'px';
-    p.style.height = size.toFixed(1) + 'px';
-    p.style.animationDelay = (Math.random() * 120).toFixed(0) + 'ms';
-
-    heroBrandParticles.appendChild(p);
-  }
-}
-
-function triggerHeroFX(idx){
-  const name = (brandByIndex[idx] || '').trim();
-  const lower = name.toLowerCase();
-  let logo = null;
-  if (lower === 'ganamos')   logo = LOGO_GANAMOS;
-  else if (lower === 'bet30')     logo = LOGO_BET30;
-  else if (lower === 'rhinoplay') logo = LOGO_RHINO;
-
-  const hasLogo = !!logo;
-  if (heroBrandFX) heroBrandFX.classList.toggle('show-logos', hasLogo);
-  if (heroBrandIconL && heroBrandIconR) {
-    if (hasLogo) { heroBrandIconL.src = logo; heroBrandIconR.src = logo; }
-  }
-  if (heroBrandText) heroBrandText.textContent = name;
-if(!heroBrandFX) return;
-  heroBrandFX.classList.remove('on');
-  // reinicia animación
-  void heroBrandFX.offsetWidth;
-  heroBrandFX.classList.add('on');
-
-  burstHeroParticles();
-
-  clearTimeout(heroBrandFX._fxTO);
-  heroBrandFX._fxTO = setTimeout(()=>{ heroBrandFX.classList.remove('on'); }, 1550);
-}
 
 function burstHeaderParticles(){
       if(!brandFX || !brandParticles) return;
@@ -1769,59 +1761,6 @@ function updateActiveFace(angOverride){
       ctx.fillRect(0,0,cw,ch);
       ctx.drawImage(vid, sx, sy, sw, sh, 0, 0, cw, ch);
     }
-    // Dibuja un label (nombre de plataforma) encima del frame, dentro del canvas.
-    // Esto evita problemas de z-index/CSS en iOS y queda "pegado" al video.
-    function drawPlatformLabel(ctx, text, cw, ch){
-      text = String(text || '').trim();
-      if(!text) return;
-
-      const t = text.toUpperCase();
-      // Tamaño responsivo según alto del canvas (9:16)
-      const fontPx = Math.max(14, Math.round(ch * 0.06));
-      ctx.save();
-      ctx.font = `900 ${fontPx}px system-ui, -apple-system, Segoe UI, Roboto, Arial`;
-      ctx.textBaseline = 'middle';
-
-      const padX = Math.round(fontPx * 0.75);
-      const padY = Math.round(fontPx * 0.55);
-      const metrics = ctx.measureText(t);
-      const textW = Math.ceil(metrics.width);
-
-      const boxW = textW + padX*2;
-      const boxH = fontPx + padY*2;
-
-      const x = Math.round((cw - boxW)/2);
-      const y = Math.round(ch * 0.10); // 10% desde arriba
-
-      const r = Math.round(boxH * 0.55);
-      // Fondo vidrio oscuro
-      ctx.fillStyle = 'rgba(0,0,0,0.28)';
-      ctx.strokeStyle = 'rgba(255,255,255,0.14)';
-      ctx.lineWidth = Math.max(1, Math.round(fontPx * 0.06));
-
-      // Rounded rect
-      ctx.beginPath();
-      const x2 = x + boxW;
-      const y2 = y + boxH;
-      ctx.moveTo(x + r, y);
-      ctx.arcTo(x2, y,  x2, y2, r);
-      ctx.arcTo(x2, y2, x,  y2, r);
-      ctx.arcTo(x,  y2, x,  y,  r);
-      ctx.arcTo(x,  y,  x2, y,  r);
-      ctx.closePath();
-      ctx.fill();
-      ctx.stroke();
-
-      // Texto
-      ctx.fillStyle = 'rgba(255,255,255,0.95)';
-      ctx.shadowColor = 'rgba(0,0,0,0.55)';
-      ctx.shadowBlur = Math.round(fontPx * 0.7);
-      ctx.shadowOffsetY = Math.round(fontPx * 0.15);
-      ctx.fillText(t, x + padX, y + boxH/2);
-
-      ctx.restore();
-    }
-
 
     // Try autoplay; if blocked, first tap anywhere reintenta
     function tryPlayAll(){
@@ -1864,8 +1803,7 @@ function updateActiveFace(angOverride){
           const ctx = c.getContext('2d', { alpha: false, desynchronized: true });
           fitCanvasToCSS(c, card);
           drawCover(ctx, vid, c.width, c.height);
-          drawPlatformLabel(ctx, brandByIndex[i] || '', c.width, c.height);
-          });
+        });
 
         // FX: detectar cara al frente y disparar texto/partículas
         updateActiveFace(getRingAngleDeg());
