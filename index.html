@@ -1013,15 +1013,19 @@ header{display:none !important;}
 .wrap{ padding-bottom: calc(var(--dock-h) + env(safe-area-inset-bottom) + 20px) !important; }
 
 .cta-dock{
-  position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: calc(env(safe-area-inset-bottom) + 14px);
-  width: min(96vw, var(--maxw));
+  /* Dentro del contenedor (simétrico con el cuadro) */
+  position: relative;
+  left: auto;
+  transform: none;
+  bottom: auto;
+
+  width: 100%;
   display: grid;
   grid-template-columns: 1fr;
   gap: 10px;
-  z-index: 80;
+
+  padding: 14px 16px 18px;
+  z-index: 5;
   pointer-events: auto;
 }
 
