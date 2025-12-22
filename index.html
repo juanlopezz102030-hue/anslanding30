@@ -47,10 +47,17 @@
       justify-content:flex-start;
       padding-left:14px;
       padding-right:14px;
-      padding-top:clamp(18px, 4svh, 38px);
+      padding-top:clamp(34px, 8dvh, 86px);
       padding-bottom:calc(env(safe-area-inset-bottom) + 18px);
       gap:14px;
     }
+    @media (max-width: 520px){
+      .wrap{
+        padding-top: calc(env(safe-area-inset-top) + 7dvh);
+        padding-bottom: calc(env(safe-area-inset-bottom) + 12px);
+      }
+    }
+
     header{
       width:100%;
       max-width:var(--maxw);
