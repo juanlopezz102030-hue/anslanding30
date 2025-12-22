@@ -1666,13 +1666,13 @@ header .logo{
 <div aria-hidden="true" class="hero-brandfx-particles" id="heroBrandParticles"></div>
 </div>
 <!-- Fuentes de video (ocultas). Canvas dibuja los frames para que el 3D sea consistente en móviles -->
-<video class="cyl-src" data-i="0" loop="" muted="" playsinline="" preload="auto" style="display:none">
+<video class="cyl-src" data-i="0" loop="" muted="" playsinline="" preload="auto" style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;" autoplay="" webkit-playsinline="">
 <source src="./bet30-preview.mp4" type="video/mp4"/>
 </video>
-<video class="cyl-src" data-i="1" loop="" muted="" playsinline="" preload="auto" style="display:none">
+<video class="cyl-src" data-i="1" loop="" muted="" playsinline="" preload="auto" style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;" autoplay="" webkit-playsinline="">
 <source src="./ganamos-preview.mp4" type="video/mp4"/>
 </video>
-<video class="cyl-src" data-i="2" loop="" muted="" playsinline="" preload="auto" style="display:none">
+<video class="cyl-src" data-i="2" loop="" muted="" playsinline="" preload="auto" style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;" autoplay="" webkit-playsinline="">
 <source src="./rhino-preview.mp4" type="video/mp4"/>
 </video>
 <div aria-hidden="false" class="cyl-scene" id="cylScene">
@@ -1935,8 +1935,15 @@ function updateActiveFace(angOverride){
     function tryPlayAll(){
       vids.forEach(v=>{
         try {
+          // iOS/Safari autoplay: must be muted + inline + (sometimes) attributes present
           v.muted = true;
+          v.defaultMuted = true;
+          v.setAttribute('muted','');
           v.playsInline = true;
+          v.setAttribute('playsinline','');
+          v.setAttribute('webkit-playsinline','');
+          v.autoplay = true;
+
           const p = v.play();
           if(p && typeof p.catch === 'function') p.catch(()=>{});
         } catch(e){}
@@ -1990,9 +1997,24 @@ function updateActiveFace(angOverride){
       requestAnimationFrame(loop);
     });
 
-    // User gesture fallback (iOS)
-    const unlock = ()=>{ tryPlayAll(); document.removeEventListener('pointerdown', unlock); };
-    document.addEventListener('pointerdown', unlock, {passive:true});
+    // User gesture fallback + lifecycle retries (mobile Safari)
+    const unlock = ()=>{ tryPlayAll(); };
+
+    // Try again when videos become ready
+    vids.forEach(v=>{
+      v.addEventListener('canplay', ()=>{
+        try { const p = v.play(); if(p && p.catch) p.catch(()=>{}); } catch(e){}
+      }, {once:true});
+    });
+
+    // User interactions
+    ['pointerdown','touchstart','click'].forEach(evt=>{
+      document.addEventListener(evt, unlock, {passive:true, once:true});
+    });
+
+    // Coming back from bfcache / tab switch
+    window.addEventListener('pageshow', unlock, {passive:true});
+    document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) tryPlayAll(); }, {passive:true});
   })();
   </script>
 <script>
