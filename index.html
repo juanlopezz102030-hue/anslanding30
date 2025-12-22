@@ -52,31 +52,40 @@
       gap:14px;
     }
     @media (max-width: 520px){
-      .wrap{
-        /* iPhone Safari: keep the main card close to the top (no huge vh padding) */
-        padding-top: calc(env(safe-area-inset-top) + 10px);
-        padding-bottom: calc(env(safe-area-inset-bottom) + 14px);
-        gap: 10px;
-        justify-content: flex-start;
+      /* iPhone/Safari: que el rectángulo (card) ocupe más pantalla y no quede aire arriba */
+      html, body{
+        height:100%;
+        overflow:hidden;
       }
-      main.card{
-        /* let the card claim the available height so the hero/video doesn't get clipped */
-        flex: 1 1 auto;
-        width: min(520px, calc(100% - 0px));
+      .wrap{
+        height:100dvh;
+        min-height:100dvh;
+        overflow:hidden;
+        padding-top: calc(env(safe-area-inset-top) + 10px);
+        padding-bottom: calc(env(safe-area-inset-bottom) + 10px);
       }
       .card{
-        overflow: hidden; /* keep rounded corners clean */
+        /* ocupa casi todo el alto visible */
+        height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 20px);
+        max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 20px);
+        display:flex;
+        flex-direction:column;
         box-shadow: 0 18px 55px rgba(0,0,0,.48);
+        overflow:hidden; /* mantiene bordes redondeados */
       }
-      /* give the hero more vertical presence on mobile without forcing vh-based min-heights */
       .hero-cylinder{
-        min-height: unset !important;
-        padding-top: 6px;
-        padding-bottom: 6px;
+        flex: 1 1 auto;
+        min-height: 0 !important; /* evita que el hero infle la página */
       }
       .cyl-scene{
-        height: 54vh;
-        max-height: 520px;
+        /* altura controlada para que no se recorte ni cree scroll raro */
+        height: min(56dvh, 520px);
+      }
+      .paystrip{
+        margin-top: 10px;
+      }
+      .cta-dock{
+        margin-top: auto; /* empuja el CTA al fondo del card */
       }
     }
 
