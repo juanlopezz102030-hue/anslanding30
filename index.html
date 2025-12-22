@@ -1579,6 +1579,52 @@ header .logo{
 /* En desktop mantenemos el look original */
 </style>
 
+
+<style id="mobile-presence-v5">
+/* === Más presencia del contenedor (iPhone): el cuadro sube y el hero NO se corta ===
+   Idea: el .card ocupa más alto (flex:1) y el hero deja de estar limitado por aspect-ratio/min-height.
+*/
+@media (max-width: 560px){
+  .wrap{
+    /* mantenemos el cuadro “apoyado” abajo pero lo estiramos hacia arriba */
+    justify-content: flex-end !important;
+    padding-top: calc(env(safe-area-inset-top) + 8px) !important;
+    padding-bottom: calc(env(safe-area-inset-bottom) + 10px) !important;
+  }
+
+  main.card{
+    flex: 1 1 auto !important;          /* <-- esto llena el espacio vacío superior */
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden;                   /* respeta bordes redondos */
+  }
+
+  /* Dejar que el hero use el alto disponible */
+  .hero.hero-cylinder{
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    aspect-ratio: auto !important;      /* anula 10/13 */
+    overflow: visible !important;       /* no recortar cilindro */
+    padding-bottom: 0 !important;
+  }
+
+  /* Escena 3D: llenar el alto del hero (evita “video cortado”) */
+  .cyl-scene{
+    height: 100% !important;
+    max-height: none !important;
+  }
+
+  /* Centrado real del cilindro (evita que se corte arriba/abajo) */
+  .cyl-face{ top: 50% !important; }
+
+  /* Ajuste fino de separación para que quede aesthetic */
+  .paystrip{ margin-top: clamp(14px, 2.2svh, 22px) !important; }
+  .cta-dock{ margin-top: 10px !important; }
+}
+
+/* Desktop / tablets: sin cambios */
+</style>
+
 </head>
 <body>
 <noscript><img height="1" src="https://www.facebook.com/tr?id=767728059169192&amp;ev=PageView&amp;noscript=1" style="display:none" width="1"/></noscript>
