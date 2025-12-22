@@ -1625,6 +1625,34 @@ header .logo{
 /* Desktop / tablets: sin cambios */
 </style>
 
+
+<style id="mobile-card-no-clip-v6">
+/* === FIX (iPhone): que el contenedor NO recorte el contenido y se adapte al alto real === */
+@media (max-width: 560px){
+  /* No empujar todo hacia abajo: así el cuadro gana presencia arriba */
+  .wrap{
+    justify-content: flex-start !important;
+    padding-top: calc(env(safe-area-inset-top) + 10px) !important;
+    padding-bottom: calc(env(safe-area-inset-bottom) + 14px) !important;
+  }
+
+  /* El card debe crecer por contenido y NO clippear */
+  main.card{
+    height: auto !important;
+    min-height: unset !important;
+    flex: 0 0 auto !important;
+    overflow: visible !important;
+    display: block !important;
+  }
+
+  /* El hero/cilindro tampoco debe recortar */
+  .hero.hero-cylinder{
+    overflow: visible !important;
+    min-height: unset !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <noscript><img height="1" src="https://www.facebook.com/tr?id=767728059169192&amp;ev=PageView&amp;noscript=1" style="display:none" width="1"/></noscript>
