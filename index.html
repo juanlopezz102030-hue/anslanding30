@@ -28,7 +28,7 @@
   --paystripExtra: 45px; /* ajusta este valor para bajar/subir los métodos */
 }
     *{box-sizing:border-box}
-    html,body{height:100% overflow-y:auto !important; }
+    html,body{height:100%; overflow-y:auto !important; }
     body{
       margin:0;
       font-family:Poppins, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -1555,6 +1555,27 @@ header .logo{
   .cta-dock{ gap: 9px !important; width: min(94vw, var(--maxw)) !important; }
 }
 </style>
+
+<style id="mobile-bottom-balance-v3">
+/* === Balance vertical (iPhone): bajar el contenedor y eliminar vacío inferior === */
+@media (max-width: 560px){
+  .wrap{
+    justify-content: flex-end !important;
+    padding-top: calc(env(safe-area-inset-top) + 10px) !important;
+    padding-bottom: calc(env(safe-area-inset-bottom) + 10px) !important;
+    gap: 10px !important;
+  }
+  main.card{
+    flex: 0 0 auto !important;
+    display: block !important;
+  }
+  .hero.hero-cylinder{
+    min-height: unset !important;
+  }
+}
+/* En desktop mantenemos el look original */
+</style>
+
 </head>
 <body>
 <noscript><img height="1" src="https://www.facebook.com/tr?id=767728059169192&amp;ev=PageView&amp;noscript=1" style="display:none" width="1"/></noscript>
