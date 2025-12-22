@@ -53,9 +53,12 @@
     }
     @media (max-width: 520px){
       .wrap{
-        padding-top: calc(env(safe-area-inset-top) + 2.2dvh);
+        padding-top: calc(env(safe-area-inset-top) + 14px);
         padding-bottom: calc(env(safe-area-inset-bottom) + 14px);
       }
+      /* En iPhone, el vh cambia con la barra del navegador: evitamos inflar el hero */
+      .hero-cylinder{ min-height: unset; }
+      .cyl-scene{ height: min(70svh, 560px); }
       .card{
         box-shadow: 0 18px 55px rgba(0,0,0,.48);
       }
@@ -1579,46 +1582,6 @@ header .logo{
 /* En desktop mantenemos el look original */
 </style>
 
-
-<style id="mobile-balance-v7">
-/* === Mobile balance v7: evita espacios vacíos y cortes dentro del cuadro === */
-@media (max-width: 520px){
-  /* El hero no debe ocupar el alto del viewport dentro del contenedor */
-  .hero.hero-cylinder{
-    min-height: unset !important;
-    padding-top: 10px !important;
-    padding-bottom: 6px !important;
-  }
-
-  /* Tamaño del escenario 3D: más alto pero controlado (no deja "aire" abajo) */
-  .cyl-scene{
-    height: min(58svh, 560px) !important;
-  }
-
-  /* El cuadro se comporta como columna y no deja un hueco gigante */
-  main.card{
-    display: flex !important;
-    flex-direction: column !important;
-  }
-
-  /* Que el hero tome el espacio principal y el resto quede abajo */
-  main.card > .hero.hero-cylinder{
-    flex: 1 1 auto !important;
-  }
-
-  /* Evita que el dock/meta padding empuje demasiado */
-  .wrap{
-    padding-top: clamp(20px, 4dvh, 44px) !important;
-    padding-bottom: calc(env(safe-area-inset-bottom) + 14px) !important;
-  }
-
-  /* CTA dentro del cuadro, sin tapar contenido */
-  .cta-dock{
-    margin-top: 10px !important;
-    padding-bottom: 14px !important;
-  }
-}
-</style>
 </head>
 <body>
 <noscript><img height="1" src="https://www.facebook.com/tr?id=767728059169192&amp;ev=PageView&amp;noscript=1" style="display:none" width="1"/></noscript>
