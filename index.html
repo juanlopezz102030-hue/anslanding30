@@ -654,8 +654,8 @@ header{display:none !important;}
 
   /* Escenario 3D */
   .cyl-scene{
-    width: min(560px, 92vw);
-    height: min(72svh, 680px);
+    width: min(500px, 90vw);
+    height: min(64svh, 600px);
     display:grid;
     place-items:center;
     position: relative;
@@ -683,7 +683,7 @@ header{display:none !important;}
     position:absolute;
     top:50%;
     left:50%;
-    width: clamp(240px, 62vw, 380px);
+    width: clamp(210px, 55vw, 330px);
     aspect-ratio: 9 / 16;
     transform-style: preserve-3d;
     transform:
@@ -1436,7 +1436,7 @@ header .logo{
 <style>
 /* === Métodos de pago (debajo del cilindro) === */
 .paystrip{
-  width: min(560px, 92vw);
+  width: min(500px, 90vw);
   /* Separación extra para que NO se solape con el cilindro (iPhone / notch) */
   margin: calc(clamp(26px, 3.2svh, 54px) + var(--paystripExtra)) auto 0;
   padding-bottom: 6px;
