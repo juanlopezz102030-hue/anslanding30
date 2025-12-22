@@ -1605,6 +1605,50 @@ header .logo{
   }
 }
 /* En desktop mantenemos el look original */
+
+/* ===== MOBILE V10: repartir verticalmente (sin empujar todo arriba) ===== */
+@media (max-width: 520px){
+  /* Forzamos el layout final (hay reglas duplicadas arriba) */
+  main.card.card, main.card{
+    height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 20px) !important;
+    max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 20px) !important;
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:stretch !important;
+    justify-content:flex-start !important;
+    padding:0 !important;
+    overflow:hidden !important; /* mantiene el borde redondo */
+  }
+
+  /* El hero ocupa el alto disponible y empuja los elementos hacia abajo */
+  section.hero.hero-cylinder, .hero.hero-cylinder{
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    display:flex !important;
+    align-items:flex-start !important;
+    justify-content:center !important;
+  }
+
+  /* Control de altura del cilindro para que haya presencia sin cortar */
+  .cyl-scene{
+    height: clamp(420px, 60dvh, 640px) !important;
+  }
+
+  /* Bajamos ligeramente el cilindro dentro del hero para que no quede arriba “apretado” */
+  .cyl-scene{ margin-top: 6px !important; }
+
+  /* Paystrip y CTA anclados al fondo con respiro */
+  .paystrip{
+    margin-top: 12px !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+  .cta-dock{
+    margin-top: 10px !important;
+    margin-bottom: 14px !important;
+  }
+}
+
 </style>
 
 </head>
