@@ -2119,9 +2119,10 @@ window.addEventListener('DOMContentLoaded', () => {
     return `https://wa.me/${n}?text=${text}`;
   }
 
-  function softGo(url){
+  function softGo(url, delay){
     try{ document.body.classList.add("is-exiting"); }catch(e){}
-    setTimeout(() => { location.href = url; }, 520);
+    const ms = (typeof delay === "number" && isFinite(delay) ? delay : 520);
+    setTimeout(() => { location.href = url; }, ms);
   }
 
   function track(name, params){
@@ -2223,11 +2224,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
   if(giftClaim){
     giftClaim.addEventListener("click", () => {
+      // Contabilizar este CTA como click a WhatsApp (evento principal)
+      track("WhatsAppClick", { placement:"modal", label:"ReclamarEnWhatsApp" });
+      // Mantener el evento anterior por compatibilidad (opcional)
       track("GiftClick", { placement:"modal", label:"ReclamarEnWhatsApp" });
+
       const amount = (typeof currentGiftCredits === "number" ? currentGiftCredits : (giftAmountEl ? parseInt(giftAmountEl.textContent || "", 10) : null));
       const suffix = (Number.isFinite(amount) ? ` (${amount})` : "");
       closeGiftModal();
-      softGo(waLink(pick(GIFT_MESSAGES) + suffix));
+      // Un poco más de delay para que el pixel alcance a disparar antes de redirigir
+      softGo(waLink(pick(GIFT_MESSAGES) + suffix), 900);
     }, { passive:true });
   }
 });
