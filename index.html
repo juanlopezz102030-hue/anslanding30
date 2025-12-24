@@ -2152,7 +2152,42 @@ function getWaNumber(){
   }
 
   function track(name, params){
-    try{ if(window.fbq) window.fbq("trackCustom", name, params || {}); }catch(e){}
+    // Sanitiza parámetros para evitar enviar PII/sensible a Meta.
+    // Mantiene: placement/label/utm_* y agrega page_path.
+    function getUTMs(){
+      var out = {}, keys = ["utm_source","utm_medium","utm_campaign","utm_content","utm_term"];
+      try{
+        var u = new URL(location.href);
+        keys.forEach(function(k){ var v=u.searchParams.get(k); if(v) out[k]=v; });
+      }catch(e){}
+      return out;
+    }
+    function sanitize(obj){
+      var blocked = new Set([
+        "phone","dest_phone","ph","email","em","fn","first_name","ln","last_name",
+        "external_id","client_ip_address","client_user_agent","zip","ct","st","country"
+      ]);
+      var clean = {};
+      try{
+        obj = obj || {};
+        Object.keys(obj).forEach(function(k){
+          if(blocked.has(k)) return;
+          clean[k] = obj[k];
+        });
+      }catch(e){}
+      // Campos útiles y seguros
+      try{ clean.page_path = location.pathname || "/"; }catch(e){}
+      // UTMs del sitio (no PII)
+      var utms = getUTMs();
+      Object.keys(utms).forEach(function(k){ clean[k]=utms[k]; });
+      return clean;
+    }
+
+    try{
+      if(typeof window.fbq === "function"){
+        window.fbq("trackCustom", name, sanitize(params));
+      }
+    }catch(e){}
   }
 
   // === Gift modal logic (no redirección automática) ===
