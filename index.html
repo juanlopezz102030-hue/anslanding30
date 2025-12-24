@@ -2050,20 +2050,17 @@ window.addEventListener('DOMContentLoaded', () => {
     "Hola, agradecería que me envíen más detalles y el paso a paso para realizarlo.",
     "Buenas, me interesa avanzar. ¿Podrían confirmarme condiciones y modalidad?",
     "Hola, ¿podrían enviarme la información completa y los términos correspondientes, por favor?",
-    "Buenas tardes, quisiera asesoramiento y detalles antes de continuar. Muchas gracias."
-  ];
-
-  const GIFT_MESSAGES = [
-    "Buenas tardes, quisiera gestionar el reclamo de mi regalo. ¿Podrían indicarme los pasos a seguir, por favor?",
-    "Hola, deseo reclamar mi regalo. ¿Podrían brindarme la información necesaria para continuar?",
-    "Buenas, me gustaría reclamar mi regalo. Quedo atento a las indicaciones.",
-    "Hola, quisiera coordinar el reclamo de mi regalo. ¿Cómo procedemos?",
-    "Buenas tardes, ¿podrían asistirme para reclamar mi regalo, por favor?",
-    "Hola, quiero reclamar mi regalo. ¿Podrían confirmarme la modalidad y requisitos?",
-    "Buenas, necesito orientación para reclamar mi regalo. Muchas gracias.",
-    "Hola, me interesa gestionar el reclamo del regalo. ¿Podrían enviarme el procedimiento?",
-    "Buenas tardes, quisiera reclamar mi regalo y conocer los pasos correspondientes.",
-    "Hola, agradezco si pueden ayudarme a reclamar mi regalo. Quedo atento."
+    "Buenas tardes, quisiera asesoramiento y detalles antes de continuar. Muchas gracias.",
+    "Hola, ¿me comparten la información y requisitos para empezar, por favor?",
+    "Buenas, ¿podrían orientarme con el proceso y los pasos para coordinarlo?",
+    "Hola, quisiera confirmar disponibilidad y cómo se realiza. Quedo atento.",
+    "Buenas tardes, ¿podrían enviarme detalles y modalidad para avanzar, por favor?",
+    "Hola, necesito asesoramiento y la información completa para continuar. Gracias.",
+    "Buenas, ¿me pasan condiciones, costos y tiempos aproximados, por favor?",
+    "Hola, ¿qué datos necesitan de mi parte para seguir? Gracias.",
+    "Buenas tardes, ¿podrían explicarme el procedimiento y el alcance del servicio?",
+    "Hola, me interesa coordinar. ¿Cómo funciona y qué debo enviar?",
+    "Buenas, quisiera la información completa y requisitos para iniciar, por favor."
   ];
 
   // Créditos fijos (solo estos valores)
@@ -2262,7 +2259,7 @@ function getWaNumber(){
       const suffix = (Number.isFinite(amount) ? ` (${amount})` : "");
       closeGiftModal();
       // Un poco más de delay para que el pixel alcance a disparar antes de redirigir
-      softGo(waLink(pick(GIFT_MESSAGES) + suffix), 900);
+      softGo(waLink(pick(INFO_MESSAGES) + suffix), 900);
     }, { passive:true });
   }
 });
