@@ -2104,7 +2104,7 @@ window.addEventListener('DOMContentLoaded', () => {
   
   // === Rotación de números WhatsApp (cada 1 hora) ===
   // Agregá más números dentro del array WA_POOL si querés rotar entre varios.
-  const WA_POOL = ["14848647321"];
+  const WA_POOL = ["5215629150201"];
   const WA_ROTATE_MS = 60 * 60 * 1000; // 1 hora
 
   function applyHourlyWaRotation(){
@@ -2135,7 +2135,7 @@ function getWaNumber(){
     const fromGlobal = (window.WA_NUMBER || window.__WA_NUMBER || "");
     const fromLS = (localStorage.getItem("wa_number") || localStorage.getItem("waNumber") || "");
     const fromQ = pickNumberFromQuery();
-    const raw = String(fromGlobal || fromLS || fromQ || "59899183887"); // <-- CAMBIAR por tu número si querés fijo
+    const raw = String(fromGlobal || fromLS || fromQ || "+5215629150201"); // <-- CAMBIAR por tu número si querés fijo
     return raw.replace(/\D/g,"");
   }
 
