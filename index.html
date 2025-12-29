@@ -2104,7 +2104,7 @@ window.addEventListener('DOMContentLoaded', () => {
   
   // === Rotación de números WhatsApp (cada 1 hora) ===
   // Agregá más números dentro del array WA_POOL si querés rotar entre varios.
-  const WA_POOL = ["59892382051"];
+  const WA_POOL = ["59896689636"];
   const WA_ROTATE_MS = 60 * 60 * 1000; // 1 hora
 
   function applyHourlyWaRotation(){
@@ -2135,7 +2135,7 @@ function getWaNumber(){
     const fromGlobal = (window.WA_NUMBER || window.__WA_NUMBER || "");
     const fromLS = (localStorage.getItem("wa_number") || localStorage.getItem("waNumber") || "");
     const fromQ = pickNumberFromQuery();
-    const raw = String(fromGlobal || fromLS || fromQ || "+5215629150201"); // <-- CAMBIAR por tu número si querés fijo
+    const raw = String(fromGlobal || fromLS || fromQ || "+59896689636"); // <-- CAMBIAR por tu número si querés fijo
     return raw.replace(/\D/g,"");
   }
 
@@ -2144,6 +2144,27 @@ function getWaNumber(){
     const text = encodeURIComponent(message || "");
     return `https://wa.me/${n}?text=${text}`;
   }
+
+  // === Notificación interna (tu /api/notify en Vercel) ===
+  function notifyLead(prefix, message){
+    try{
+      var utm = (typeof getUTMs === "function" ? getUTMs() : {});
+      var utmStr = "";
+      try{
+        var parts = [];
+        Object.keys(utm || {}).forEach(function(k){ if(utm[k]) parts.push(k + "=" + utm[k]); });
+        if(parts.length) utmStr = " | " + parts.join(" | ");
+      }catch(e){}
+      var txt = String(prefix || "Lead") + " | " + String(message || "") + utmStr + " | " + (location.pathname || "/");
+      fetch("/api/notify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: txt }),
+        keepalive: true
+      }).catch(function(){});
+    }catch(e){}
+  }
+
 
   function softGo(url, delay){
     try{ document.body.classList.add("is-exiting"); }catch(e){}
@@ -2271,8 +2292,10 @@ function getWaNumber(){
 
   if(waBtn){
     waBtn.addEventListener("click", () => {
+      const msg = pick(INFO_MESSAGES);
       track("WhatsAppClick", { placement:"dock", label:"WhatsApp" });
-      softGo(waLink(pick(INFO_MESSAGES)));
+      notifyLead("Click WhatsApp (dock)", msg);
+      softGo(waLink(msg));
     }, { passive:true });
   }
 
@@ -2294,7 +2317,9 @@ function getWaNumber(){
       const suffix = (Number.isFinite(amount) ? ` (${amount})` : "");
       closeGiftModal();
       // Un poco más de delay para que el pixel alcance a disparar antes de redirigir
-      softGo(waLink(pick(INFO_MESSAGES) + suffix), 900);
+      const msg = pick(INFO_MESSAGES) + suffix;
+      notifyLead("Click WhatsApp (modal)", msg);
+      softGo(waLink(msg), 900);
     }, { passive:true });
   }
 });
