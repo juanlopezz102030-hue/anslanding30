@@ -2217,18 +2217,104 @@ function getWaNumber(){
   const giftClose = document.getElementById("giftClose");
   const giftClaim = document.getElementById("giftClaimWA");
 
+  
+
+  // === Gift SFX + "rolling numbers" until audio ends ===
+  const giftSfx = document.getElementById("giftSfx");
+  let giftRollTimer = null;
+  let giftRevealTimer = null;
+  let giftIsOpen = false;
+
+  function startRollingCredits(){
+    stopRollingCredits();
+    if(!giftAmountEl) return;
+    giftAmountEl.classList.add("is-rolling");
+    giftRollTimer = setInterval(() => {
+      // Números random tipo "slot" mientras suena el audio
+      const n = 10 + randIndex(990); // 10..999
+      giftAmountEl.textContent = String(n);
+    }, 65);
+  }
+
+  function stopRollingCredits(){
+    if(giftRollTimer){ try{ clearInterval(giftRollTimer); }catch(e){} giftRollTimer = null; }
+    if(giftRevealTimer){ try{ clearTimeout(giftRevealTimer); }catch(e){} giftRevealTimer = null; }
+    try{ if(giftAmountEl) giftAmountEl.classList.remove("is-rolling"); }catch(e){}
+  }
+
+  function playGiftSfx(onDone){
+    // Ejecuta onDone cuando termina el audio (o fallback si no puede reproducir).
+    if(!giftSfx){
+      try{ onDone && onDone(); }catch(e){}
+      return;
+    }
+
+    let finished = false;
+    const done = () => {
+      if(finished) return;
+      finished = true;
+      try{ onDone && onDone(); }catch(e){}
+    };
+
+    try{
+      // Limpiar estado
+      giftSfx.onended = null;
+      giftSfx.pause();
+      giftSfx.currentTime = 0;
+
+      // Cuando termina el audio -> revelar
+      giftSfx.onended = done;
+
+      const p = giftSfx.play();
+
+      // Safety fallback: usar duración si existe, si no 12s
+      const d = Number(giftSfx.duration);
+      const fallbackMs = (Number.isFinite(d) && d > 0) ? Math.min(d * 1000 + 150, 20000) : 12000;
+      giftRevealTimer = setTimeout(done, fallbackMs);
+
+      if(p && typeof p.catch === "function"){
+        p.catch(() => {
+          // Si el navegador bloquea autoplay, usamos un fallback corto.
+          giftRevealTimer = setTimeout(done, 900);
+        });
+      }
+    }catch(e){
+      // Si falla, seguimos igual
+      giftRevealTimer = setTimeout(done, 900);
+    }
+  }
+
   function openGiftModal(){
     if(!giftModal) return;
+    giftIsOpen = true;
+
     const credits = pickFixedCredits();
-    if(giftAmountEl) giftAmountEl.textContent = String(credits);
+    // Mientras suena el audio, mostramos números random, y al final revelamos los créditos reales.
+    if(giftAmountEl) giftAmountEl.textContent = String(10 + randIndex(990));
+
     giftModal.classList.add("is-open");
     giftModal.setAttribute("aria-hidden", "false");
-  
+
     runGiftSequence();
+
+    // Rolling + SFX -> revelar al terminar
+    startRollingCredits();
+    playGiftSfx(() => {
+      if(!giftIsOpen) return;
+      stopRollingCredits();
+      if(giftAmountEl) giftAmountEl.textContent = String(credits);
+    });
   }
+
 
   function closeGiftModal(){
     if(!giftModal) return;
+    giftIsOpen = false;
+    stopRollingCredits();
+    try{
+      if(giftSfx){ giftSfx.onended = null; giftSfx.pause(); giftSfx.currentTime = 0; }
+    }catch(e){}
+
     giftModal.classList.remove("is-open");
     giftModal.setAttribute("aria-hidden", "true");
     try{
@@ -2401,35 +2487,8 @@ function getWaNumber(){
     reveal();
   }
 })();
-</script><!-- Gift button sound (plays on tap/click) -->
-<audio id="giftSound" preload="auto" src="gift-sound.mp3"></audio>
-<script>
-(function () {
-  const soundEl = document.getElementById('giftSound');
-
-  function playGiftSound() {
-    if (!soundEl) return;
-    try {
-      // allow rapid re-taps
-      soundEl.currentTime = 0;
-      const p = soundEl.play();
-      if (p && typeof p.catch === 'function') p.catch(function(){});
-    } catch (e) {}
-  }
-
-  function bind(id) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    // pointerdown reduces latency on mobile
-    el.addEventListener('pointerdown', playGiftSound, { passive: true });
-    el.addEventListener('touchstart', playGiftSound, { passive: true });
-    el.addEventListener('click', playGiftSound, { passive: true });
-  }
-
-  // Solo botón principal “Reclamar tu regalo”
-  bind('ctaGift');
-})();
 </script>
-
+  <!-- SFX del regalo (se reproduce SOLO al tocar "Reclamar tu regalo") -->
+  <audio id="giftSfx" preload="auto" src="gift-sound.mp3"></audio>
 </body>
 </html>
