@@ -2257,7 +2257,7 @@ function getWaNumber(){
       // Números random tipo "slot" mientras suena el audio
       const n = 10 + randIndex(990); // 10..999
       giftAmountEl.textContent = String(n);
-    }, 65);
+    }, 35);
   }
 
   function stopRollingCredits(){
@@ -2286,6 +2286,15 @@ function getWaNumber(){
       giftSfx.pause();
       giftSfx.currentTime = 0;
 
+      // Acelerar audio
+      const SFX_RATE = 1.35;
+      try{
+        giftSfx.playbackRate = SFX_RATE;
+        if('preservesPitch' in giftSfx) giftSfx.preservesPitch = true;
+        giftSfx.mozPreservesPitch = true;
+        giftSfx.webkitPreservesPitch = true;
+      }catch(e){}
+
       // Cuando termina el audio -> revelar
       giftSfx.onended = done;
 
@@ -2293,7 +2302,8 @@ function getWaNumber(){
 
       // Safety fallback: usar duración si existe, si no 12s
       const d = Number(giftSfx.duration);
-      const fallbackMs = (Number.isFinite(d) && d > 0) ? Math.min(d * 1000 + 150, 20000) : 12000;
+      const r = (typeof SFX_RATE === 'number' && SFX_RATE > 0) ? SFX_RATE : 1;
+      const fallbackMs = (Number.isFinite(d) && d > 0) ? Math.min((d * 1000) / r + 150, 20000) : Math.floor(12000 / r);
       giftRevealTimer = setTimeout(done, fallbackMs);
 
       if(p && typeof p.catch === "function"){
@@ -2383,7 +2393,7 @@ function getWaNumber(){
     giftFlashText.classList.remove("is-hidden");
 
     const words = ["JUGA", "AHORA", "NO PIERDAS", "MAS TIEMPO", "UNITE A LOS MEJORES"];
-    const step = 380; // rápido
+    const step = 220; // más rápido
 
     words.forEach((w, i) => {
       giftAnimTimers.push(setTimeout(() => playFlash(w), i * step));
