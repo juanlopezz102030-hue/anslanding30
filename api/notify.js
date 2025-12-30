@@ -1,22 +1,37 @@
 /**
  * Vercel Serverless Function
- * Route: /api/notify
+ * Route: https://TU-DOMINIO.vercel.app/api/notify
  *
- * Env vars:
- *  - WASENDER_API_TOKEN1
- *  - WASENDER_TO1
- *  - WASENDER_API_TOKEN2
- *  - WASENDER_TO2
- *
- * (Compat) también soporta:
- *  - WASENDER_API_TOKEN
- *  - WASENDER_TO
+ * Env vars (Vercel → Project → Settings → Environment Variables):
+ *  - WASENDER_API_TOKEN = (tu token)
+ *  - WASENDER_TO        = +59896689636  (tu número destino)
  */
 module.exports = async (req, res) => {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
     return res.status(405).json({ error: "Method not allowed" });
   }
+
+  // Soporta 1 o 2 sesiones (tokens/números) para rotación
+// Preferidos: WASENDER_API_TOKEN1 / WASENDER_TO1 y WASENDER_API_TOKEN2 / WASENDER_TO2
+// Fallback:   WASENDER_API_TOKEN / WASENDER_TO
+const pool = [
+  { token: process.env.WASENDER_API_TOKEN1, to: process.env.WASENDER_TO1 },
+  { token: process.env.WASENDER_API_TOKEN2, to: process.env.WASENDER_TO2 },
+].filter(x => x.token && x.to);
+
+const fallbackToken = process.env.WASENDER_API_TOKEN;
+const fallbackTo = process.env.WASENDER_TO;
+
+const effectivePool = pool.length ? pool : (fallbackToken && fallbackTo ? [{ token: fallbackToken, to: fallbackTo }] : []);
+
+if (!effectivePool.length) {
+  return res.status(500).json({ error: "Missing WASENDER env vars (token/to)" });
+}
+
+// Rotación por hora (misma idea que tu landing)
+const idx = Math.floor(Date.now() / (60 * 60 * 1000)) % effectivePool.length;
+const { token, to } = effectivePool[idx];
 
   let body = req.body;
   if (typeof body === "string") {
@@ -26,36 +41,7 @@ module.exports = async (req, res) => {
   const text = String(body?.text || "").trim();
   if (!text) return res.status(400).json({ error: "Missing text" });
 
-  const token1 = process.env.WASENDER_API_TOKEN1 || process.env.WASENDER_API_TOKEN || "";
-  const to1    = process.env.WASENDER_TO1       || process.env.WASENDER_TO       || "";
-  const token2 = process.env.WASENDER_API_TOKEN2 || "";
-  const to2    = process.env.WASENDER_TO2        || "";
-
-  const has1 = !!(token1 && to1);
-  const has2 = !!(token2 && to2);
-
-  if (!has1 && !has2) {
-    return res.status(500).json({
-      error: "Missing env vars",
-      details: "Need WASENDER_API_TOKEN1/WASENDER_TO1 and/or WASENDER_API_TOKEN2/WASENDER_TO2"
-    });
-  }
-
-  // Podés forzar con body.line o query ?line=1|2
-  const forcedLine = String((req.query?.line ?? body?.line ?? "")).trim();
-
-  let chosen;
-  if (forcedLine === "1" && has1) chosen = 1;
-  else if (forcedLine === "2" && has2) chosen = 2;
-  else {
-    // Auto: si hay 2 líneas, random; si hay 1, usa la que exista
-    if (has1 && has2) chosen = (Math.random() < 0.5 ? 1 : 2);
-    else chosen = has1 ? 1 : 2;
-  }
-
-  const token = chosen === 1 ? token1 : token2;
-  const to    = chosen === 1 ? to1    : to2;
-
+  // Node18+ (Vercel) tiene fetch global; fallback por si el runtime cambia
   const fetchFn = globalThis.fetch || (await import("node-fetch")).default;
 
   try {
@@ -69,7 +55,7 @@ module.exports = async (req, res) => {
     });
 
     const data = await r.json().catch(() => ({}));
-    return res.status(r.status).json({ line_used: chosen, ...data });
+    return res.status(r.status).json(data);
   } catch (e) {
     return res.status(500).json({ error: "Upstream request failed" });
   }
