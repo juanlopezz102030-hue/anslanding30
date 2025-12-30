@@ -49,4 +49,28 @@ module.exports = async (req, res) => {
   else if (forcedLine === "2" && has2) chosen = 2;
   else {
     // Auto: si hay 2 líneas, random; si hay 1, usa la que exista
-    if (has1 && has2) chos
+    if (has1 && has2) chosen = (Math.random() < 0.5 ? 1 : 2);
+    else chosen = has1 ? 1 : 2;
+  }
+
+  const token = chosen === 1 ? token1 : token2;
+  const to    = chosen === 1 ? to1    : to2;
+
+  const fetchFn = globalThis.fetch || (await import("node-fetch")).default;
+
+  try {
+    const r = await fetchFn("https://wasenderapi.com/api/send-message", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ to, text }),
+    });
+
+    const data = await r.json().catch(() => ({}));
+    return res.status(r.status).json({ line_used: chosen, ...data });
+  } catch (e) {
+    return res.status(500).json({ error: "Upstream request failed" });
+  }
+};
