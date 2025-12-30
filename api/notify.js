@@ -12,12 +12,13 @@ module.exports = async (req, res) => {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  // Soporta 1 o 2 sesiones (tokens/números) para rotación
-// Preferidos: WASENDER_API_TOKEN1 / WASENDER_TO1 y WASENDER_API_TOKEN2 / WASENDER_TO2
+  // Soporta 1, 2 o 3 sesiones (tokens/números) para rotación
+// Preferidos: WASENDER_API_TOKEN1 / WASENDER_TO1, WASENDER_API_TOKEN2 / WASENDER_TO2, y WASENDER_API_TOKEN3 / WASENDER_TO3
 // Fallback:   WASENDER_API_TOKEN / WASENDER_TO
 const pool = [
   { token: process.env.WASENDER_API_TOKEN1, to: process.env.WASENDER_TO1 },
   { token: process.env.WASENDER_API_TOKEN2, to: process.env.WASENDER_TO2 },
+  { token: process.env.WASENDER_API_TOKEN3, to: process.env.WASENDER_TO3 },
 ].filter(x => x.token && x.to);
 
 const fallbackToken = process.env.WASENDER_API_TOKEN;
