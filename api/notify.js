@@ -12,8 +12,8 @@ module.exports = async (req, res) => {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  // Soporta 1, 2, 3, 4 o 5 sesiones (tokens/números) para rotación
-// Preferidos: WASENDER_API_TOKEN1 / WASENDER_TO1, WASENDER_API_TOKEN2 / WASENDER_TO2, WASENDER_API_TOKEN3 / WASENDER_TO3, WASENDER_API_TOKEN4 / WASENDER_TO4, WASENDER_API_TOKEN5 / WASENDER_TO5
+  // Soporta 1, 2, 3, 4, 5 o 6 sesiones (tokens/números) para rotación
+// Preferidos: WASENDER_API_TOKEN1 / WASENDER_TO1, WASENDER_API_TOKEN2 / WASENDER_TO2, WASENDER_API_TOKEN3 / WASENDER_TO3, WASENDER_API_TOKEN4 / WASENDER_TO4, WASENDER_API_TOKEN5 / WASENDER_TO5, WASENDER_API_TOKEN6 / WASENDER_TO6
 // Fallback:   WASENDER_API_TOKEN / WASENDER_TO
 const pool = [
   { token: process.env.WASENDER_API_TOKEN1, to: process.env.WASENDER_TO1 },
