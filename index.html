@@ -9,8 +9,6 @@
     
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon-192.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,137 +30,127 @@
             color: white;
             font-family: 'Montserrat', sans-serif;
             height: 100vh;
-            overflow: hidden;
+            height: 100dvh; /* Altura dinámica para móviles modernos */
+            overflow: hidden; 
             display: flex; flex-direction: column;
         }
 
-        /* Fondo Fijo */
         .bg-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
         .bg-image { width: 100%; height: 100%; object-fit: cover; opacity: 0.4; }
-        .bg-overlay {
-            position: absolute; inset: 0;
-            background: linear-gradient(to bottom, rgba(10,5,16,0.9) 0%, rgba(10,5,16,0.95) 100%);
-        }
+        .bg-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(10,5,16,0.9) 0%, rgba(10,5,16,0.95) 100%); }
 
-        /* SISTEMA DE VISTAS */
+        /* --- VISTAS --- */
         .app-view {
             flex: 1;
             overflow-y: auto;
-            padding: 20px 20px 100px 20px; 
-            display: none; 
+            /* Padding inferior grande para que el contenido no quede tapado por el botón flotante */
+            padding: 15px 20px 140px 20px; 
+            display: none;
             animation: fadeIn 0.3s ease;
         }
         .app-view.active { display: flex; flex-direction: column; align-items: center; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* HEADER */
-        .header-content { text-align: center; margin-bottom: 20px; width: 100%; }
-        .brand-logo-img { width: 100px; display: block; margin: 0 auto 10px; filter: drop-shadow(0 0 15px var(--gold)); }
+        /* --- VISTA 1: INICIO COMPACTO --- */
+        .header-content { text-align: center; margin-bottom: 10px; width: 100%; }
+        /* Logo más pequeño para ganar espacio */
+        .brand-logo-img { width: 70px; display: block; margin: 0 auto 5px; filter: drop-shadow(0 0 15px var(--gold)); }
         
-        /* ELEMENTOS UI */
-        .section-title { font-size: 10px; color: #888; font-weight: 800; letter-spacing: 2px; margin-bottom: 10px; text-transform: uppercase; align-self: flex-start; margin-left: 5px; }
+        .section-title { font-size: 9px; color: #888; font-weight: 800; letter-spacing: 1px; margin-bottom: 8px; text-transform: uppercase; width: 100%; text-align: center;}
         
-        /* Plataformas */
-        .platforms-wrapper { display: flex; gap: 15px; width: 100%; max-width: 380px; height: 300px; margin-bottom: 20px; flex-shrink: 0; }
+        /* Plataformas más bajitas */
+        .platforms-wrapper { display: flex; gap: 10px; width: 100%; max-width: 380px; height: 220px; margin-bottom: 15px; }
         .platform-card {
-            flex: 1; position: relative; border-radius: 18px; border: 1px solid rgba(255,255,255,0.1);
+            flex: 1; position: relative; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);
             background: #000; overflow: hidden; transition: all 0.2s; cursor: pointer;
         }
-        .platform-card.selected { border: 2px solid var(--gold); transform: scale(1.02); box-shadow: 0 0 20px rgba(212,175,55,0.3); }
-        .platform-card.selected::after { content: '✔'; position: absolute; top: 10px; right: 10px; background: var(--gold); color: #000; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .platform-card.selected { border: 2px solid var(--gold); transform: scale(1.02); box-shadow: 0 0 15px rgba(212,175,55,0.2); }
+        .platform-card.selected::after { content: '✔'; position: absolute; top: 10px; right: 10px; background: var(--gold); color: #000; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 10px; }
         .screen-img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
 
-        /* Pagos */
-        .payment-box { width: 100%; max-width: 380px; background: rgba(255,255,255,0.05); border-radius: 20px; padding: 15px; flex-shrink: 0; }
-        .pay-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; justify-items: center; }
-        .pay-item { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); transition: all 0.2s; cursor: pointer; position: relative;}
+        /* Pagos Compactos */
+        .payment-box { width: 100%; max-width: 380px; background: rgba(255,255,255,0.03); border-radius: 16px; padding: 10px; }
+        .pay-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; justify-items: center; }
+        .pay-item { width: 45px; height: 45px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); transition: all 0.2s; cursor: pointer; }
         .pay-item.selected { background: rgba(212,175,55,0.2); border: 1px solid var(--gold); }
-        .pay-icon { width: 35px; height: 35px; object-fit: contain; }
-        .icon-otro { font-size: 9px; font-weight: 800; color: #fff; }
+        .pay-icon { width: 30px; height: 30px; object-fit: contain; }
+        .icon-otro { font-size: 8px; font-weight: 800; color: #fff; }
 
-        /* Botón Acción Principal */
+        /* --- BOTÓN FLOTANTE (STICKY) --- */
+        /* Ahora el botón "vuela" sobre el contenido */
+        .floating-cta-container {
+            position: fixed;
+            bottom: 80px; /* Justo encima del menú de navegación */
+            left: 0; 
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            z-index: 900;
+            padding: 0 20px;
+            pointer-events: none; /* Permite tocar a los lados */
+        }
+
         .action-btn {
-            width: 100%; max-width: 380px; background: linear-gradient(90deg, #25D366, #128C7E); color: white;
-            padding: 16px; border-radius: 50px; text-align: center; font-weight: 800; font-size: 14px;
-            text-transform: uppercase; margin-top: 25px; text-decoration: none;
-            box-shadow: 0 5px 20px rgba(37,211,102,0.3); display: flex; align-items: center; justify-content: center; gap: 8px; flex-shrink: 0;
+            width: 100%; max-width: 380px; 
+            background: linear-gradient(90deg, #25D366, #128C7E);
+            color: white;
+            padding: 14px; border-radius: 50px; text-align: center; font-weight: 800; font-size: 14px;
+            text-transform: uppercase; text-decoration: none;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.5); 
+            pointer-events: auto; /* Reactiva el click en el botón */
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: transform 0.2s;
         }
-        .action-btn i { font-size: 20px; }
+        .action-btn:active { transform: scale(0.96); }
+        .action-btn.pulse { animation: pulseBtn 2s infinite; }
+        @keyframes pulseBtn { 0%{transform:scale(1);} 50%{transform:scale(1.03);} 100%{transform:scale(1);} }
 
-        /* --- VISTA GUÍA (NUEVA) --- */
-        .guide-card {
-            width: 100%; max-width: 380px; background: var(--panel-bg);
-            border-radius: 15px; padding: 20px; margin-bottom: 15px;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .guide-step { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 15px; }
-        .step-num { 
-            background: var(--gold); color: black; width: 25px; height: 25px; border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;
-        }
-        .step-text { font-size: 12px; color: #ccc; line-height: 1.4; }
-        .step-text strong { color: white; }
-        .os-title { color: var(--gold); font-size: 14px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        /* --- OTRAS VISTAS --- */
+        .history-card { width: 100%; max-width: 380px; background: var(--panel-bg); border-radius: 15px; padding: 15px; margin-bottom: 10px; border-left: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; }
+        .hist-info h4 { font-size: 14px; margin-bottom: 4px; color: white; }
+        .hist-info p { font-size: 11px; color: #888; }
+        .hist-status { font-size: 10px; background: rgba(212,175,55,0.2); color: var(--gold); padding: 4px 8px; border-radius: 4px; }
         
-        .wa-support {
-            width: 100%; max-width: 380px; background: rgba(37, 211, 102, 0.1); border: 1px solid var(--green-wa);
-            color: var(--green-wa); padding: 15px; border-radius: 15px; text-align: center;
-            text-decoration: none; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 10px;
-            margin-top: 10px;
-        }
-
-        /* VISTA HISTORIAL */
-        .history-card {
-            width: 100%; max-width: 380px; background: var(--panel-bg);
-            border-radius: 15px; padding: 15px; margin-bottom: 10px;
-            border-left: 3px solid var(--gold); display: flex; justify-content: space-between; align-items: center;
-        }
-        .hist-info h4 { font-size: 14px; margin-bottom: 4px; color: white; margin-top:0; }
-        .hist-info p { font-size: 11px; color: #888; margin: 0; }
-        .hist-status { font-size: 10px; background: rgba(212,175,55,0.15); color: var(--gold); padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(212,175,55,0.3); }
-        .empty-state { text-align: center; color: #666; margin-top: 50px; width: 100%; }
-
-        /* VISTA PERFIL */
         .profile-container { width: 100%; max-width: 380px; text-align: center; }
-        .profile-avatar { width: 90px; height: 90px; background: var(--panel-bg); border-radius: 50%; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--gold); font-size: 40px; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
-        .input-group { text-align: left; margin-bottom: 20px; }
-        .input-group label { display: block; font-size: 12px; color: #aaa; margin-bottom: 8px; font-weight: bold; margin-left: 5px; }
-        .input-field { 
-            width: 100%; background: var(--panel-bg); border: 1px solid #333; 
-            color: white; padding: 15px; border-radius: 12px; font-family: 'Montserrat'; outline: none;
-        }
-        .input-field:focus { border-color: var(--gold); }
-        .save-btn { background: var(--gold); color: black; border: none; width: 100%; padding: 16px; border-radius: 12px; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
+        .profile-avatar { width: 80px; height: 80px; background: var(--panel-bg); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--gold); font-size: 30px; }
+        .input-field { width: 100%; background: var(--panel-bg); border: 1px solid #333; color: white; padding: 15px; border-radius: 12px; font-family: 'Montserrat'; margin-bottom: 20px; }
+        .save-btn { background: var(--gold); color: black; border: none; width: 100%; padding: 15px; border-radius: 12px; font-weight: 800; cursor: pointer; }
 
-        /* BARRA INFERIOR (4 Ítems) */
+        /* --- BARRA DE NAVEGACIÓN --- */
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; width: 100%;
-            background: rgba(15, 15, 20, 0.98); border-top: 1px solid rgba(255,255,255,0.1);
-            height: 75px; display: flex; justify-content: space-around; align-items: center;
-            z-index: 1000; padding-bottom: 15px; backdrop-filter: blur(10px);
+            background: #0f0f12; border-top: 1px solid rgba(255,255,255,0.1);
+            height: 70px; display: flex; justify-content: space-around; align-items: center;
+            z-index: 1000; padding-bottom: 10px;
         }
         .nav-item {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            color: #666; text-decoration: none; font-size: 9px; font-weight: 600; width: 25%; /* 4 items = 25% each */
-            transition: all 0.2s;
+            color: #666; text-decoration: none; font-size: 10px; font-weight: 600; width: 33%;
+            transition: color 0.2s;
         }
         .nav-item i { font-size: 22px; margin-bottom: 4px; }
-        .nav-item.active { color: var(--gold); transform: translateY(-2px); }
-        .nav-item.active i { filter: drop-shadow(0 0 5px rgba(212,175,55,0.5)); }
+        .nav-item.active { color: var(--gold); }
 
     </style>
 </head>
 <body>
 
     <div class="bg-container">
-        <img src="aerial-las-vegas-night_926199-3939420.webp" class="bg-image">
+        <img src="fondo.webp" class="bg-image">
         <div class="bg-overlay"></div>
+    </div>
+
+    <div class="floating-cta-container">
+        <a href="#" onclick="processLoad()" class="action-btn" id="mainBtn">
+            <i class="ri-whatsapp-line" style="font-size: 18px;"></i>
+            CARGAR AHORA
+        </a>
     </div>
 
     <div id="view-home" class="app-view active">
         <div class="header-content">
             <img src="cayo.webp" class="brand-logo-img">
-            <p style="font-size:12px; color:#aaa; margin:0;">Hola, <span id="userNameDisplay" style="color:white; font-weight:bold;">Jugador</span> 👋</p>
+            <p style="font-size:11px; color:#aaa;">Hola, <span id="userNameDisplay" style="color:white; font-weight:bold;">Jugador</span> 👋</p>
         </div>
 
         <p class="section-title">1. Elige Plataforma</p>
@@ -188,65 +176,22 @@
                 <div class="pay-item" onclick="selectPayment('OTRO', this)"><div class="icon-otro">OTRO</div></div>
             </div>
         </div>
-
-        <a href="#" onclick="processLoad()" class="action-btn" id="mainBtn">
-            <i class="ri-whatsapp-line"></i> CARGAR AHORA
-        </a>
-    </div>
+        </div>
 
     <div id="view-history" class="app-view">
-        <h2 style="margin-bottom:20px; font-size:18px; text-align:center;">📜 Historial</h2>
+        <h2 style="margin-bottom:20px; font-size:16px; text-align:center;">📜 Tu Historial</h2>
         <div id="history-list">
-            <div class="empty-state">No tienes solicitudes recientes.</div>
+            <div style="text-align:center; color:#666; font-size:12px; margin-top:40px;">No hay movimientos recientes.</div>
         </div>
-    </div>
-
-    <div id="view-guide" class="app-view">
-        <h2 style="margin-bottom:20px; font-size:18px; text-align:center;">📲 Instalar App</h2>
-        
-        <div class="guide-card">
-            <div class="os-title"><i class="ri-android-fill"></i> Android (Chrome)</div>
-            <div class="guide-step">
-                <div class="step-num">1</div>
-                <div class="step-text">Toca los <strong>tres puntos (⋮)</strong> arriba a la derecha de tu navegador.</div>
-            </div>
-            <div class="guide-step">
-                <div class="step-num">2</div>
-                <div class="step-text">Busca y selecciona la opción <strong>"Instalar aplicación"</strong> o "Agregar a la pantalla principal".</div>
-            </div>
-        </div>
-
-        <div class="guide-card">
-            <div class="os-title"><i class="ri-apple-fill"></i> iPhone (Safari)</div>
-            <div class="guide-step">
-                <div class="step-num">1</div>
-                <div class="step-text">Toca el botón <strong>Compartir</strong> (cuadrado con flecha) en la barra inferior.</div>
-            </div>
-            <div class="guide-step">
-                <div class="step-num">2</div>
-                <div class="step-text">Desliza hacia abajo y selecciona <strong>"Agregar a Inicio"</strong>.</div>
-            </div>
-        </div>
-
-        <a href="javascript:void(0)" onclick="contactSupport()" class="wa-support">
-            <i class="ri-customer-service-2-line"></i> ¿Dudas? Escribir a Soporte
-        </a>
     </div>
 
     <div id="view-profile" class="app-view">
-        <h2 style="margin-bottom:30px; font-size:18px; text-align:center;">👤 Mi Perfil</h2>
+        <h2 style="margin-bottom:30px; font-size:16px; text-align:center;">👤 Tu Perfil</h2>
         <div class="profile-container">
             <div class="profile-avatar">🦁</div>
-            
-            <div class="input-group">
-                <label>Tu Usuario de Casino (Opcional)</label>
-                <input type="text" id="userInput" class="input-field" placeholder="Ej: JuanPerez22">
-            </div>
-            
+            <label style="display:block; text-align:left; font-size:11px; margin-bottom:5px; color:#aaa;">Tu Usuario de Casino:</label>
+            <input type="text" id="userInput" class="input-field" placeholder="Ej: JuanPerez22">
             <button onclick="saveProfile()" class="save-btn">GUARDAR DATOS</button>
-            <p style="font-size:10px; color:#666; margin-top:20px; line-height:1.4;">
-                Estos datos se guardan de forma segura únicamente en tu dispositivo.
-            </p>
         </div>
     </div>
 
@@ -255,27 +200,15 @@
             <i class="ri-home-5-line"></i> Inicio
         </a>
         <a href="#" class="nav-item" onclick="switchView('history', this)">
-            <i class="ri-file-list-3-line"></i> Historial
-        </a>
-        <a href="#" class="nav-item" onclick="switchView('guide', this)">
-            <i class="ri-download-2-line"></i> Instalar
+            <i class="ri-history-line"></i> Historial
         </a>
         <a href="#" class="nav-item" onclick="switchView('profile', this)">
-            <i class="ri-user-settings-line"></i> Perfil
+            <i class="ri-user-3-line"></i> Perfil
         </a>
     </div>
 
     <script>
-        // --- 1. ACTIVAR PWA ---
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js').catch(err => console.log('Error SW:', err));
-            });
-        }
-
-        // --- 2. LÓGICA ---
         const MY_PHONE = "59899080276"; 
-        
         let selectedPlat = null;
         let selectedPay = null;
         let userName = localStorage.getItem('cayo_username') || "";
@@ -288,15 +221,21 @@
             loadHistory();
         });
 
-        // Navegación
         function switchView(viewName, element) {
             document.querySelectorAll('.app-view').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             document.getElementById('view-' + viewName).classList.add('active');
             element.classList.add('active');
+            
+            // Ocultar el botón flotante si no estamos en 'home'
+            const floatBtn = document.querySelector('.floating-cta-container');
+            if(viewName === 'home') {
+                floatBtn.style.display = 'flex';
+            } else {
+                floatBtn.style.display = 'none';
+            }
         }
 
-        // Selección
         function selectPlatform(name, el) {
             document.querySelectorAll('.platform-card').forEach(item => item.classList.remove('selected'));
             el.classList.add('selected');
@@ -313,21 +252,17 @@
 
         function updateBtn() {
             const btn = document.getElementById('mainBtn');
-            // Mantenemos el icono de WhatsApp siempre visible
-            const icon = '<i class="ri-whatsapp-line"></i> ';
-            
+            // Quitamos el icono momentáneamente para poner el texto largo
             if(selectedPlat && selectedPay) {
-                btn.innerHTML = icon + `CARGAR EN ${selectedPlat} CON ${selectedPay}`;
+                btn.innerHTML = `CARGAR EN ${selectedPlat} CON ${selectedPay}`;
+                btn.classList.add('pulse');
             } else if(selectedPlat) {
-                btn.innerHTML = icon + `CARGAR EN ${selectedPlat}...`;
-            } else {
-                btn.innerHTML = icon + "CARGAR AHORA";
+                btn.innerHTML = `CARGAR EN ${selectedPlat}...`;
             }
         }
 
-        // Procesar Carga
         function processLoad() {
-            if(!selectedPlat) { alert("⚠️ Por favor elige una plataforma primero."); return; }
+            if(!selectedPlat) { alert("⚠️ Elige una plataforma primero"); return; }
             
             let text = `¡Hola CAYO! 👋`;
             if(userName) text += ` Soy el usuario *${userName}*.`;
@@ -338,13 +273,6 @@
             window.location.href = `https://wa.me/${MY_PHONE}?text=${encodeURIComponent(text)}`;
         }
 
-        // Botón Soporte
-        function contactSupport() {
-            let text = "¡Hola CAYO! Necesito ayuda con la aplicación 🛠️";
-            window.location.href = `https://wa.me/${MY_PHONE}?text=${encodeURIComponent(text)}`;
-        }
-
-        // Historial
         function saveToHistory(plat, pay) {
             const historyItem = {
                 date: new Date().toLocaleDateString(),
@@ -354,7 +282,7 @@
             };
             let history = JSON.parse(localStorage.getItem('cayo_history') || "[]");
             history.unshift(historyItem);
-            if(history.length > 30) history.pop();
+            if(history.length > 20) history.pop();
             localStorage.setItem('cayo_history', JSON.stringify(history));
             loadHistory();
         }
@@ -362,10 +290,8 @@
         function loadHistory() {
             const list = document.getElementById('history-list');
             let history = JSON.parse(localStorage.getItem('cayo_history') || "[]");
-            if(history.length === 0) {
-                list.innerHTML = '<div class="empty-state">No tienes solicitudes recientes.</div>';
-                return;
-            }
+            if(history.length === 0) return;
+
             let html = '';
             history.forEach(item => {
                 html += `
@@ -380,14 +306,14 @@
             list.innerHTML = html;
         }
 
-        // Perfil
         function saveProfile() {
             const inputName = document.getElementById('userInput').value;
             if(inputName) {
                 localStorage.setItem('cayo_username', inputName);
                 userName = inputName;
                 document.getElementById('userNameDisplay').innerText = inputName;
-                alert("✅ ¡Perfil Guardado!");
+                alert("✅ ¡Datos guardados correctamente!");
+                // Volver al inicio simulando click
                 switchView('home', document.querySelectorAll('.nav-item')[0]);
             }
         }
