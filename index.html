@@ -3,84 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Carga fichas al instante en CAYO. Agencia de confianza en Uruguay para Bet30 y Ganamos. Atención 24/7.">
     <title>CAYO | Tu Agencia de Confianza</title>
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
 
     <style>
-        /* --- 1. CONFIGURACIÓN BASE --- */
+        /* --- OPTIMIZACIÓN CRÍTICA --- */
+        /* Contenemos el repintado del navegador */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
         :root {
             --gold: #D4AF37;
             --green-wa: #25D366;
-            --glass: rgba(15, 5, 20, 0.95);
+            --glass: rgba(15, 5, 20, 0.92); /* Un poco menos opacidad para rendimiento */
             --glass-border: rgba(255, 255, 255, 0.15);
             --bg-dark: #0a0510;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
         body {
-            background: var(--bg-dark); color: white;
+            background-color: var(--bg-dark); /* Color de fondo mientras carga la imagen */
+            color: white;
             font-family: 'Montserrat', sans-serif;
-            /* CAMBIO CLAVE: Permitimos que el cuerpo crezca y scrollee naturalmente */
             min-height: 100vh; 
-            overflow-x: hidden; /* Solo ocultamos el desborde lateral */
-            padding-bottom: 100px; /* Espacio extra abajo para que el botón no tape nada */
-            position: relative;
+            /* Usamos dvh para móviles modernos */
+            min-height: 100dvh;
+            display: flex; flex-direction: column;
+            overflow-x: hidden;
+            /* Mejora el scroll en móviles */
+            -webkit-overflow-scrolling: touch; 
         }
 
-        /* --- FONDO FIJO --- */
+        /* --- FONDO OPTIMIZADO --- */
         .bg-container { 
-            position: fixed; /* Se queda quieto mientras bajas */
-            top: 0; left: 0; width: 100%; height: 100%; 
-            z-index: -1; 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; 
+            /* Evita que el navegador repinte esto constantemente */
+            will-change: transform; 
         }
-        .bg-image { width: 100%; height: 100%; object-fit: cover; }
+        .bg-image { 
+            width: 100%; height: 100%; object-fit: cover; 
+            opacity: 0.6; /* Truco: bajar opacidad aquí evita pintar el overlay tan fuerte */
+        }
         .bg-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(5,2,10,0.9) 0%, rgba(10,5,20,0.7) 50%, rgba(5,2,10,0.95) 100%);
-            backdrop-filter: blur(4px);
+            background: linear-gradient(to bottom, rgba(5,2,10,0.95) 0%, rgba(10,5,20,0.8) 50%, rgba(5,2,10,0.98) 100%);
         }
         
         .urgency-bar {
             background: linear-gradient(90deg, #ff0000, #ff4400);
             color: white; font-size: 10px; font-weight: 700; letter-spacing: 1px;
-            text-align: center; padding: 10px; 
-            position: relative; z-index: 10;
+            text-align: center; padding: 8px; z-index: 10; flex-shrink: 0;
             text-transform: uppercase;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
         /* --- LAYOUT PRINCIPAL --- */
         .main-layout {
+            flex: 1; display: flex; flex-direction: column;
+            align-items: center; 
+            justify-content: flex-start; /* Cambio a start para evitar espacios raros */
+            gap: 20px; /* Espaciado constante */
+            padding: 10px 0 100px 0; /* Más espacio abajo para el botón */
             width: 100%; 
-            display: flex; flex-direction: column; align-items: center; 
-            padding-top: 20px;
-            /* Eliminamos overflow y alturas fijas aquí para evitar bloqueos */
         }
 
         /* 1. HEADER */
-        .header-content { text-align: center; margin-bottom: 20px; width: 100%; }
+        .header-content { text-align: center; flex-shrink: 0; padding-top: 10px; contain: content; }
         .brand-logo-img {
-            max-width: 120px; height: auto; display: block; margin: 0 auto 10px auto;
-            filter: drop-shadow(0 0 25px rgba(212,175,55,0.6));
+            width: 110px; height: auto; /* Dimensiones fijas ayudan al navegador */
+            display: block; margin: 0 auto 10px auto;
+            filter: drop-shadow(0 0 15px rgba(212,175,55,0.5));
         }
-        .brand-subtitle { font-size: 11px; color: #ccc; letter-spacing: 0.5px; }
+        .brand-subtitle { font-size: 11px; color: #ccc; margin-top: 0px; letter-spacing: 0.5px; }
         .highlight { color: var(--gold); font-weight: 700; }
 
         /* 2. PLATAFORMAS */
         .section-container {
             width: 100%; display: flex; flex-direction: column; align-items: center;
-            margin-bottom: 30px;
+            contain: layout style; /* Optimización de renderizado */
         }
         .instruction-text {
-            font-size: 10px; color: #aaa; margin-bottom: 15px; font-weight: 700; 
+            font-size: 10px; color: #aaa; margin-bottom: 10px; font-weight: 700; 
             text-transform: uppercase; letter-spacing: 2px;
         }
         
         .platforms-wrapper {
-            display: flex; gap: 15px; width: 90%; max-width: 400px; 
-            /* Altura fija solo para las imágenes, el resto fluye */
+            display: flex; gap: 15px; width: 90%; max-width: 380px; 
             height: 320px; 
         }
 
@@ -88,12 +97,12 @@
             flex: 1; position: relative; overflow: hidden; cursor: pointer;
             border-radius: 18px; 
             border: 1px solid rgba(255,255,255,0.2);
-            background: #000;
-            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            background: #1a1a1a;
+            transition: transform 0.2s ease, border-color 0.2s; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             display: flex; flex-direction: column;
-            /* Fix para safari mobile */
-            -webkit-transform: translateZ(0);
+            /* Mejora rendimiento en scroll */
+            transform: translateZ(0); 
         }
         .platform-card:active { transform: scale(0.98); }
 
@@ -107,54 +116,52 @@
         .screen-img {
             width: 100%; height: 100%; 
             object-fit: cover; object-position: top center;
-            transition: transform 0.4s ease, filter 0.3s;
+            transition: filter 0.3s;
             filter: brightness(0.9);
         }
         
         .platform-card.selected {
             border: 3px solid var(--gold);
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
-            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.3);
         }
-        .platform-card.selected .screen-img { 
-            filter: brightness(1.1); transform: scale(1.03); 
-        }
+        .platform-card.selected .screen-img { filter: brightness(1.1); }
         .platform-card.selected::after {
             content: '✔'; position: absolute; top: 30px; right: 10px;
             background: var(--gold); color: #000; font-weight: 900; 
-            width: 26px; height: 26px; border-radius: 50%; 
+            width: 24px; height: 24px; border-radius: 50%; 
             display: flex; align-items: center; justify-content: center; z-index: 20;
-            font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            font-size: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.5);
             border: 2px solid #fff;
         }
 
         /* 3. PAGOS */
         .payment-box {
-            width: 94%; max-width: 400px;
+            width: 94%; max-width: 380px;
             background: var(--glass); border: 1px solid var(--glass-border);
-            border-radius: 20px; padding: 20px 10px;
+            border-radius: 20px; padding: 15px 10px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-            margin-bottom: 20px;
+            flex-shrink: 0;
+            /* Backdrop filter es pesado, lo usamos con moderación */
+            backdrop-filter: blur(8px); 
         }
 
         .pay-grid { 
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 12px; 
+            gap: 10px; 
             justify-items: center;
             align-items: center;
         }
         
         .pay-item-wrapper {
-            cursor: pointer; transition: transform 0.2s; position: relative;
+            cursor: pointer; position: relative;
             border-radius: 50%; padding: 4px; border: 2px solid transparent;
             display: flex; justify-content: center; align-items: center;
-            /* Fix para click en movil */
-            touch-action: manipulation;
+            transition: transform 0.2s;
         }
         .pay-icon {
-            width: 45px; height: 45px; border-radius: 50%; background: #fff; padding: 2px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3); object-fit: contain; display: block;
+            width: 42px; height: 42px; border-radius: 50%; background: #fff; padding: 2px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3); object-fit: contain; display: block;
         }
 
         .icon-otro {
@@ -172,11 +179,12 @@
         /* --- BOTÓN FLOTANTE --- */
         .sticky-footer {
             position: fixed; bottom: 0; left: 0; right: 0;
-            background: rgba(10, 5, 16, 0.95); backdrop-filter: blur(10px);
+            background: rgba(10, 5, 16, 0.98); 
+            backdrop-filter: blur(10px);
             border-top: 1px solid rgba(255,255,255,0.1);
-            padding: 15px 20px; display: flex; justify-content: center; 
-            z-index: 1000; /* Z-index alto para estar siempre encima */
-            box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
+            padding: 15px 20px; display: flex; justify-content: center; z-index: 1000;
+            /* Optimización de animación */
+            will-change: transform;
         }
         .btn-sticky {
             width: 100%; max-width: 400px; background: var(--green-wa); color: white;
@@ -186,25 +194,23 @@
             box-shadow: 0 5px 20px rgba(37, 211, 102, 0.25);
             display: flex; align-items: center; justify-content: center; gap: 8px;
             transition: transform 0.2s;
-            /* Mejor respuesta al tactil */
-            touch-action: manipulation;
         }
         .btn-sticky:active { transform: scale(0.96); }
-        .btn-sticky.pulse { animation: pulseBtn 1.5s infinite; }
+        .btn-sticky.pulse { animation: pulseBtn 2s infinite; }
         @keyframes pulseBtn { 0%{transform:scale(1);} 50%{transform:scale(1.02);} 100%{transform:scale(1);} }
 
     </style>
 
-<script>
-!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '767728059169192'); fbq('track', 'PageView');
-</script>
+    <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '767728059169192'); fbq('track', 'PageView');
+    </script>
 </head>
 
 <body>
 
     <div class="bg-container">
-        <img src="aerial-las-vegas-night_926199-3939420.avif" alt="Fondo" class="bg-image">
+        <img src="aerial-las-vegas-night_926199-3939420.avif" alt="Fondo" class="bg-image" fetchpriority="high">
         <div class="bg-overlay"></div>
     </div>
 
@@ -213,21 +219,24 @@ fbq('init', '767728059169192'); fbq('track', 'PageView');
     <div class="main-layout">
         
         <div class="header-content">
-            <img src="cayo.jpg" alt="CAYO Shield" class="brand-logo-img" style="border-radius: 50%;">
+            <img src="cayo.jpg" alt="CAYO Shield" class="brand-logo-img" width="110" height="110" fetchpriority="high">
             <p class="brand-subtitle">Tu agencia de confianza en <span class="highlight">$UY</span>.</p>
         </div>
 
         <div class="section-container">
             <p class="instruction-text">1. ELIGE TU PLATAFORMA</p>
             <div class="platforms-wrapper">
+                
                 <div class="platform-card" id="plat-bet30" onclick="selectPlatform('BET30', 'plat-bet30')">
                     <div class="phone-notch"><div class="notch-bar"></div></div>
-                    <img src="bet30.jpeg" alt="Bet30 App" class="screen-img">
+                    <img src="bet30.jpeg" alt="Bet30 App" class="screen-img" width="180" height="300" loading="eager">
                 </div>
+
                 <div class="platform-card" id="plat-ganamos" onclick="selectPlatform('GANAMOS', 'plat-ganamos')">
                     <div class="phone-notch"><div class="notch-bar"></div></div>
-                    <img src="ganamos.jpeg" alt="Ganamos App" class="screen-img">
+                    <img src="ganamos.jpeg" alt="Ganamos App" class="screen-img" width="180" height="300" loading="eager">
                 </div>
+
             </div>
         </div>
 
@@ -235,27 +244,28 @@ fbq('init', '767728059169192'); fbq('track', 'PageView');
             <p class="instruction-text">2. SELECCIONA MÉTODO DE PAGO</p>
             <div class="pay-grid">
                 <div class="pay-item-wrapper" id="pay-brou" onclick="selectPayment('BROU', 'pay-brou')">
-                    <img class="pay-icon" src="brou.png" alt="BROU">
+                    <img class="pay-icon" src="brou.png" alt="BROU" width="42" height="42" loading="lazy">
                 </div>
                 <div class="pay-item-wrapper" id="pay-itau" onclick="selectPayment('ITAU', 'pay-itau')">
-                    <img class="pay-icon" src="itau.png" alt="Itau">
+                    <img class="pay-icon" src="itau.png" alt="Itau" width="42" height="42" loading="lazy">
                 </div>
                 <div class="pay-item-wrapper" id="pay-midinero" onclick="selectPayment('MIDINERO', 'pay-midinero')">
-                    <img class="pay-icon" src="midinero.png" alt="MiDinero">
+                    <img class="pay-icon" src="midinero.png" alt="MiDinero" width="42" height="42" loading="lazy">
                 </div>
                 <div class="pay-item-wrapper" id="pay-mercadopago" onclick="selectPayment('MERCADOPAGO', 'pay-mercadopago')">
-                    <img class="pay-icon" src="mercadopago.png" alt="MP">
+                    <img class="pay-icon" src="mercadopago.png" alt="MP" width="42" height="42" loading="lazy">
                 </div>
                 
                 <div class="pay-item-wrapper" id="pay-prex" onclick="selectPayment('PREX', 'pay-prex')">
-                    <img class="pay-icon" src="prex.png" alt="Prex">
+                    <img class="pay-icon" src="prex.png" alt="Prex" width="42" height="42" loading="lazy">
                 </div>
                 <div class="pay-item-wrapper" id="pay-santander" onclick="selectPayment('SANTANDER', 'pay-santander')">
-                    <img class="pay-icon" src="santander.png" alt="Santander">
+                    <img class="pay-icon" src="santander.png" alt="Santander" width="42" height="42" loading="lazy">
                 </div>
                 <div class="pay-item-wrapper" id="pay-scotiabank" onclick="selectPayment('SCOTIABANK', 'pay-scotiabank')">
-                    <img class="pay-icon" src="scotiabank.png" alt="Scotiabank">
+                    <img class="pay-icon" src="scotiabank.png" alt="Scotiabank" width="42" height="42" loading="lazy">
                 </div>
+                
                 <div class="pay-item-wrapper" id="pay-otro" onclick="selectPayment('OTRO MÉTODO', 'pay-otro')">
                     <div class="pay-icon icon-otro">OTRO</div>
                 </div>
@@ -272,7 +282,7 @@ fbq('init', '767728059169192'); fbq('track', 'PageView');
     </div>
 
     <script>
-        const MY_PHONE = "59899080276"; 
+        const MY_PHONE = "59891003623"; 
         
         let selectedPlatform = null;
         let selectedPayment = null;
@@ -310,6 +320,7 @@ fbq('init', '767728059169192'); fbq('track', 'PageView');
             
             let message = "";
             if (selectedPlatform && selectedPayment) {
+                // Mensaje simplificado sin "fichas"
                 message = `¡Hola CAYO! 👋 Quiero cargar en *${selectedPlatform}* pagando con *${selectedPayment}*.`;
             } else if (selectedPlatform) {
                 message = `¡Hola CAYO! 👋 Quiero cargar en *${selectedPlatform}*.`;
