@@ -43,7 +43,8 @@
         .app-view {
             flex: 1;
             overflow-y: auto;
-            padding: 15px 20px 140px 20px; 
+            /* Padding inferior grande para que el botón flotante no tape el monto */
+            padding: 15px 20px 160px 20px; 
             display: none;
             animation: fadeIn 0.3s ease;
         }
@@ -56,7 +57,8 @@
         
         .section-title { font-size: 9px; color: #888; font-weight: 800; letter-spacing: 1px; margin-bottom: 8px; text-transform: uppercase; width: 100%; text-align: center;}
         
-        .platforms-wrapper { display: flex; gap: 10px; width: 100%; max-width: 380px; height: 220px; margin-bottom: 15px; }
+        /* Plataformas */
+        .platforms-wrapper { display: flex; gap: 10px; width: 100%; max-width: 380px; height: 200px; margin-bottom: 15px; }
         .platform-card {
             flex: 1; position: relative; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);
             background: #000; overflow: hidden; transition: all 0.2s; cursor: pointer;
@@ -65,12 +67,29 @@
         .platform-card.selected::after { content: '✔'; position: absolute; top: 10px; right: 10px; background: var(--gold); color: #000; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 10px; }
         .screen-img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
 
-        .payment-box { width: 100%; max-width: 380px; background: rgba(255,255,255,0.03); border-radius: 16px; padding: 10px; }
+        /* Pagos */
+        .payment-box { width: 100%; max-width: 380px; background: rgba(255,255,255,0.03); border-radius: 16px; padding: 10px; margin-bottom: 15px; }
         .pay-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; justify-items: center; }
         .pay-item { width: 45px; height: 45px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); transition: all 0.2s; cursor: pointer; }
         .pay-item.selected { background: rgba(212,175,55,0.2); border: 1px solid var(--gold); }
         .pay-icon { width: 30px; height: 30px; object-fit: contain; }
         .icon-otro { font-size: 8px; font-weight: 800; color: #fff; }
+
+        /* NUEVO: Input de Monto */
+        .amount-container {
+            width: 100%; max-width: 380px;
+            background: rgba(20, 20, 25, 0.8);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px; padding: 10px 20px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .currency { font-size: 18px; color: var(--gold); font-weight: 800; margin-right: 10px; }
+        .amount-input {
+            background: transparent; border: none; color: white;
+            font-family: 'Montserrat'; font-size: 18px; font-weight: 700;
+            width: 100%; outline: none;
+        }
+        .amount-input::placeholder { color: #555; }
 
         /* --- BOTÓN FLOTANTE --- */
         .floating-cta-container {
@@ -79,9 +98,12 @@
             padding: 0 20px; pointer-events: none;
         }
         .action-btn {
-            width: 100%; max-width: 380px; background: linear-gradient(90deg, #25D366, #128C7E);
-            color: white; padding: 14px; border-radius: 50px; text-align: center; font-weight: 800; font-size: 14px;
-            text-transform: uppercase; text-decoration: none; box-shadow: 0 5px 25px rgba(0,0,0,0.5); 
+            width: 100%; max-width: 380px; 
+            background: linear-gradient(90deg, #25D366, #128C7E);
+            color: white; padding: 14px; border-radius: 50px; 
+            text-align: center; font-weight: 800; font-size: 14px;
+            text-transform: uppercase; text-decoration: none;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.5); 
             pointer-events: auto; display: flex; align-items: center; justify-content: center; gap: 8px;
             transition: transform 0.2s;
         }
@@ -97,23 +119,10 @@
         
         .profile-container { width: 100%; max-width: 380px; text-align: center; }
         .profile-avatar { width: 80px; height: 80px; background: var(--panel-bg); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--gold); font-size: 30px; }
-        .input-field { width: 100%; background: var(--panel-bg); border: 1px solid #333; color: white; padding: 15px; border-radius: 12px; font-family: 'Montserrat'; margin-bottom: 15px; }
-        .save-btn { background: var(--gold); color: black; border: none; width: 100%; padding: 15px; border-radius: 12px; font-weight: 800; cursor: pointer; margin-bottom: 20px; }
+        .input-field { width: 100%; background: var(--panel-bg); border: 1px solid #333; color: white; padding: 15px; border-radius: 12px; font-family: 'Montserrat'; margin-bottom: 20px; }
+        .save-btn { background: var(--gold); color: black; border: none; width: 100%; padding: 15px; border-radius: 12px; font-weight: 800; cursor: pointer; }
 
-        /* --- GUÍA DE INSTALACIÓN --- */
-        .install-guide {
-            background: rgba(37, 211, 102, 0.1); border: 1px solid var(--green-wa);
-            border-radius: 15px; padding: 15px; margin-top: 20px; text-align: left;
-        }
-        .install-title { color: var(--green-wa); font-weight: 800; font-size: 12px; margin-bottom: 10px; display: flex; align-items: center; gap: 5px; }
-        .install-step { font-size: 11px; color: #ccc; margin-bottom: 5px; }
-        .install-btn {
-            background: white; color: black; border: none; width: 100%; padding: 12px;
-            border-radius: 10px; font-weight: 800; cursor: pointer; margin-top: 10px;
-            display: none; /* Se activa con JS */
-        }
-
-        /* --- BARRA DE NAVEGACIÓN --- */
+        /* --- NAVEGACIÓN --- */
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; width: 100%;
             background: #0f0f12; border-top: 1px solid rgba(255,255,255,0.1);
@@ -129,16 +138,6 @@
         .nav-item.active { color: var(--gold); }
 
     </style>
-
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
-                    .then(reg => console.log('SW registrado'))
-                    .catch(err => console.log('SW error', err));
-            });
-        }
-    </script>
 </head>
 <body>
 
@@ -178,10 +177,17 @@
                 <div class="pay-item" onclick="selectPayment('MIDINERO', this)"><img src="midinero.webp" class="pay-icon"></div>
                 <div class="pay-item" onclick="selectPayment('MERCADOPAGO', this)"><img src="mercadopago.webp" class="pay-icon"></div>
                 <div class="pay-item" onclick="selectPayment('PREX', this)"><img src="prex.webp" class="pay-icon"></div>
+                
                 <div class="pay-item" onclick="selectPayment('SANTANDER', this)"><img src="santander.webp" class="pay-icon"></div>
                 <div class="pay-item" onclick="selectPayment('SCOTIABANK', this)"><img src="scotiabank.webp" class="pay-icon"></div>
                 <div class="pay-item" onclick="selectPayment('OTRO', this)"><div class="icon-otro">OTRO</div></div>
             </div>
+        </div>
+
+        <p class="section-title">3. Ingresa Monto (Min $300)</p>
+        <div class="amount-container">
+            <span class="currency">$</span>
+            <input type="number" id="amountInput" class="amount-input" placeholder="300">
         </div>
     </div>
 
@@ -199,17 +205,6 @@
             <label style="display:block; text-align:left; font-size:11px; margin-bottom:5px; color:#aaa;">Tu Usuario de Casino:</label>
             <input type="text" id="userInput" class="input-field" placeholder="Ej: JuanPerez22">
             <button onclick="saveProfile()" class="save-btn">GUARDAR DATOS</button>
-
-            <div class="install-guide">
-                <div class="install-title"><i class="ri-download-cloud-2-line"></i> INSTALAR APP</div>
-                
-                <button id="installBtn" class="install-btn">📲 INSTALAR AHORA</button>
-                
-                <div id="iosGuide">
-                    <p class="install-step">1. Toca el botón <strong>Compartir</strong> <i class="ri-share-up-line"></i> en tu navegador.</p>
-                    <p class="install-step">2. Busca la opción <strong>"Agregar a Inicio"</strong> <i class="ri-add-box-line"></i>.</p>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -230,7 +225,6 @@
         let selectedPlat = null;
         let selectedPay = null;
         let userName = localStorage.getItem('cayo_username') || "";
-        let deferredPrompt; // Para guardar el evento de instalación
 
         document.addEventListener('DOMContentLoaded', () => {
             if(userName) {
@@ -238,29 +232,6 @@
                 document.getElementById('userInput').value = userName;
             }
             loadHistory();
-        });
-
-        // --- LÓGICA DE INSTALACIÓN PWA ---
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            // Mostrar botón de instalar
-            const installBtn = document.getElementById('installBtn');
-            installBtn.style.display = 'block';
-            
-            // Si aparece el botón, ocultamos la guía de iOS para no confundir
-            document.getElementById('iosGuide').style.display = 'none';
-
-            installBtn.addEventListener('click', () => {
-                installBtn.style.display = 'none';
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('Usuario aceptó instalar');
-                    }
-                    deferredPrompt = null;
-                });
-            });
         });
 
         function switchView(viewName, element) {
@@ -290,32 +261,41 @@
 
         function updateBtn() {
             const btn = document.getElementById('mainBtn');
+            // Mantenemos texto simple para que el monto se vea bien en WhatsApp
             if(selectedPlat && selectedPay) {
-                btn.innerHTML = `CARGAR EN ${selectedPlat} CON ${selectedPay}`;
+                btn.innerHTML = `CARGAR EN ${selectedPlat}`; 
                 btn.classList.add('pulse');
-            } else if(selectedPlat) {
-                btn.innerHTML = `CARGAR EN ${selectedPlat}...`;
             }
         }
 
         function processLoad() {
             if(!selectedPlat) { alert("⚠️ Elige una plataforma primero"); return; }
+            if(!selectedPay) { alert("⚠️ Elige un método de pago"); return; }
             
+            // VALIDACIÓN DE MONTO
+            let amount = document.getElementById('amountInput').value;
+            if(!amount || amount < 300) {
+                alert("⚠️ El monto mínimo es de $300");
+                document.getElementById('amountInput').focus();
+                return;
+            }
+
             let text = `¡Hola CAYO! 👋`;
             if(userName) text += ` Soy el usuario *${userName}*.`;
-            text += ` Quiero cargar en *${selectedPlat}*`;
-            if(selectedPay) text += ` usando *${selectedPay}*.`;
+            text += ` Quiero cargar *$${amount}* en *${selectedPlat}*`;
+            text += ` pagando con *${selectedPay}*.`;
 
-            saveToHistory(selectedPlat, selectedPay || "Consultar");
+            saveToHistory(selectedPlat, selectedPay, amount);
             window.location.href = `https://wa.me/${MY_PHONE}?text=${encodeURIComponent(text)}`;
         }
 
-        function saveToHistory(plat, pay) {
+        function saveToHistory(plat, pay, amount) {
             const historyItem = {
                 date: new Date().toLocaleDateString(),
                 time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
                 plat: plat,
-                pay: pay
+                pay: pay,
+                amount: amount
             };
             let history = JSON.parse(localStorage.getItem('cayo_history') || "[]");
             history.unshift(historyItem);
@@ -334,8 +314,9 @@
                 html += `
                 <div class="history-card">
                     <div class="hist-info">
-                        <h4>Carga en ${item.plat}</h4>
-                        <p>${item.date} - ${item.time} • ${item.pay}</p>
+                        <h4>Carga de $${item.amount || '---'}</h4>
+                        <p>${item.plat} • ${item.pay}</p>
+                        <p style="font-size:9px; margin-top:2px;">${item.date} - ${item.time}</p>
                     </div>
                     <div class="hist-status">ENVIADO</div>
                 </div>`;
