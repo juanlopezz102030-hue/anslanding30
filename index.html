@@ -9,10 +9,15 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    
+    <noscript>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    </noscript>
 
     <style>
-        /* --- CORE STYLES --- */
+        /* --- CORE STYLES OPTIMIZADOS --- */
         :root {
             --gold: #D4AF37;
             --glass: rgba(20, 20, 25, 0.95);
@@ -32,7 +37,7 @@
             padding-bottom: 90px;
         }
 
-        /* Fondo optimizado: renderizado por GPU */
+        /* Fondo optimizado con GPU */
         .bg-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
             transform: translateZ(0); will-change: opacity;
@@ -59,7 +64,7 @@
 
         .header-content { text-align: center; width: 100%; contain: content; }
         .brand-logo-img {
-            width: 110px; height: 110px; /* Dimensiones fijas para evitar saltos (CLS) */
+            width: 110px; height: 110px;
             display: block; margin: 0 auto 10px auto;
             filter: drop-shadow(0 0 15px rgba(212,175,55,0.5));
         }
@@ -118,7 +123,6 @@
             background: var(--glass); border: 1px solid var(--glass-border);
             border-radius: 24px; padding: 20px 15px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            /* Optimización: no renderizar hasta que sea visible */
             content-visibility: auto; contain-intrinsic-size: 200px;
         }
 
@@ -179,7 +183,7 @@
     setTimeout(function(){
         !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
         fbq('init', '767728059169192'); fbq('track', 'PageView');
-    }, 3000);
+    }, 3500);
     </script>
 </head>
 
@@ -202,23 +206,21 @@
         <div class="section-container">
             <p class="instruction-text">1. ELIGE TU PLATAFORMA</p>
             <div class="platforms-wrapper">
-                
                 <div class="platform-card" id="plat-bet30" onclick="selectPlatform('BET30', 'plat-bet30')">
                     <div class="phone-notch"><div class="notch-bar"></div></div>
                     <img src="bet30.webp" alt="Bet30" class="screen-img" width="180" height="320" loading="eager">
                 </div>
-
                 <div class="platform-card" id="plat-ganamos" onclick="selectPlatform('GANAMOS', 'plat-ganamos')">
                     <div class="phone-notch"><div class="notch-bar"></div></div>
                     <img src="ganamos.webp" alt="Ganamos" class="screen-img" width="180" height="320" loading="eager">
                 </div>
-
             </div>
         </div>
 
         <div class="payment-box">
             <p class="instruction-text">2. SELECCIONA MÉTODO DE PAGO</p>
             <div class="pay-grid">
+                
                 <div class="pay-item-wrapper" id="pay-brou" onclick="selectPayment('BROU', 'pay-brou')">
                     <img class="pay-icon" src="brou.webp" alt="BROU" width="38" height="38" loading="lazy">
                 </div>
