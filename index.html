@@ -43,7 +43,6 @@
         .app-view {
             flex: 1;
             overflow-y: auto;
-            /* Padding inferior grande para que el botón flotante no tape el monto */
             padding: 15px 20px 160px 20px; 
             display: none;
             animation: fadeIn 0.3s ease;
@@ -57,7 +56,6 @@
         
         .section-title { font-size: 9px; color: #888; font-weight: 800; letter-spacing: 1px; margin-bottom: 8px; text-transform: uppercase; width: 100%; text-align: center;}
         
-        /* Plataformas */
         .platforms-wrapper { display: flex; gap: 10px; width: 100%; max-width: 380px; height: 200px; margin-bottom: 15px; }
         .platform-card {
             flex: 1; position: relative; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);
@@ -67,7 +65,6 @@
         .platform-card.selected::after { content: '✔'; position: absolute; top: 10px; right: 10px; background: var(--gold); color: #000; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 10px; }
         .screen-img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
 
-        /* Pagos */
         .payment-box { width: 100%; max-width: 380px; background: rgba(255,255,255,0.03); border-radius: 16px; padding: 10px; margin-bottom: 15px; }
         .pay-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; justify-items: center; }
         .pay-item { width: 45px; height: 45px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); transition: all 0.2s; cursor: pointer; }
@@ -75,7 +72,6 @@
         .pay-icon { width: 30px; height: 30px; object-fit: contain; }
         .icon-otro { font-size: 8px; font-weight: 800; color: #fff; }
 
-        /* NUEVO: Input de Monto */
         .amount-container {
             width: 100%; max-width: 380px;
             background: rgba(20, 20, 25, 0.8);
@@ -111,6 +107,23 @@
         .action-btn.pulse { animation: pulseBtn 2s infinite; }
         @keyframes pulseBtn { 0%{transform:scale(1);} 50%{transform:scale(1.03);} 100%{transform:scale(1);} }
 
+        /* --- VISTA: ENLACES (NUEVA) --- */
+        .link-card {
+            width: 100%; max-width: 380px;
+            background: var(--panel-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px; padding: 15px; margin-bottom: 15px;
+            display: flex; align-items: center; justify-content: space-between;
+            text-decoration: none; color: white;
+            transition: transform 0.2s;
+        }
+        .link-card:active { transform: scale(0.98); background: rgba(255,255,255,0.1); }
+        .link-content { display: flex; align-items: center; gap: 15px; }
+        .link-thumb { width: 50px; height: 50px; border-radius: 10px; object-fit: cover; }
+        .link-info h3 { font-size: 16px; margin-bottom: 4px; color: var(--gold); }
+        .link-info p { font-size: 11px; color: #888; }
+        .link-arrow { color: #555; }
+
         /* --- OTRAS VISTAS --- */
         .history-card { width: 100%; max-width: 380px; background: var(--panel-bg); border-radius: 15px; padding: 15px; margin-bottom: 10px; border-left: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; }
         .hist-info h4 { font-size: 14px; margin-bottom: 4px; color: white; }
@@ -131,10 +144,10 @@
         }
         .nav-item {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            color: #666; text-decoration: none; font-size: 10px; font-weight: 600; width: 33%;
+            color: #666; text-decoration: none; font-size: 9px; font-weight: 600; width: 25%; /* 4 items = 25% each */
             transition: color 0.2s;
         }
-        .nav-item i { font-size: 22px; margin-bottom: 4px; }
+        .nav-item i { font-size: 20px; margin-bottom: 4px; }
         .nav-item.active { color: var(--gold); }
 
     </style>
@@ -177,7 +190,6 @@
                 <div class="pay-item" onclick="selectPayment('MIDINERO', this)"><img src="midinero.webp" class="pay-icon"></div>
                 <div class="pay-item" onclick="selectPayment('MERCADOPAGO', this)"><img src="mercadopago.webp" class="pay-icon"></div>
                 <div class="pay-item" onclick="selectPayment('PREX', this)"><img src="prex.webp" class="pay-icon"></div>
-                
                 <div class="pay-item" onclick="selectPayment('SANTANDER', this)"><img src="santander.webp" class="pay-icon"></div>
                 <div class="pay-item" onclick="selectPayment('SCOTIABANK', this)"><img src="scotiabank.webp" class="pay-icon"></div>
                 <div class="pay-item" onclick="selectPayment('OTRO', this)"><div class="icon-otro">OTRO</div></div>
@@ -198,6 +210,33 @@
         </div>
     </div>
 
+    <div id="view-links" class="app-view">
+        <h2 style="margin-bottom:20px; font-size:16px; text-align:center;">🔗 Accesos Directos</h2>
+        <p style="text-align:center; font-size:11px; color:#aaa; margin-bottom:20px;">Entra a tu cuenta para jugar:</p>
+        
+        <a href="https://ganamosnet.org" target="_blank" class="link-card">
+            <div class="link-content">
+                <img src="ganamos.webp" class="link-thumb">
+                <div class="link-info">
+                    <h3>GANAMOS</h3>
+                    <p>ganamosnet.org</p>
+                </div>
+            </div>
+            <i class="ri-external-link-line link-arrow"></i>
+        </a>
+
+        <a href="https://bet30vip.ai" target="_blank" class="link-card">
+            <div class="link-content">
+                <img src="bet30.webp" class="link-thumb">
+                <div class="link-info">
+                    <h3>BET 30</h3>
+                    <p>bet30vip.ai</p>
+                </div>
+            </div>
+            <i class="ri-external-link-line link-arrow"></i>
+        </a>
+    </div>
+
     <div id="view-profile" class="app-view">
         <h2 style="margin-bottom:30px; font-size:16px; text-align:center;">👤 Tu Perfil</h2>
         <div class="profile-container">
@@ -214,6 +253,9 @@
         </a>
         <a href="#" class="nav-item" onclick="switchView('history', this)">
             <i class="ri-history-line"></i> Historial
+        </a>
+        <a href="#" class="nav-item" onclick="switchView('links', this)">
+            <i class="ri-links-line"></i> Enlaces
         </a>
         <a href="#" class="nav-item" onclick="switchView('profile', this)">
             <i class="ri-user-3-line"></i> Perfil
@@ -241,6 +283,7 @@
             element.classList.add('active');
             
             const floatBtn = document.querySelector('.floating-cta-container');
+            // Solo mostrar botón flotante en HOME
             if(viewName === 'home') floatBtn.style.display = 'flex';
             else floatBtn.style.display = 'none';
         }
@@ -261,7 +304,6 @@
 
         function updateBtn() {
             const btn = document.getElementById('mainBtn');
-            // Mantenemos texto simple para que el monto se vea bien en WhatsApp
             if(selectedPlat && selectedPay) {
                 btn.innerHTML = `CARGAR EN ${selectedPlat}`; 
                 btn.classList.add('pulse');
@@ -272,7 +314,6 @@
             if(!selectedPlat) { alert("⚠️ Elige una plataforma primero"); return; }
             if(!selectedPay) { alert("⚠️ Elige un método de pago"); return; }
             
-            // VALIDACIÓN DE MONTO
             let amount = document.getElementById('amountInput').value;
             if(!amount || amount < 300) {
                 alert("⚠️ El monto mínimo es de $300");
