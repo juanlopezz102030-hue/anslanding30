@@ -22,12 +22,19 @@
         body {
             background: var(--bg-dark); color: white;
             font-family: 'Montserrat', sans-serif;
-            height: 100vh; display: flex; flex-direction: column;
-            overflow: hidden;
+            /* CAMBIO CLAVE: Permitimos que el cuerpo crezca y scrollee naturalmente */
+            min-height: 100vh; 
+            overflow-x: hidden; /* Solo ocultamos el desborde lateral */
+            padding-bottom: 100px; /* Espacio extra abajo para que el botón no tape nada */
+            position: relative;
         }
 
-        /* --- FONDO --- */
-        .bg-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        /* --- FONDO FIJO --- */
+        .bg-container { 
+            position: fixed; /* Se queda quieto mientras bajas */
+            top: 0; left: 0; width: 100%; height: 100%; 
+            z-index: -1; 
+        }
         .bg-image { width: 100%; height: 100%; object-fit: cover; }
         .bg-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -38,40 +45,42 @@
         .urgency-bar {
             background: linear-gradient(90deg, #ff0000, #ff4400);
             color: white; font-size: 10px; font-weight: 700; letter-spacing: 1px;
-            text-align: center; padding: 8px; z-index: 100; flex-shrink: 0;
+            text-align: center; padding: 10px; 
+            position: relative; z-index: 10;
             text-transform: uppercase;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
         /* --- LAYOUT PRINCIPAL --- */
         .main-layout {
-            flex: 1; display: flex; flex-direction: column;
-            align-items: center; 
-            justify-content: space-evenly;
-            padding: 10px 0 80px 0;
-            width: 100%; overflow-y: auto;
+            width: 100%; 
+            display: flex; flex-direction: column; align-items: center; 
+            padding-top: 20px;
+            /* Eliminamos overflow y alturas fijas aquí para evitar bloqueos */
         }
 
-        /* 1. HEADER (LOGO LEÓN) */
-        .header-content { text-align: center; flex-shrink: 0; padding-top: 5px; }
+        /* 1. HEADER */
+        .header-content { text-align: center; margin-bottom: 20px; width: 100%; }
         .brand-logo-img {
-            max-width: 110px; /* Tamaño del escudo */
-            height: auto; display: block; margin: 0 auto 10px auto;
+            max-width: 120px; height: auto; display: block; margin: 0 auto 10px auto;
             filter: drop-shadow(0 0 25px rgba(212,175,55,0.6));
         }
-        .brand-subtitle { font-size: 11px; color: #ccc; margin-top: 0px; letter-spacing: 0.5px; }
+        .brand-subtitle { font-size: 11px; color: #ccc; letter-spacing: 0.5px; }
         .highlight { color: var(--gold); font-weight: 700; }
 
-        /* 2. PLATAFORMAS (VERTICALES TIPO CELULAR) */
+        /* 2. PLATAFORMAS */
         .section-container {
             width: 100%; display: flex; flex-direction: column; align-items: center;
+            margin-bottom: 30px;
         }
         .instruction-text {
-            font-size: 10px; color: #aaa; margin-bottom: 10px; font-weight: 700; 
+            font-size: 10px; color: #aaa; margin-bottom: 15px; font-weight: 700; 
             text-transform: uppercase; letter-spacing: 2px;
         }
         
         .platforms-wrapper {
-            display: flex; gap: 15px; width: 90%; max-width: 380px; 
+            display: flex; gap: 15px; width: 90%; max-width: 400px; 
+            /* Altura fija solo para las imágenes, el resto fluye */
             height: 320px; 
         }
 
@@ -80,9 +89,11 @@
             border-radius: 18px; 
             border: 1px solid rgba(255,255,255,0.2);
             background: #000;
-            transition: all 0.2s; 
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
             box-shadow: 0 15px 40px rgba(0,0,0,0.5);
             display: flex; flex-direction: column;
+            /* Fix para safari mobile */
+            -webkit-transform: translateZ(0);
         }
         .platform-card:active { transform: scale(0.98); }
 
@@ -117,19 +128,19 @@
             border: 2px solid #fff;
         }
 
-        /* 3. PAGOS (CUADRÍCULA 4x2) */
+        /* 3. PAGOS */
         .payment-box {
-            width: 94%; max-width: 380px;
+            width: 94%; max-width: 400px;
             background: var(--glass); border: 1px solid var(--glass-border);
-            border-radius: 20px; padding: 15px 10px;
+            border-radius: 20px; padding: 20px 10px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-            flex-shrink: 0;
+            margin-bottom: 20px;
         }
 
         .pay-grid { 
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px; 
+            gap: 12px; 
             justify-items: center;
             align-items: center;
         }
@@ -138,9 +149,11 @@
             cursor: pointer; transition: transform 0.2s; position: relative;
             border-radius: 50%; padding: 4px; border: 2px solid transparent;
             display: flex; justify-content: center; align-items: center;
+            /* Fix para click en movil */
+            touch-action: manipulation;
         }
         .pay-icon {
-            width: 42px; height: 42px; border-radius: 50%; background: #fff; padding: 2px;
+            width: 45px; height: 45px; border-radius: 50%; background: #fff; padding: 2px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3); object-fit: contain; display: block;
         }
 
@@ -159,19 +172,24 @@
         /* --- BOTÓN FLOTANTE --- */
         .sticky-footer {
             position: fixed; bottom: 0; left: 0; right: 0;
-            background: rgba(10, 5, 16, 0.98); backdrop-filter: blur(10px);
+            background: rgba(10, 5, 16, 0.95); backdrop-filter: blur(10px);
             border-top: 1px solid rgba(255,255,255,0.1);
-            padding: 15px 20px; display: flex; justify-content: center; z-index: 90;
+            padding: 15px 20px; display: flex; justify-content: center; 
+            z-index: 1000; /* Z-index alto para estar siempre encima */
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
         }
         .btn-sticky {
             width: 100%; max-width: 400px; background: var(--green-wa); color: white;
-            text-decoration: none; font-weight: 800; font-size: 15px;
-            padding: 14px; border-radius: 50px;
+            text-decoration: none; font-weight: 800; font-size: 16px;
+            padding: 16px; border-radius: 50px;
             text-align: center; text-transform: uppercase; letter-spacing: 0.5px;
             box-shadow: 0 5px 20px rgba(37, 211, 102, 0.25);
             display: flex; align-items: center; justify-content: center; gap: 8px;
-            transition: all 0.3s ease;
+            transition: transform 0.2s;
+            /* Mejor respuesta al tactil */
+            touch-action: manipulation;
         }
+        .btn-sticky:active { transform: scale(0.96); }
         .btn-sticky.pulse { animation: pulseBtn 1.5s infinite; }
         @keyframes pulseBtn { 0%{transform:scale(1);} 50%{transform:scale(1.02);} 100%{transform:scale(1);} }
 
@@ -202,17 +220,14 @@ fbq('init', '767728059169192'); fbq('track', 'PageView');
         <div class="section-container">
             <p class="instruction-text">1. ELIGE TU PLATAFORMA</p>
             <div class="platforms-wrapper">
-                
                 <div class="platform-card" id="plat-bet30" onclick="selectPlatform('BET30', 'plat-bet30')">
                     <div class="phone-notch"><div class="notch-bar"></div></div>
                     <img src="bet30.jpeg" alt="Bet30 App" class="screen-img">
                 </div>
-
                 <div class="platform-card" id="plat-ganamos" onclick="selectPlatform('GANAMOS', 'plat-ganamos')">
                     <div class="phone-notch"><div class="notch-bar"></div></div>
                     <img src="ganamos.jpeg" alt="Ganamos App" class="screen-img">
                 </div>
-
             </div>
         </div>
 
@@ -241,7 +256,6 @@ fbq('init', '767728059169192'); fbq('track', 'PageView');
                 <div class="pay-item-wrapper" id="pay-scotiabank" onclick="selectPayment('SCOTIABANK', 'pay-scotiabank')">
                     <img class="pay-icon" src="scotiabank.png" alt="Scotiabank">
                 </div>
-                
                 <div class="pay-item-wrapper" id="pay-otro" onclick="selectPayment('OTRO MÉTODO', 'pay-otro')">
                     <div class="pay-icon icon-otro">OTRO</div>
                 </div>
