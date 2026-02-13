@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* --- 1. CORE STYLES (Minimizado para velocidad) --- */
+        /* --- ESTILOS OPTIMIZADOS --- */
         :root {
             --gold: #D4AF37;
             --glass: rgba(20, 20, 25, 0.95);
@@ -26,17 +26,15 @@
             background-color: var(--bg-dark);
             color: white;
             font-family: 'Montserrat', sans-serif;
-            min-height: 100dvh; /* Soporte moderno para móviles */
+            min-height: 100dvh;
             display: flex; flex-direction: column;
             overflow-x: hidden;
             padding-bottom: 90px;
         }
 
-        /* --- 2. FONDO DE ALTO RENDIMIENTO --- */
         .bg-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            transform: translateZ(0); /* Activa GPU */
-            will-change: opacity;
+            transform: translateZ(0); will-change: opacity;
         }
         .bg-image {
             width: 100%; height: 100%; object-fit: cover; opacity: 0.5;
@@ -46,7 +44,6 @@
             background: linear-gradient(to bottom, rgba(10,5,16,0.85) 0%, rgba(10,5,16,0.7) 40%, #0a0510 100%);
         }
 
-        /* --- 3. COMPONENTES UI --- */
         .urgency-bar {
             background: linear-gradient(90deg, #d32f2f, #f57c00);
             color: white; font-size: 10px; font-weight: 800; letter-spacing: 1px;
@@ -59,17 +56,15 @@
             padding-top: 20px; gap: 25px;
         }
 
-        /* Header Optimizado */
         .header-content { text-align: center; width: 100%; contain: content; }
         .brand-logo-img {
-            width: 110px; height: 110px; /* Dimensiones explícitas para CLS 0 */
+            width: 110px; height: 110px;
             display: block; margin: 0 auto 10px auto;
             filter: drop-shadow(0 0 15px rgba(212,175,55,0.5));
         }
         .brand-subtitle { font-size: 11px; color: #ccc; letter-spacing: 0.5px; }
         .highlight { color: var(--gold); font-weight: 700; }
 
-        /* Plataformas (Celulares) */
         .section-container { width: 100%; display: flex; flex-direction: column; align-items: center; }
         .instruction-text {
             font-size: 10px; color: #888; margin-bottom: 12px; font-weight: 800; 
@@ -78,7 +73,7 @@
         
         .platforms-wrapper {
             display: flex; gap: 15px; width: 92%; max-width: 380px; height: 320px;
-            contain: layout paint; /* Renderizado rápido */
+            contain: layout paint;
         }
 
         .platform-card {
@@ -103,7 +98,6 @@
             transition: filter 0.2s; filter: brightness(0.9);
         }
         
-        /* Estado Seleccionado */
         .platform-card.selected {
             border: 2px solid var(--gold);
             box-shadow: 0 0 25px rgba(212, 175, 55, 0.25);
@@ -118,13 +112,11 @@
             border: 2px solid #fff;
         }
 
-        /* Pagos Premium (Sin bordes blancos) */
         .payment-box {
             width: 94%; max-width: 380px;
             background: var(--glass); border: 1px solid var(--glass-border);
             border-radius: 24px; padding: 20px 15px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            /* Renderizado diferido para velocidad */
             content-visibility: auto; contain-intrinsic-size: 200px;
         }
 
@@ -135,16 +127,16 @@
         
         .pay-item-wrapper {
             cursor: pointer; position: relative;
-            width: 50px; height: 50px; /* Tamaño táctil óptimo */
+            width: 50px; height: 50px;
             border-radius: 14px; 
             display: flex; justify-content: center; align-items: center;
             transition: transform 0.2s, background 0.2s;
-            background: rgba(255,255,255,0.03); /* Fondo sutil para unificar */
+            background: rgba(255,255,255,0.03);
         }
         .pay-icon {
             width: 38px; height: 38px; object-fit: contain;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-            border-radius: 8px; /* Suaviza los iconos cuadrados */
+            border-radius: 8px;
         }
 
         .icon-otro {
@@ -159,7 +151,6 @@
             transform: scale(1.05);
         }
 
-        /* Botón Flotante */
         .sticky-footer {
             position: fixed; bottom: 0; left: 0; right: 0;
             background: rgba(5, 5, 10, 0.95); backdrop-filter: blur(12px);
@@ -177,8 +168,6 @@
             transition: transform 0.2s;
         }
         .btn-sticky:active { transform: scale(0.97); }
-        
-        /* Animación suave */
         .btn-sticky.pulse { animation: pulseBtn 2s infinite; }
         @keyframes pulseBtn { 0%{box-shadow:0 0 0 0 rgba(37,211,102,0.4)} 70%{box-shadow:0 0 0 10px rgba(37,211,102,0)} 100%{box-shadow:0 0 0 0 rgba(37,211,102,0)} }
 
@@ -195,7 +184,7 @@
 <body>
 
     <div class="bg-container">
-        <img src="fondo.webp" alt="Fondo" class="bg-image" width="360" height="800" fetchpriority="high">
+        <img src="aerial-las-vegas-night_926199-3939420.webp" alt="Fondo" class="bg-image" width="360" height="800" fetchpriority="high">
         <div class="bg-overlay"></div>
     </div>
 
@@ -229,26 +218,28 @@
             <p class="instruction-text">2. SELECCIONA MÉTODO DE PAGO</p>
             <div class="pay-grid">
                 <div class="pay-item-wrapper" id="pay-brou" onclick="selectPayment('BROU', 'pay-brou')">
-                    <img class="pay-icon" src="brou.png" alt="BROU" width="38" height="38" loading="lazy">
+                    <img class="pay-icon" src="brou.webp" alt="BROU" width="38" height="38" loading="lazy">
                 </div>
                 <div class="pay-item-wrapper" id="pay-itau" onclick="selectPayment('ITAU', 'pay-itau')">
-                    <img class="pay-icon" src="itau.png" alt="Itau" width="38" height="38" loading="lazy">
+                    <img class="pay-icon" src="itau.webp" alt="Itau" width="38" height="38" loading="lazy">
                 </div>
                 <div class="pay-item-wrapper" id="pay-midinero" onclick="selectPayment('MIDINERO', 'pay-midinero')">
-                    <img class="pay-icon" src="midinero.png" alt="MiDinero" width="38" height="38" loading="lazy">
+                    <img class="pay-icon" src="midinero.webp" alt="MiDinero" width="38" height="38" loading="lazy">
                 </div>
+                
                 <div class="pay-item-wrapper" id="pay-mercadopago" onclick="selectPayment('MERCADOPAGO', 'pay-mercadopago')">
-                    <img class="pay-icon" src="mercadopago.png" alt="MP" width="38" height="38" loading="lazy">
+                    <img class="pay-icon" src="mercadopago.webp" alt="MP" width="38" height="38" loading="lazy">
                 </div>
                 
                 <div class="pay-item-wrapper" id="pay-prex" onclick="selectPayment('PREX', 'pay-prex')">
-                    <img class="pay-icon" src="prex.png" alt="Prex" width="38" height="38" loading="lazy">
+                    <img class="pay-icon" src="prex.webp" alt="Prex" width="38" height="38" loading="lazy">
                 </div>
+                
                 <div class="pay-item-wrapper" id="pay-santander" onclick="selectPayment('SANTANDER', 'pay-santander')">
-                    <img class="pay-icon" src="santander.png" alt="Santander" width="38" height="38" loading="lazy">
+                    <img class="pay-icon" src="santander.webp" alt="Santander" width="38" height="38" loading="lazy">
                 </div>
                 <div class="pay-item-wrapper" id="pay-scotiabank" onclick="selectPayment('SCOTIABANK', 'pay-scotiabank')">
-                    <img class="pay-icon" src="scotiabank.png" alt="Scotiabank" width="38" height="38" loading="lazy">
+                    <img class="pay-icon" src="scotiabank.webp" alt="Scotiabank" width="38" height="38" loading="lazy">
                 </div>
                 
                 <div class="pay-item-wrapper" id="pay-otro" onclick="selectPayment('OTRO MÉTODO', 'pay-otro')">
