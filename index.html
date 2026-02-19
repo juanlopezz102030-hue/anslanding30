@@ -1,381 +1,718 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-UY">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Panel de Control CAYO. Gestiona tus cargas y retiros 24/7.">
-    <meta name="theme-color" content="#0a0510">
-    <title>CAYO | App Oficial</title>
-    
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icon-192.png">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>CAYO - Ticket Exclusivo</title>
+    <meta name="description" content="Reclamá tu ticket exclusivo y descubrí premios increíbles en CAYO.">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <link rel="preload" as="video" href="panda.mp4" type="video/mp4" fetchpriority="high">
+    
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+    </noscript>
 
-    <style>
-        /* --- ESTILOS GENERALES --- */
-        :root {
-            --gold: #D4AF37;
-            --bg-dark: #0a0510;
-            --panel-bg: #141418;
-            --green-wa: #25D366;
+    <script>
+    /* 1. ARQUITECTURA DE DATOS: Capa para GTM y Meta Conversions API (CAPI) */
+    window.dataLayer = window.dataLayer || [];
+
+    /* SISTEMA ANTI-SALTO PARA NAVEGADOR DE FACEBOOK / INSTAGRAM / SAFARI */
+    function lockHeight() {
+        document.documentElement.style.setProperty('--locked-vh', window.innerHeight + 'px');
+    }
+    lockHeight();
+    let initWidth = window.innerWidth;
+    window.addEventListener('resize', () => {
+        if (window.innerWidth !== initWidth) {
+            initWidth = window.innerWidth;
+            lockHeight();
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
+    });
+
+    /* 2. Inicializamos la "memoria" del Píxel INMEDIATAMENTE */
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];}(window, document,'script');
+    
+    fbq('init', '767728059169192');
+
+    (function(){
+      function getUTMs(url){
+        var out={}, keys=['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
+        try{ var u=new URL(url); keys.forEach(function(k){ var v=u.searchParams.get(k); if(v) out[k]=v; }); }catch(e){}
+        return out;
+      }
+      fbq('track', 'PageView', getUTMs(location.href));
+    })();
+
+    /* 3. WPO: Retrasamos la carga de FB Events, pero reacciona a interacciones */
+    window.loadFBPixel = function() {
+        if (window.fbPixelLoaded) return;
+        window.fbPixelLoaded = true;
+        var t = document.createElement('script');
+        t.async = true;
+        t.src = 'https://connect.facebook.net/en_US/fbevents.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(t, s);
+    };
+
+    setTimeout(window.loadFBPixel, 3500);
+    ['touchstart', 'click', 'scroll', 'mousemove'].forEach(function(evt) {
+        window.addEventListener(evt, window.loadFBPixel, { once: true, passive: true });
+    });
+    </script>
+    <style>
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         body {
-            background-color: var(--bg-dark);
-            color: white;
-            font-family: 'Montserrat', sans-serif;
-            height: 100vh;
-            height: 100dvh;
-            overflow: hidden; 
+            background-color: #000; color: white; margin: 0;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            padding-top: 40px; /* ESPACIO RESERVADO PARA BANNER LEGAL */
+        }
+
+        /* =========================================
+           CUMPLIMIENTO LEGAL (Prevención baneos Meta)
+           ========================================= */
+        .legal-banner {
+            position: fixed; top: 0; left: 0; width: 100%; height: 40px;
+            background-color: #1a1a1a; color: #a3a3a3; 
+            display: flex; align-items: center; justify-content: center; text-align: center;
+            font-weight: 600; font-size: 10px; z-index: 9999; border-bottom: 1px solid #333;
+            letter-spacing: 0.5px; text-transform: uppercase;
+        }
+        .age-badge { background-color: #333; color: white; padding: 2px 6px; border-radius: 4px; margin-left: 5px; font-size: 11px; font-weight: 800;}
+
+        .bg-fixed {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at 50% 30%, #9b19f0 0%, #480099 45%, #050505 100%);
+            z-index: -1; overflow: hidden; pointer-events: none;
+        }
+        
+        .rays {
+            position: absolute; top: 45%; left: 50%; 
+            width: 200vmax; height: 200vmax;
+            background: repeating-conic-gradient(from 0deg, rgba(255, 255, 255, 0.08) 0deg 8deg, transparent 8deg 16deg);
+            transform: translate(-50%, -50%); 
+            will-change: transform;
+            animation: spin 80s linear infinite;
+            -webkit-mask-image: radial-gradient(circle at 50% 50%, black 10%, transparent 40%);
+            mask-image: radial-gradient(circle at 50% 50%, black 10%, transparent 40%);
+        }
+        @keyframes spin { 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+
+        .app-container {
+            width: 100%; max-width: 480px; margin: 0 auto;
+            position: relative; z-index: 1;
             display: flex; flex-direction: column;
         }
 
-        .bg-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        .bg-image { width: 100%; height: 100%; object-fit: cover; opacity: 0.4; }
-        .bg-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(10,5,16,0.9) 0%, rgba(10,5,16,0.95) 100%); }
-
-        /* --- VISTAS --- */
-        .app-view {
-            flex: 1;
-            overflow-y: auto;
-            padding: 15px 20px 160px 20px; 
-            display: none;
-            animation: fadeIn 0.3s ease;
+        @media (min-width: 480px) {
+            body { display: flex; justify-content: center; align-items: center; padding-top: 40px;}
+            .app-container {
+                max-width: 420px; height: calc(90vh - 40px); max-height: 850px; min-height: auto;
+                border-radius: 40px; border: 8px solid #1a1a1a; 
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+                overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+            }
+            .app-container::-webkit-scrollbar { display: none; }
         }
-        .app-view.active { display: flex; flex-direction: column; align-items: center; }
+
+        .hero-section {
+            display: flex; flex-direction: column;
+            width: 100%; 
+            min-height: calc(var(--locked-vh, 100vh) - 40px);
+            position: relative; z-index: 10; flex-shrink: 0;
+        }
+
+        .top-nav {
+            display: flex; justify-content: flex-end; padding: 10px 20px;
+            padding-top: max(10px, env(safe-area-inset-top)); z-index: 10; flex-shrink: 0;
+        }
+        
+        .btn-close {
+            width: 28px; height: 28px; border-radius: 50%; 
+            background: rgba(30, 30, 30, 0.6);
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s;
+        }
+        .btn-close:active { background: rgba(255, 255, 255, 0.25); }
+        .btn-close svg { width: 12px; height: 12px; stroke: white; stroke-width: 2.5; stroke-linecap: round; }
+
+        .header { 
+            text-align: center; z-index: 10; flex-shrink: 0; padding-top: 0px;
+            display: flex; justify-content: center; align-items: center;
+        }
+        
+        .cayo-logo {
+            height: 55px; width: auto; margin-bottom: 0px;
+            filter: drop-shadow(0 5px 15px rgba(255, 204, 0, 0.4));
+            animation: floatLogo 4s ease-in-out infinite;
+        }
+        @keyframes floatLogo { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+
+        .ticket-wrapper {
+            --safe-top: env(safe-area-inset-top, 0px); 
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+            /* Espacio calculado: 280 base + banner 40px */
+            --ui-space: calc(320px + var(--safe-top) + var(--safe-bottom)); 
+            
+            --available-height: calc(var(--locked-vh, 100vh) - var(--ui-space));
+            --max-width: calc((var(--available-height) - 110px) * 0.7334);
+            --ticket-width: clamp(240px, min(88vw, var(--max-width)), 420px); 
+            
+            --video-height: calc(var(--ticket-width) * 1208 / 886);
+            --ticket-height: calc(var(--video-height) + 110px); 
+
+            flex: 1; display: flex; align-items: center; justify-content: center;
+            position: relative; z-index: 10; padding: 10px 0; 
+        }
+
+        .ticket-container { 
+            width: var(--ticket-width); height: var(--ticket-height); 
+            position: relative; 
+        }
+        
+        .ticket-glow { 
+            position: absolute; inset: -15px; 
+            background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 40%, transparent 70%); 
+            border-radius: 20px; 
+            animation: pulse 4s alternate infinite; pointer-events: none; 
+        }
+        @keyframes pulse { 100% { opacity: 0.6; transform: scale(1.03); } }
+
+        .ticket {
+            width: 100%; height: 100%; position: absolute; inset: 0; background: transparent; border-radius: 12px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            -webkit-mask-image: radial-gradient(circle at 0 calc(100% - 110px), transparent 12px, black 13px), radial-gradient(circle at 100% calc(100% - 110px), transparent 12px, black 13px);
+            -webkit-mask-size: 51% 100%; -webkit-mask-repeat: no-repeat; -webkit-mask-position: left, right;
+            mask-image: radial-gradient(circle at 0 calc(100% - 110px), transparent 12px, black 13px), radial-gradient(circle at 100% calc(100% - 110px), transparent 12px, black 13px);
+            mask-size: 51% 100%; mask-repeat: no-repeat; mask-position: left, right;
+        }
+
+        .ticket-glare { position: absolute; inset: 0; z-index: 20; border-radius: 12px; pointer-events: none; mix-blend-mode: overlay; background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 60%); }
+        .video-container { position: absolute; top: 0; left: 0; width: 100%; height: var(--video-height); border-radius: 12px 12px 0 0; overflow: hidden; z-index: 1; background-color: #000; }
+        
+        .video-container video { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+        
+        .divider { position: absolute; top: calc(100% - 110px); left: 12px; width: calc(100% - 24px); height: 1px; border-top: 1.5px dashed rgba(0,0,0,0.4); z-index: 15; pointer-events: none; }
+
+        .ticket-bottom { position: absolute; bottom: 0; left: 0; width: 100%; height: 110px; z-index: 10; }
+        
+        .prize-under { 
+            position: absolute; inset: 0; background: linear-gradient(135deg, #1d0342, #111); border-radius: 0 0 12px 12px; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: inset 0 0 20px rgba(0,0,0,0.8); z-index: 2; 
+        }
+        
+        .peel-layer { position: absolute; inset: 0; z-index: 3; --peel-size: 40px; }
+        .peel-content { 
+            position: absolute; inset: 0; background: linear-gradient(125deg, #a1ffce 0%, #faffd1 20%, #ffb6ff 40%, #9dbaff 60%, #a1ffce 100%); 
+            background-size: 300% 300%; animation: holo 6s ease infinite; border-radius: 0 0 12px 12px; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--peel-size)), calc(100% - var(--peel-size)) 100%, 0 100%); 
+            -webkit-clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--peel-size)), calc(100% - var(--peel-size)) 100%, 0 100%); overflow: hidden; 
+        }
+
+        .welcome-badge { background-color: #1a1a1a; color: #ccff00; font-size: 11px; font-weight: 800; text-transform: uppercase; padding: 4px 10px; border-radius: 12px; margin-bottom: 2px; letter-spacing: 0.5px; }
+        .visitor-id { font-size: 10px; font-weight: 600; color: rgba(0,0,0,0.5); margin-top: 4px; font-family: monospace; }
+        
+        .shine-3s { position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent 0%, rgba(255,255,255,0.8) 50%, transparent 100%); transform: skewX(-20deg); animation: shine-3s 3s infinite; pointer-events: none; }
+        @keyframes holo { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes shine-3s { 0% { left: -100%; } 15% { left: 200%; } 100% { left: 200%; } }
+        
+        .peel-flap-shadow { position: absolute; bottom: 0; right: 0; width: var(--peel-size); height: var(--peel-size); filter: drop-shadow(-2px -2px 4px rgba(0,0,0,0.4)); pointer-events: none; z-index: 5; transform-origin: bottom right; }
+        .peel-flap-shadow.hint { animation: flap-hint 2s infinite; }
+        @keyframes flap-hint { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        .peel-flap { width: 100%; height: 100%; background: linear-gradient(-45deg, #e0e0e0 0%, #ffffff 40%, #faffd1 100%); clip-path: polygon(0 0, 100% 0, 0 100%); -webkit-clip-path: polygon(0 0, 100% 0, 0 100%); }
+        .peel-hint { position: absolute; bottom: 35px; right: 15px; font-size: 11px; font-weight: 700; color: #111; background: rgba(255, 255, 255, 0.9); padding: 4px 10px; border-radius: 20px; pointer-events: none; box-shadow: 0 2px 10px rgba(0,0,0,0.1); animation: bounce-hint 1.5s infinite; z-index: 25; }
+        @keyframes bounce-hint { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-4px, -4px); } }
+        .touch-area { position: absolute; bottom: -20px; right: -20px; width: 80px; height: 80px; z-index: 30; cursor: grab; touch-action: none; }
+        .touch-area:active { cursor: grabbing; }
+
+        .bottom-actions { padding: 0 20px; display: flex; flex-direction: column; gap: 8px; z-index: 10; flex-shrink: 0; }
+        
+        .btn { width: 100%; height: 52px; border-radius: 16px; font-size: 15px; font-weight: 800; border: none; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; text-transform: uppercase; letter-spacing: -0.2px; }
+        .btn:active { transform: scale(0.96); }
+        
+        /* MODIFICADO: BOTÓN SIEMPRE VISIBLE Y ACTIVO */
+        .btn-whatsapp { 
+            background-color: #25D366; /* Verde activo desde el inicio */
+            color: #ffffff; 
+            opacity: 1; /* Totalmente visible */
+            pointer-events: auto; /* Clickable */
+            filter: grayscale(0%);
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); 
+            transition: all 0.4s ease;
+            animation: pulse-whatsapp 2s infinite; /* Animación activa */
+        }
+        .btn-whatsapp svg { width: 22px; height: 22px; fill: #ffffff; }
+        
+        @keyframes pulse-whatsapp {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); transform: scale(1); }
+            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); transform: scale(1.02); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); transform: scale(1); }
+        }
+
+        .scarcity-text {
+            text-align: center; font-size: 11.5px; font-weight: 600; color: rgba(255,255,255,0.6);
+            margin-top: 2px; transition: color 0.3s;
+        }
+        .scarcity-text span { font-variant-numeric: tabular-nums; font-weight: 800; }
+
+        /* TESTIMONIO DE PRUEBA SOCIAL NEUTRO */
+        .testimonial-box {
+            display: none; /* Oculto hasta raspar */
+            background: rgba(0,0,0,0.4); border-left: 4px solid #ccff00; 
+            padding: 12px; border-radius: 8px; font-size: 12px; font-style: italic; color: #d1d5db; text-align: left; margin: 5px 0 10px 0;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .payment-rectangle { 
+            background-color: rgba(255, 255, 255, 0.1);
+            width: 100%; height: 52px; border-radius: 16px; display: flex; justify-content: space-evenly; align-items: center; padding: 0 8px; 
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05); 
+        }
+        
+        .payment-logo { width: clamp(26px, 8vw, 34px); height: clamp(26px, 8vw, 34px); border-radius: 8px; object-fit: cover; background-color: #ffffff; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: transform 0.2s; cursor: pointer; }
+        .payment-logo:hover { transform: scale(1.08); }
+
+        .scroll-down-hint {
+            display: flex; justify-content: center; align-items: center; 
+            height: 24px; margin-top: auto; 
+            padding-bottom: max(15px, calc(env(safe-area-inset-bottom) + 5px));
+            opacity: 0.6; animation: bounce-arrow 2s infinite; pointer-events: none; z-index: 10;
+        }
+        .scroll-down-hint svg { width: 20px; height: 20px; stroke: white; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+        @keyframes bounce-arrow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+
+        .games-section { padding: 10px 24px 40px 24px; padding-bottom: max(40px, env(safe-area-inset-bottom)); position: relative; z-index: 10; flex-shrink: 0; width: 100%; }
+        .section-title { font-size: 15px; font-weight: 700; color: white; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; letter-spacing: -0.2px; }
+        .live-dot { width: 8px; height: 8px; background-color: #ff3366; border-radius: 50%; animation: pulse-dot 1.5s infinite; }
+        @keyframes pulse-dot { 0% { box-shadow: 0 0 0 0 rgba(255, 51, 102, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(255, 51, 102, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 51, 102, 0); } }
+
+        .games-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .game-card { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; overflow: hidden; position: relative; cursor: pointer; transition: transform 0.2s, opacity 0.5s; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .game-card:active { transform: scale(0.96); }
+        .game-card.fade-out { opacity: 0; transform: scale(0.95); }
+
+        .game-img-wrapper { position: relative; width: 100%; aspect-ratio: 1/1; background: #111; }
+        .game-img { width: 100%; height: 100%; object-fit: cover; }
+        .game-info { padding: 10px 12px; background: rgba(0, 0, 0, 0.3); }
+        .game-title { font-size: 12.5px; font-weight: 600; color: #e0e0e0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; }
+
+        .game-badge { position: absolute; top: 0; left: 0; font-size: 9px; font-weight: 800; padding: 4px 8px; z-index: 2; border-bottom-right-radius: 8px; box-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
+        .badge-new { background: #8cc63f; color: #000; } 
+        .badge-drops { background: linear-gradient(135deg, #000, #222); color: #fff; border: 1px solid rgba(255,204,0,0.3); border-top: none; border-left: none; }
+        .badge-drops span { color: #ffcc00; }
+        .badge-hot { background: #D90429; color: #fff; }
+        .badge-live { background: #e50f38; color: #fff; display: flex; align-items: center; gap: 4px; }
+        .badge-live::before { content: ''; width: 4px; height: 4px; background: #fff; border-radius: 50%; display: inline-block; animation: blink 1s infinite alternate; }
+        @keyframes blink { 0% { opacity: 0.2; } 100% { opacity: 1; } }
+
+        .demo-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; z-index: 5; }
+        @media (hover: hover) { .game-card:hover .demo-overlay { opacity: 1; } .game-card:hover .play-btn { transform: translateY(0); } }
+        .game-card:active .demo-overlay { opacity: 1; }
+        .play-btn { background: #ccff00; color: #000; font-size: 11px; font-weight: 800; text-transform: uppercase; padding: 6px 14px; border-radius: 20px; box-shadow: 0 4px 15px rgba(204, 255, 0, 0.4); transform: translateY(10px); transition: transform 0.3s; }
+        .game-card:active .play-btn { transform: translateY(0); }
+
+        .toast-container {
+            position: fixed; bottom: max(20px, env(safe-area-inset-bottom)); left: 20px; right: 20px; z-index: 100;
+            display: flex; flex-direction: column; gap: 10px; pointer-events: none; align-items: center;
+        }
+        .toast {
+            background: rgba(20, 20, 20, 0.95); border: 1px solid rgba(255, 204, 0, 0.4);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+            color: white; padding: 10px 16px; border-radius: 50px; font-size: 12px; font-weight: 500;
+            display: flex; align-items: center; gap: 10px;
+            transform: translateY(100px); opacity: 0; transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast-icon { background: #25D366; color: white; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 10px; }
+        .toast b { color: #ffcc00; }
+        
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* --- VISTA 1: INICIO --- */
-        .header-content { text-align: center; margin-bottom: 10px; width: 100%; }
-        .brand-logo-img { width: 70px; display: block; margin: 0 auto 5px; filter: drop-shadow(0 0 15px var(--gold)); }
-        
-        .section-title { font-size: 9px; color: #888; font-weight: 800; letter-spacing: 1px; margin-bottom: 8px; text-transform: uppercase; width: 100%; text-align: center;}
-        
-        .platforms-wrapper { display: flex; gap: 10px; width: 100%; max-width: 380px; height: 200px; margin-bottom: 15px; }
-        .platform-card {
-            flex: 1; position: relative; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);
-            background: #000; overflow: hidden; transition: all 0.2s; cursor: pointer;
-        }
-        .platform-card.selected { border: 2px solid var(--gold); transform: scale(1.02); box-shadow: 0 0 15px rgba(212,175,55,0.2); }
-        .platform-card.selected::after { content: '✔'; position: absolute; top: 10px; right: 10px; background: var(--gold); color: #000; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 10px; }
-        .screen-img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
-
-        .payment-box { width: 100%; max-width: 380px; background: rgba(255,255,255,0.03); border-radius: 16px; padding: 10px; margin-bottom: 15px; }
-        .pay-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; justify-items: center; }
-        .pay-item { width: 45px; height: 45px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); transition: all 0.2s; cursor: pointer; }
-        .pay-item.selected { background: rgba(212,175,55,0.2); border: 1px solid var(--gold); }
-        .pay-icon { width: 30px; height: 30px; object-fit: contain; }
-        .icon-otro { font-size: 8px; font-weight: 800; color: #fff; }
-
-        .amount-container {
-            width: 100%; max-width: 380px;
-            background: rgba(20, 20, 25, 0.8);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 16px; padding: 10px 20px;
-            display: flex; align-items: center; justify-content: space-between;
-        }
-        .currency { font-size: 18px; color: var(--gold); font-weight: 800; margin-right: 10px; }
-        .amount-input {
-            background: transparent; border: none; color: white;
-            font-family: 'Montserrat'; font-size: 18px; font-weight: 700;
-            width: 100%; outline: none;
-        }
-        .amount-input::placeholder { color: #555; }
-
-        /* --- BOTÓN FLOTANTE --- */
-        .floating-cta-container {
-            position: fixed; bottom: 80px; left: 0; width: 100%;
-            display: flex; justify-content: center; z-index: 900;
-            padding: 0 20px; pointer-events: none;
-        }
-        .action-btn {
-            width: 100%; max-width: 380px; 
-            background: linear-gradient(90deg, #25D366, #128C7E);
-            color: white; padding: 14px; border-radius: 50px; 
-            text-align: center; font-weight: 800; font-size: 14px;
-            text-transform: uppercase; text-decoration: none;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.5); 
-            pointer-events: auto; display: flex; align-items: center; justify-content: center; gap: 8px;
-            transition: transform 0.2s;
-        }
-        .action-btn:active { transform: scale(0.96); }
-        .action-btn.pulse { animation: pulseBtn 2s infinite; }
-        @keyframes pulseBtn { 0%{transform:scale(1);} 50%{transform:scale(1.03);} 100%{transform:scale(1);} }
-
-        /* --- VISTA: ENLACES (NUEVA) --- */
-        .link-card {
-            width: 100%; max-width: 380px;
-            background: var(--panel-bg);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 16px; padding: 15px; margin-bottom: 15px;
-            display: flex; align-items: center; justify-content: space-between;
-            text-decoration: none; color: white;
-            transition: transform 0.2s;
-        }
-        .link-card:active { transform: scale(0.98); background: rgba(255,255,255,0.1); }
-        .link-content { display: flex; align-items: center; gap: 15px; }
-        .link-thumb { width: 50px; height: 50px; border-radius: 10px; object-fit: cover; }
-        .link-info h3 { font-size: 16px; margin-bottom: 4px; color: var(--gold); }
-        .link-info p { font-size: 11px; color: #888; }
-        .link-arrow { color: #555; }
-
-        /* --- OTRAS VISTAS --- */
-        .history-card { width: 100%; max-width: 380px; background: var(--panel-bg); border-radius: 15px; padding: 15px; margin-bottom: 10px; border-left: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; }
-        .hist-info h4 { font-size: 14px; margin-bottom: 4px; color: white; }
-        .hist-info p { font-size: 11px; color: #888; }
-        .hist-status { font-size: 10px; background: rgba(212,175,55,0.2); color: var(--gold); padding: 4px 8px; border-radius: 4px; }
-        
-        .profile-container { width: 100%; max-width: 380px; text-align: center; }
-        .profile-avatar { width: 80px; height: 80px; background: var(--panel-bg); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--gold); font-size: 30px; }
-        .input-field { width: 100%; background: var(--panel-bg); border: 1px solid #333; color: white; padding: 15px; border-radius: 12px; font-family: 'Montserrat'; margin-bottom: 20px; }
-        .save-btn { background: var(--gold); color: black; border: none; width: 100%; padding: 15px; border-radius: 12px; font-weight: 800; cursor: pointer; }
-
-        /* --- NAVEGACIÓN --- */
-        .bottom-nav {
-            position: fixed; bottom: 0; left: 0; width: 100%;
-            background: #0f0f12; border-top: 1px solid rgba(255,255,255,0.1);
-            height: 70px; display: flex; justify-content: space-around; align-items: center;
-            z-index: 1000; padding-bottom: 10px;
-        }
-        .nav-item {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            color: #666; text-decoration: none; font-size: 9px; font-weight: 600; width: 25%; /* 4 items = 25% each */
-            transition: color 0.2s;
-        }
-        .nav-item i { font-size: 20px; margin-bottom: 4px; }
-        .nav-item.active { color: var(--gold); }
-
     </style>
 </head>
 <body>
 
-    <div class="bg-container">
-        <img src="fondo.webp" class="bg-image">
-        <div class="bg-overlay"></div>
+    <noscript>
+        <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=767728059169192&ev=PageView&noscript=1"/>
+    </noscript>
+
+    <div class="legal-banner">
+        <p>EL JUEGO COMPULSIVO ES PERJUDICIAL PARA LA SALUD <span class="age-badge">+18</span></p>
     </div>
 
-    <div class="floating-cta-container">
-        <a href="#" onclick="processLoad()" class="action-btn" id="mainBtn">
-            <i class="ri-whatsapp-line" style="font-size: 18px;"></i>
-            CARGAR AHORA
-        </a>
-    </div>
-
-    <div id="view-home" class="app-view active">
-        <div class="header-content">
-            <img src="cayo.webp" class="brand-logo-img">
-            <p style="font-size:11px; color:#aaa;">Hola, <span id="userNameDisplay" style="color:white; font-weight:bold;">Jugador</span> 👋</p>
-        </div>
-
-        <p class="section-title">1. Elige Plataforma</p>
-        <div class="platforms-wrapper">
-            <div class="platform-card" onclick="selectPlatform('BET30', this)">
-                <img src="bet30.webp" class="screen-img">
-            </div>
-            <div class="platform-card" onclick="selectPlatform('GANAMOS', this)">
-                <img src="ganamos.webp" class="screen-img">
-            </div>
-        </div>
-
-        <p class="section-title">2. Elige Método de Pago</p>
-        <div class="payment-box">
-            <div class="pay-grid">
-                <div class="pay-item" onclick="selectPayment('BROU', this)"><img src="brou.webp" class="pay-icon"></div>
-                <div class="pay-item" onclick="selectPayment('ITAU', this)"><img src="itau.webp" class="pay-icon"></div>
-                <div class="pay-item" onclick="selectPayment('MIDINERO', this)"><img src="midinero.webp" class="pay-icon"></div>
-                <div class="pay-item" onclick="selectPayment('MERCADOPAGO', this)"><img src="mercadopago.webp" class="pay-icon"></div>
-                <div class="pay-item" onclick="selectPayment('PREX', this)"><img src="prex.webp" class="pay-icon"></div>
-                <div class="pay-item" onclick="selectPayment('SANTANDER', this)"><img src="santander.webp" class="pay-icon"></div>
-                <div class="pay-item" onclick="selectPayment('SCOTIABANK', this)"><img src="scotiabank.webp" class="pay-icon"></div>
-                <div class="pay-item" onclick="selectPayment('OTRO', this)"><div class="icon-otro">OTRO</div></div>
-            </div>
-        </div>
-
-        <p class="section-title">3. Ingresa Monto (Min $300)</p>
-        <div class="amount-container">
-            <span class="currency">$</span>
-            <input type="number" id="amountInput" class="amount-input" placeholder="300">
+    <div class="bg-fixed">
+        <div class="bg-inner">
+            <div class="rays"></div>
         </div>
     </div>
 
-    <div id="view-history" class="app-view">
-        <h2 style="margin-bottom:20px; font-size:16px; text-align:center;">📜 Tu Historial</h2>
-        <div id="history-list">
-            <div style="text-align:center; color:#666; font-size:12px; margin-top:40px;">No hay movimientos recientes.</div>
-        </div>
-    </div>
+    <div class="toast-container" id="toast-container"></div>
 
-    <div id="view-links" class="app-view">
-        <h2 style="margin-bottom:20px; font-size:16px; text-align:center;">🔗 Accesos Directos</h2>
-        <p style="text-align:center; font-size:11px; color:#aaa; margin-bottom:20px;">Entra a tu cuenta para jugar:</p>
+    <main class="app-container">
         
-        <a href="https://ganamosnet.org" target="_blank" class="link-card">
-            <div class="link-content">
-                <img src="ganamos.webp" class="link-thumb">
-                <div class="link-info">
-                    <h3>GANAMOS</h3>
-                    <p>ganamosnet.org</p>
+        <div class="hero-section">
+            <div class="top-nav">
+                <button class="btn-close" aria-label="Cerrar"><svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L13 13M1 13L13 1"/></svg></button>
+            </div>
+
+            <div class="header">
+                <img src="cayo.png" alt="CAYO" class="cayo-logo" onerror="this.src='https://ui-avatars.com/api/?name=CAYO&background=000&color=FFD000&size=200&font-size=0.4&bold=true'">
+            </div>
+
+            <div class="ticket-wrapper">
+                <div class="ticket-container">
+                    <div class="ticket-glow"></div>
+                    <div class="ticket">
+                        <div class="ticket-glare"></div>
+                        
+                        <div class="video-container"><video src="panda.mp4" autoplay loop muted playsinline fetchpriority="high"></video></div>
+                        
+                        <div class="divider"></div>
+                        
+                        <div class="ticket-bottom">
+                            <div class="prize-under">
+                                <span style="font-size: 11px; font-weight: 800; opacity: 0.9; letter-spacing: 1px; color: #fff;">¡FELICITACIONES!</span>
+                                <strong style="font-size: 30px; font-weight: 900; color: #ffcc00; letter-spacing: -1px; margin-top: 2px;">+25% EXTRA</strong>
+                                <span style="font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.7); margin-top: 5px;">BONO DE BIENVENIDA</span>
+                            </div>
+                            
+                            <div class="peel-layer" id="peel-layer">
+                                <div class="peel-content">
+                                     <div class="welcome-badge">Bono de Bienvenida</div>
+                                     <div style="font-size: 16px; font-weight: 900; color: #111; line-height: 1.1; letter-spacing: -0.5px; text-align: center; margin-top: 2px; text-transform: uppercase;">Deslizá y<br>Descubrí</div>
+                                     <div class="visitor-id" id="visitor-id">#VISITANTE-0000</div>
+                                     <div class="shine-3s"></div>
+                                </div>
+                                <div class="peel-flap-shadow hint" id="peel-flap-shadow"><div class="peel-flap"></div></div>
+                            </div>
+                            <div class="peel-hint" id="peel-hint">👆 Deslizá</div>
+                            <div class="touch-area" id="touch-area"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <i class="ri-external-link-line link-arrow"></i>
-        </a>
 
-        <a href="https://bet30vip.ai" target="_blank" class="link-card">
-            <div class="link-content">
-                <img src="bet30.webp" class="link-thumb">
-                <div class="link-info">
-                    <h3>BET 30</h3>
-                    <p>bet30vip.ai</p>
+            <div class="bottom-actions">
+                <a id="btn-whatsapp" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp whatsapp_click">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                    <span id="btn-text" style="transition: opacity 0.3s ease;">WHATSAPP</span>
+                </a>
+                
+                <div class="scarcity-text" id="scarcity-text">👉 Deslizá el ticket para revelar tu premio</div>
+
+                <div class="testimonial-box" id="testimonial-box">
+                    "¡Increíble! Recibí mi retiro de $15.000 UYU en menos de 5 minutos. Mi cajero me guio en todo." <br><strong style="color: #fff; display: block; margin-top: 5px;">- Facundo M. ⭐⭐⭐⭐⭐</strong>
+                </div>
+
+                <div class="payment-rectangle">
+                    <img src="itau.png" alt="Itaú" class="payment-logo" onerror="this.src='https://ui-avatars.com/api/?name=Itaú&background=141B4D&color=fff&size=100'">
+                    <img src="brou.png" alt="BROU" class="payment-logo" onerror="this.src='https://ui-avatars.com/api/?name=BROU&background=0064A6&color=fff&size=100'">
+                    <img src="convenio.png" alt="Convenio" class="payment-logo" onerror="this.src='https://ui-avatars.com/api/?name=Pago&background=0072C6&color=fff&size=100'">
+                    <img src="md.png" alt="Midinero" class="payment-logo" onerror="this.src='https://ui-avatars.com/api/?name=MD&background=001E62&color=fff&size=100'">
+                    <img src="santander.png" alt="Santander" class="payment-logo" onerror="this.src='https://ui-avatars.com/api/?name=San&background=EC0000&color=fff&size=100'">
+                    <img src="prex.png" alt="Prex" class="payment-logo" onerror="this.src='https://ui-avatars.com/api/?name=Prex&background=4C2B82&color=fff&size=100'">
                 </div>
             </div>
-            <i class="ri-external-link-line link-arrow"></i>
-        </a>
-    </div>
 
-    <div id="view-profile" class="app-view">
-        <h2 style="margin-bottom:30px; font-size:16px; text-align:center;">👤 Tu Perfil</h2>
-        <div class="profile-container">
-            <div class="profile-avatar">🦁</div>
-            <label style="display:block; text-align:left; font-size:11px; margin-bottom:5px; color:#aaa;">Tu Usuario de Casino:</label>
-            <input type="text" id="userInput" class="input-field" placeholder="Ej: JuanPerez22">
-            <button onclick="saveProfile()" class="save-btn">GUARDAR DATOS</button>
+            <div class="scroll-down-hint">
+                <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
         </div>
-    </div>
 
-    <div class="bottom-nav">
-        <a href="#" class="nav-item active" onclick="switchView('home', this)">
-            <i class="ri-home-5-line"></i> Inicio
-        </a>
-        <a href="#" class="nav-item" onclick="switchView('history', this)">
-            <i class="ri-history-line"></i> Historial
-        </a>
-        <a href="#" class="nav-item" onclick="switchView('links', this)">
-            <i class="ri-links-line"></i> Enlaces
-        </a>
-        <a href="#" class="nav-item" onclick="switchView('profile', this)">
-            <i class="ri-user-3-line"></i> Perfil
-        </a>
-    </div>
+        <div class="games-section">
+            <h3 class="section-title">
+                <span class="live-dot"></span> Modo Demostración
+            </h3>
+            <div class="games-grid" id="games-grid">
+                </div>
+        </div>
+
+    </main>
 
     <script>
-        const MY_PHONE = "59899080276"; 
-        let selectedPlat = null;
-        let selectedPay = null;
-        let userName = localStorage.getItem('cayo_username') || "";
-
-        document.addEventListener('DOMContentLoaded', () => {
-            if(userName) {
-                document.getElementById('userNameDisplay').innerText = userName;
-                document.getElementById('userInput').value = userName;
-            }
-            loadHistory();
-        });
-
-        function switchView(viewName, element) {
-            document.querySelectorAll('.app-view').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            document.getElementById('view-' + viewName).classList.add('active');
-            element.classList.add('active');
+        document.addEventListener("DOMContentLoaded", () => {
             
-            const floatBtn = document.querySelector('.floating-cta-container');
-            // Solo mostrar botón flotante en HOME
-            if(viewName === 'home') floatBtn.style.display = 'flex';
-            else floatBtn.style.display = 'none';
-        }
-
-        function selectPlatform(name, el) {
-            document.querySelectorAll('.platform-card').forEach(item => item.classList.remove('selected'));
-            el.classList.add('selected');
-            selectedPlat = name;
-            updateBtn();
-        }
-
-        function selectPayment(name, el) {
-            document.querySelectorAll('.pay-item').forEach(item => item.classList.remove('selected'));
-            el.classList.add('selected');
-            selectedPay = name;
-            updateBtn();
-        }
-
-        function updateBtn() {
-            const btn = document.getElementById('mainBtn');
-            if(selectedPlat && selectedPay) {
-                btn.innerHTML = `CARGAR EN ${selectedPlat}`; 
-                btn.classList.add('pulse');
-            }
-        }
-
-        function processLoad() {
-            if(!selectedPlat) { alert("⚠️ Elige una plataforma primero"); return; }
-            if(!selectedPay) { alert("⚠️ Elige un método de pago"); return; }
+            const numeroWhatsApp = "59899080276";
+            const wpBtn = document.getElementById('btn-whatsapp');
+            const btnText = document.getElementById('btn-text');
             
-            let amount = document.getElementById('amountInput').value;
-            if(!amount || amount < 300) {
-                alert("⚠️ El monto mínimo es de $300");
-                document.getElementById('amountInput').focus();
-                return;
+            const idGenerado = `#VISITANTE-${Math.floor(1000 + Math.random() * 9000)}`;
+            document.getElementById('visitor-id').textContent = idGenerado;
+
+            // MENSAJES AUTOMÁTICOS PARA EL CAJERO (Sin nombres de bancos)
+            function setRandomWhatsAppLink() {
+                const mensajesWhatsApp = [
+                    `¡Hola Cayo! Raspé el ticket, mi código es ${idGenerado} y quiero reclamar mi bono del 25% para cargar saldo con pesos uruguayos 🦁`,
+                    `Buenas Cayo, me salió el premio del 25% extra (Cód: ${idGenerado}). ¿Me pasás los métodos de pago habilitados para depositar?`,
+                    `Hola Cayo! 👑 Tengo el ticket reservado ${idGenerado}, ¿cómo hago para que me carguen el bono?`
+                ];
+                const mensajeElegido = mensajesWhatsApp[Math.floor(Math.random() * mensajesWhatsApp.length)];
+                wpBtn.href = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensajeElegido)}`;
             }
+            setRandomWhatsAppLink();
 
-            let text = `¡Hola CAYO! 👋`;
-            if(userName) text += ` Soy el usuario *${userName}*.`;
-            text += ` Quiero cargar *$${amount}* en *${selectedPlat}*`;
-            text += ` pagando con *${selectedPay}*.`;
+            // RASTREO DE CLIC HACIA CAPI
+            wpBtn.addEventListener('click', function() {
+                if (typeof window.loadFBPixel === 'function') window.loadFBPixel();
+                if(typeof fbq === 'function') fbq('trackCustom', 'WhatsAppClick');
+                
+                window.dataLayer.push({
+                    'event': 'whatsapp_click',
+                    'button_id': 'btn-whatsapp',
+                    'lead_status': 'qualified_by_scratch',
+                    'currency': 'UYU'
+                });
 
-            saveToHistory(selectedPlat, selectedPay, amount);
-            window.location.href = `https://wa.me/${MY_PHONE}?text=${encodeURIComponent(text)}`;
-        }
-
-        function saveToHistory(plat, pay, amount) {
-            const historyItem = {
-                date: new Date().toLocaleDateString(),
-                time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
-                plat: plat,
-                pay: pay,
-                amount: amount
-            };
-            let history = JSON.parse(localStorage.getItem('cayo_history') || "[]");
-            history.unshift(historyItem);
-            if(history.length > 20) history.pop();
-            localStorage.setItem('cayo_history', JSON.stringify(history));
-            loadHistory();
-        }
-
-        function loadHistory() {
-            const list = document.getElementById('history-list');
-            let history = JSON.parse(localStorage.getItem('cayo_history') || "[]");
-            if(history.length === 0) return;
-
-            let html = '';
-            history.forEach(item => {
-                html += `
-                <div class="history-card">
-                    <div class="hist-info">
-                        <h4>Carga de $${item.amount || '---'}</h4>
-                        <p>${item.plat} • ${item.pay}</p>
-                        <p style="font-size:9px; margin-top:2px;">${item.date} - ${item.time}</p>
-                    </div>
-                    <div class="hist-status">ENVIADO</div>
-                </div>`;
+                setTimeout(setRandomWhatsAppLink, 1000);
             });
-            list.innerHTML = html;
-        }
 
-        function saveProfile() {
-            const inputName = document.getElementById('userInput').value;
-            if(inputName) {
-                localStorage.setItem('cayo_username', inputName);
-                userName = inputName;
-                document.getElementById('userNameDisplay').innerText = inputName;
-                alert("✅ ¡Datos guardados correctamente!");
-                switchView('home', document.querySelectorAll('.nav-item')[0]);
+            // NOTIFICACIONES TOAST NEUTRALES
+            const nombres = ["Martín", "Sofía", "Diego", "Lucía", "Carlos", "Ana", "Joaquín", "Vale", "Facundo", "Camila", "Gonzalo", "Micaela"];
+            const acciones = [
+                "reclamó su bono de +25%", 
+                "retiró sus ganancias rápido", 
+                "activó su ticket con el cajero", 
+                "cargó saldo con pesos uruguayos", 
+                "acaba de depositar en su cuenta",
+                "retiró el saldo a su billetera digital"
+            ];
+            
+            function mostrarNotificacion() {
+                const nombre = nombres[Math.floor(Math.random() * nombres.length)];
+                const accion = acciones[Math.floor(Math.random() * acciones.length)];
+                
+                const toast = document.createElement('div');
+                toast.className = 'toast';
+                toast.innerHTML = `<div class="toast-icon">✓</div><div><b>${nombre}</b> ${accion}</div>`;
+                document.getElementById('toast-container').appendChild(toast);
+                
+                setTimeout(() => toast.classList.add('show'), 100);
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 500);
+                }, 4000);
             }
-        }
-    </script>
 
+            function cicloNotificaciones() {
+                setTimeout(() => {
+                    mostrarNotificacion();
+                    cicloNotificaciones();
+                }, Math.random() * 8000 + 7000);
+            }
+            setTimeout(cicloNotificaciones, 3000);
+
+            function iniciarTemporizador() {
+                let tiempo = 899; 
+                const timerEl = document.getElementById('countdown');
+                const scarcityText = document.getElementById('scarcity-text');
+                scarcityText.style.color = '#ffcc00';
+                
+                setInterval(() => {
+                    tiempo--;
+                    if (tiempo < 0) tiempo = 0;
+                    let m = Math.floor(tiempo / 60);
+                    let s = tiempo % 60;
+                    if(timerEl) {
+                        timerEl.textContent = `${m}:${s < 10 ? '0' : ''}${s}`;
+                    }
+                }, 1000);
+            }
+
+            const gameCatalog = [
+                { title: "3 Tombs", img: "juegos/3tombs.png", badge: "NEW" },
+                { title: "Cleopatra", img: "juegos/cleopatra.png", badge: "DROPS & WINS" },
+                { title: "Buffalo King", img: "juegos/buffalo.png", badge: "" },
+                { title: "5 Lions", img: "juegos/5lions.png", badge: "HOT" },
+                { title: "Congo Cash", img: "juegos/congocash.png", badge: "" },
+                { title: "ONE Blackjack", img: "juegos/oneblackjack.png", badge: "LIVE" },
+                { title: "Roulette XPG", img: "juegos/roulettexpg.png", badge: "LIVE" },
+                { title: "Spanish Roulette", img: "juegos/spanishroulette.png", badge: "LIVE" }
+            ];
+
+            const grid = document.getElementById('games-grid');
+            const slotsCount = 6; 
+            let activeGames = [];
+
+            function createCardHTML(game) {
+                let badgeHTML = '';
+                if (game.badge === "NEW") { badgeHTML = `<div class="game-badge badge-new">NEW</div>`; } 
+                else if (game.badge === "DROPS & WINS") { badgeHTML = `<div class="game-badge badge-drops">👑 <span>DROPS</span> & WINS</div>`; } 
+                else if (game.badge === "HOT") { badgeHTML = `<div class="game-badge badge-hot">🔥 HOT</div>`; } 
+                else if (game.badge === "LIVE") { badgeHTML = `<div class="game-badge badge-live">LIVE</div>`; }
+                const fallbackURL = `https://ui-avatars.com/api/?name=${encodeURIComponent(game.title.substring(0,3))}&background=111&color=fff&size=300`;
+                return `
+                    <div class="game-img-wrapper">
+                        ${badgeHTML}
+                        <img src="${game.img}" class="game-img" alt="${game.title}" onerror="this.src='${fallbackURL}'">
+                        <div class="demo-overlay"><div class="play-btn">Jugar con Bono</div></div>
+                    </div>
+                    <div class="game-info"><div class="game-title">${game.title}</div></div>
+                `;
+            }
+
+            let reserveGames = [...gameCatalog].sort(() => 0.5 - Math.random());
+            for(let i = 0; i < slotsCount; i++) {
+                const game = reserveGames.pop(); activeGames.push(game);
+                const card = document.createElement('div'); card.className = 'game-card';
+                card.innerHTML = createCardHTML(game);
+                
+                card.onclick = () => {
+                    if (typeof window.loadFBPixel === 'function') window.loadFBPixel();
+                    if(typeof fbq === 'function') fbq('trackCustom', 'WhatsAppClick');
+                    
+                    window.dataLayer.push({
+                        'event': 'whatsapp_click',
+                        'game': game.title,
+                        'currency': 'UYU'
+                    });
+
+                    // Mensaje neutral para los juegos
+                    const msg = `¡Hola Cayo! 🦁 Vi el juego ${game.title} en la página y quiero activar mi bono del +25% para ir a probarlo con saldo.`;
+                    window.open(`https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(msg)}`, '_blank');
+                };
+                
+                grid.appendChild(card);
+            }
+
+            function crossfadeGame() {
+                if(gameCatalog.length <= slotsCount) return;
+                const slotIndex = Math.floor(Math.random() * slotsCount);
+                const cardEl = grid.children[slotIndex];
+                let availableGames = gameCatalog.filter(g => !activeGames.some(active => active.title === g.title));
+                if(availableGames.length > 0) {
+                    let newGame = availableGames[Math.floor(Math.random() * availableGames.length)];
+                    cardEl.classList.add('fade-out');
+                    setTimeout(() => {
+                        cardEl.innerHTML = createCardHTML(newGame); activeGames[slotIndex] = newGame;
+                        
+                        cardEl.onclick = () => {
+                            if (typeof window.loadFBPixel === 'function') window.loadFBPixel();
+                            if(typeof fbq === 'function') fbq('trackCustom', 'WhatsAppClick');
+                            
+                            window.dataLayer.push({
+                                'event': 'whatsapp_click',
+                                'game': newGame.title,
+                                'currency': 'UYU'
+                            });
+
+                            // Mensaje neutral para los juegos
+                            const msg = `¡Hola Cayo! 🦁 Vi el juego ${newGame.title} en la página y quiero activar mi bono del +25% para ir a probarlo con saldo.`;
+                            window.open(`https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(msg)}`, '_blank');
+                        };
+
+                        cardEl.classList.remove('fade-out');
+                    }, 500);
+                }
+            }
+            setInterval(crossfadeGame, 2500);
+
+            // LOGICA DEL TICKET RASPABLE (Fricción Positiva)
+            const peelLayer = document.getElementById('peel-layer');
+            const touchArea = document.getElementById('touch-area');
+            const peelHint = document.getElementById('peel-hint');
+            const flapShadow = document.getElementById('peel-flap-shadow');
+
+            let hasPeeled = false, startX, startY; const initialPeel = 40; 
+            let currentPeel = initialPeel, basePeel = initialPeel; let peelAnimFrame;
+            let isPeeling = false;
+
+            function startDrag(e) {
+                if (hasPeeled) return; 
+                isPeeling = true; 
+                let clientX = e.touches ? e.touches[0].clientX : e.clientX; 
+                let clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                startX = clientX; startY = clientY; basePeel = currentPeel;
+                if (peelHint) peelHint.style.display = 'none'; 
+                flapShadow.classList.remove('hint');
+            }
+
+            function doDrag(e) {
+                if (!isPeeling || hasPeeled) return; 
+                let clientX = e.touches ? e.touches[0].clientX : e.clientX; 
+                let clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                let diffX = startX - clientX; let diffY = startY - clientY;
+                
+                if(diffX > 5 || diffY > 5) {
+                    if(e.cancelable) e.preventDefault(); 
+                    let dragAmount = (diffX + diffY) / 1.5;
+                    currentPeel = Math.max(initialPeel, basePeel + dragAmount);
+                    peelLayer.style.setProperty('--peel-size', `${currentPeel}px`);
+                    if (currentPeel > 150) { isPeeling = false; openCompletely(); }
+                }
+            }
+
+            function endDrag() { 
+                if (!isPeeling || hasPeeled) return; 
+                isPeeling = false; 
+                animatePeel(initialPeel, 300); 
+            }
+
+            touchArea.addEventListener('mousedown', startDrag); window.addEventListener('mousemove', doDrag, {passive: false});
+            window.addEventListener('mouseup', endDrag); window.addEventListener('mouseleave', endDrag);
+            touchArea.addEventListener('touchstart', startDrag, {passive: false}); window.addEventListener('touchmove', doDrag, {passive: false});
+            touchArea.addEventListener('touchend', endDrag);
+
+            function animatePeel(targetSize, duration, onComplete) {
+                let startSize = currentPeel; let startTime = performance.now();
+                function step(time) {
+                    if (isPeeling) return; 
+                    let progress = Math.min((time - startTime) / duration, 1);
+                    currentPeel = startSize + (targetSize - startSize) * (1 - Math.pow(1 - progress, 2));
+                    peelLayer.style.setProperty('--peel-size', `${currentPeel}px`);
+                    if (progress < 1) peelAnimFrame = requestAnimationFrame(step); else if (onComplete) onComplete();
+                }
+                cancelAnimationFrame(peelAnimFrame); peelAnimFrame = requestAnimationFrame(step);
+            }
+
+            function openCompletely() {
+                hasPeeled = true; touchArea.style.display = 'none';
+                
+                if (typeof window.loadFBPixel === 'function') window.loadFBPixel();
+                if(typeof fbq === 'function') fbq('trackCustom', 'Ticket_Raspado', { premio: '+25% Extra' });
+                
+                // EVENTO ESTRUCTURADO HACIA DATALAYER (GTM / CAPI)
+                window.dataLayer.push({
+                    'event': 'lead_qualified',
+                    'action': 'ticket_scratched',
+                    'currency': 'UYU'
+                });
+
+                if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+                
+                animatePeel(400, 400, () => {
+                    peelLayer.style.display = 'none';
+                    
+                    // CAMBIO DINÁMICO DEL TEXTO Y ANIMACIÓN EXTRA
+                    btnText.style.opacity = 0;
+                    setTimeout(() => {
+                        btnText.textContent = "RECLAMAR MI 25% EXTRA";
+                        btnText.style.opacity = 1;
+                        // Ya no necesitamos añadir la clase btn-ready porque la animación de pulso ya está activa por defecto
+                    }, 300);
+                    
+                    document.getElementById('scarcity-text').innerHTML = `🔥 Tu bono reservado expira en: <span id="countdown">14:59</span>`;
+                    
+                    // REVELA EL TESTIMONIO DE PRUEBA SOCIAL
+                    document.getElementById('testimonial-box').style.display = 'block';
+
+                    iniciarTemporizador();
+                });
+            }
+        });
+    </script>
 </body>
 </html>
