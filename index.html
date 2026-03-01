@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Gana Uruguay</title>
-    <meta name="description" content="Reclamá tu ticket exclusivo y descubrí premios increíbles.">
+    <meta name="description" content="Reclamá tu ticket exclusivo y descubrí beneficios increíbles.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -148,15 +148,13 @@
             display: flex; justify-content: center; align-items: center;
         }
         
-        /* Ajuste: Logo más compacto para ganar altura */
-        .cayo-logo {
+        .main-logo {
             height: 42px; width: auto; margin-bottom: 0px;
             filter: drop-shadow(0 5px 15px rgba(255, 204, 0, 0.4));
             animation: floatLogo 4s ease-in-out infinite;
         }
         @keyframes floatLogo { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
 
-        /* Ajuste: Espacio reservado para UI inferior aumentado a 380px */
         .ticket-wrapper {
             --safe-top: env(safe-area-inset-top, 0px); 
             --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -234,7 +232,6 @@
         .touch-area { position: absolute; bottom: -20px; right: -20px; width: 80px; height: 80px; z-index: 30; cursor: grab; touch-action: none; }
         .touch-area:active { cursor: grabbing; }
 
-        /* Ajustes visuales de fondo y botones */
         .bottom-actions { 
             padding: 0 15px; 
             display: flex; flex-direction: column; gap: 12px; z-index: 10; flex-shrink: 0; 
@@ -242,7 +239,7 @@
         
         .btn { 
             width: 100%; 
-            height: 64px; /* Más grande y llamativo */
+            height: 64px; 
             border-radius: 20px; 
             font-size: 18px; 
             font-weight: 900; border: none; cursor: pointer; transition: all 0.3s ease; 
@@ -279,7 +276,6 @@
             animation: fadeIn 0.5s ease-out;
         }
 
-        /* Rectángulo de pago compacto */
         .payment-rectangle { 
             background-color: rgba(255, 255, 255, 0.1);
             width: 100%; height: 46px; border-radius: 14px; 
@@ -300,22 +296,22 @@
         .scroll-down-hint svg { width: 20px; height: 20px; stroke: white; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
         @keyframes bounce-arrow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
 
-        .games-section { padding: 10px 24px 40px 24px; padding-bottom: max(40px, env(safe-area-inset-bottom)); position: relative; z-index: 10; flex-shrink: 0; width: 100%; }
+        .options-section { padding: 10px 24px 40px 24px; padding-bottom: max(40px, env(safe-area-inset-bottom)); position: relative; z-index: 10; flex-shrink: 0; width: 100%; }
         .section-title { font-size: 15px; font-weight: 700; color: white; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; letter-spacing: -0.2px; }
         .live-dot { width: 8px; height: 8px; background-color: #ff3366; border-radius: 50%; animation: pulse-dot 1.5s infinite; }
         @keyframes pulse-dot { 0% { box-shadow: 0 0 0 0 rgba(255, 51, 102, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(255, 51, 102, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 51, 102, 0); } }
 
-        .games-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        .game-card { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; overflow: hidden; position: relative; cursor: pointer; transition: transform 0.2s, opacity 0.5s; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-        .game-card:active { transform: scale(0.96); }
-        .game-card.fade-out { opacity: 0; transform: scale(0.95); }
+        .options-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .option-card { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; overflow: hidden; position: relative; cursor: pointer; transition: transform 0.2s, opacity 0.5s; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .option-card:active { transform: scale(0.96); }
+        .option-card.fade-out { opacity: 0; transform: scale(0.95); }
 
-        .game-img-wrapper { position: relative; width: 100%; aspect-ratio: 1/1; background: #111; }
-        .game-img { width: 100%; height: 100%; object-fit: cover; }
-        .game-info { padding: 10px 12px; background: rgba(0, 0, 0, 0.3); }
-        .game-title { font-size: 12.5px; font-weight: 600; color: #e0e0e0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; }
+        .option-img-wrapper { position: relative; width: 100%; aspect-ratio: 1/1; background: #111; }
+        .option-img { width: 100%; height: 100%; object-fit: cover; }
+        .option-info { padding: 10px 12px; background: rgba(0, 0, 0, 0.3); }
+        .option-title { font-size: 12.5px; font-weight: 600; color: #e0e0e0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; }
 
-        .game-badge { position: absolute; top: 0; left: 0; font-size: 9px; font-weight: 800; padding: 4px 8px; z-index: 2; border-bottom-right-radius: 8px; box-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
+        .option-badge { position: absolute; top: 0; left: 0; font-size: 9px; font-weight: 800; padding: 4px 8px; z-index: 2; border-bottom-right-radius: 8px; box-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
         .badge-new { background: #8cc63f; color: #000; } 
         .badge-drops { background: linear-gradient(135deg, #000, #222); color: #fff; border: 1px solid rgba(255,204,0,0.3); border-top: none; border-left: none; }
         .badge-drops span { color: #ffcc00; }
@@ -325,10 +321,10 @@
         @keyframes blink { 0% { opacity: 0.2; } 100% { opacity: 1; } }
 
         .demo-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; z-index: 5; }
-        @media (hover: hover) { .game-card:hover .demo-overlay { opacity: 1; } .game-card:hover .play-btn { transform: translateY(0); } }
-        .game-card:active .demo-overlay { opacity: 1; }
+        @media (hover: hover) { .option-card:hover .demo-overlay { opacity: 1; } .option-card:hover .play-btn { transform: translateY(0); } }
+        .option-card:active .demo-overlay { opacity: 1; }
         .play-btn { background: #ccff00; color: #000; font-size: 11px; font-weight: 800; text-transform: uppercase; padding: 6px 14px; border-radius: 20px; box-shadow: 0 4px 15px rgba(204, 255, 0, 0.4); transform: translateY(10px); transition: transform 0.3s; }
-        .game-card:active .play-btn { transform: translateY(0); }
+        .option-card:active .play-btn { transform: translateY(0); }
 
         .toast-container {
             position: fixed; bottom: max(20px, env(safe-area-inset-bottom)); left: 20px; right: 20px; z-index: 100;
@@ -355,7 +351,7 @@
     </noscript>
 
     <div class="legal-banner">
-        <p>EL JUEGO COMPULSIVO ES PERJUDICIAL PARA LA SALUD <span class="age-badge">+18</span></p>
+        <p>EL ENTRETENIMIENTO EXCESIVO ES PERJUDICIAL PARA LA SALUD <span class="age-badge">+18</span></p>
     </div>
 
     <div class="bg-fixed">
@@ -374,7 +370,7 @@
             </div>
 
             <div class="header">
-                <img src="cayo.png" alt="CAYO" class="cayo-logo" onerror="this.src='https://ui-avatars.com/api/?name=CAYO&background=000&color=FFD000&size=200&font-size=0.4&bold=true'">
+                <img src="logo.png" alt="Logo" class="main-logo" onerror="this.src='https://ui-avatars.com/api/?name=PREMIO&background=000&color=FFD000&size=200&font-size=0.4&bold=true'">
             </div>
 
             <div class="ticket-wrapper">
@@ -437,11 +433,11 @@
             </div>
         </div>
 
-        <div class="games-section">
+        <div class="options-section">
             <h3 class="section-title">
                 <span class="live-dot"></span> Modo Demostración
             </h3>
-            <div class="games-grid" id="games-grid">
+            <div class="options-grid" id="options-grid">
                 </div>
         </div>
 
@@ -459,9 +455,9 @@
 
             function setRandomWhatsAppLink() {
                 const mensajesWhatsApp = [
-                    `¡Hola Cayo! Raspé el ticket, mi código es ${idGenerado} y quiero recibir más información sobre esto 🦁`,
-                    `Buenas Cayo, me salió el premio del 25% extra (Cód: ${idGenerado}). ¿Me podrías dar más detalles de cómo funciona?`,
-                    `Hola Cayo! 👑 Tengo el ticket reservado ${idGenerado}, quiero más info por favor.`
+                    `¡Hola! Raspé el ticket, mi código es ${idGenerado} y quiero recibir más información sobre esto 🦁`,
+                    `Buenas, me salió el premio del 25% extra (Cód: ${idGenerado}). ¿Me podrías dar más detalles de cómo funciona?`,
+                    `¡Hola! 👑 Tengo el ticket reservado ${idGenerado}, quiero más info por favor.`
                 ];
                 const mensajeElegido = mensajesWhatsApp[Math.floor(Math.random() * mensajesWhatsApp.length)];
                 wpBtn.href = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensajeElegido)}`;
@@ -483,7 +479,7 @@
 
             const nombres = ["Martín", "Sofía", "Diego", "Lucía", "Carlos", "Ana", "Joaquín", "Vale", "Facundo", "Camila", "Gonzalo", "Micaela"];
             const acciones = [
-                "solicitó información sobre el bono", 
+                "solicitó información sobre el beneficio", 
                 "recibió asesoramiento rápido", 
                 "activó su código con el asistente", 
                 "consultó sobre el ticket exclusivo", 
@@ -532,42 +528,42 @@
                 }, 1000);
             }
 
-            const gameCatalog = [
-                { title: "3 Tombs", img: "juegos/3tombs.png", badge: "NEW" },
-                { title: "Cleopatra", img: "juegos/cleopatra.png", badge: "DROPS & WINS" },
-                { title: "Buffalo King", img: "juegos/buffalo.png", badge: "" },
-                { title: "5 Lions", img: "juegos/5lions.png", badge: "HOT" },
-                { title: "Congo Cash", img: "juegos/congocash.png", badge: "" },
-                { title: "ONE Blackjack", img: "juegos/oneblackjack.png", badge: "LIVE" },
-                { title: "Roulette XPG", img: "juegos/roulettexpg.png", badge: "LIVE" },
-                { title: "Spanish Roulette", img: "juegos/spanishroulette.png", badge: "LIVE" }
+            const optionCatalog = [
+                { title: "3 Tombs", img: "img/3tombs.png", badge: "NEW" },
+                { title: "Cleopatra", img: "img/cleopatra.png", badge: "DROPS & WINS" },
+                { title: "Buffalo King", img: "img/buffalo.png", badge: "" },
+                { title: "5 Lions", img: "img/5lions.png", badge: "HOT" },
+                { title: "Congo Cash", img: "img/congocash.png", badge: "" },
+                { title: "ONE Blackjack", img: "img/oneblackjack.png", badge: "LIVE" },
+                { title: "Roulette XPG", img: "img/roulettexpg.png", badge: "LIVE" },
+                { title: "Spanish Roulette", img: "img/spanishroulette.png", badge: "LIVE" }
             ];
 
-            const grid = document.getElementById('games-grid');
+            const grid = document.getElementById('options-grid');
             const slotsCount = 6; 
-            let activeGames = [];
+            let activeOptions = [];
 
             function createCardHTML(game) {
                 let badgeHTML = '';
-                if (game.badge === "NEW") { badgeHTML = `<div class="game-badge badge-new">NEW</div>`; } 
-                else if (game.badge === "DROPS & WINS") { badgeHTML = `<div class="game-badge badge-drops">👑 <span>DROPS</span> & WINS</div>`; } 
-                else if (game.badge === "HOT") { badgeHTML = `<div class="game-badge badge-hot">🔥 HOT</div>`; } 
-                else if (game.badge === "LIVE") { badgeHTML = `<div class="game-badge badge-live">LIVE</div>`; }
+                if (game.badge === "NEW") { badgeHTML = `<div class="option-badge badge-new">NEW</div>`; } 
+                else if (game.badge === "DROPS & WINS") { badgeHTML = `<div class="option-badge badge-drops">👑 <span>DROPS</span> & WINS</div>`; } 
+                else if (game.badge === "HOT") { badgeHTML = `<div class="option-badge badge-hot">🔥 HOT</div>`; } 
+                else if (game.badge === "LIVE") { badgeHTML = `<div class="option-badge badge-live">LIVE</div>`; }
                 const fallbackURL = `https://ui-avatars.com/api/?name=${encodeURIComponent(game.title.substring(0,3))}&background=111&color=fff&size=300`;
                 return `
-                    <div class="game-img-wrapper">
+                    <div class="option-img-wrapper">
                         ${badgeHTML}
-                        <img src="${game.img}" class="game-img" alt="${game.title}" onerror="this.src='${fallbackURL}'">
+                        <img src="${game.img}" class="option-img" alt="${game.title}" onerror="this.src='${fallbackURL}'">
                         <div class="demo-overlay"><div class="play-btn">Más Info</div></div>
                     </div>
-                    <div class="game-info"><div class="game-title">${game.title}</div></div>
+                    <div class="option-info"><div class="option-title">${game.title}</div></div>
                 `;
             }
 
-            let reserveGames = [...gameCatalog].sort(() => 0.5 - Math.random());
+            let reserveOptions = [...optionCatalog].sort(() => 0.5 - Math.random());
             for(let i = 0; i < slotsCount; i++) {
-                const game = reserveGames.pop(); activeGames.push(game);
-                const card = document.createElement('div'); card.className = 'game-card';
+                const game = reserveOptions.pop(); activeOptions.push(game);
+                const card = document.createElement('div'); card.className = 'option-card';
                 card.innerHTML = createCardHTML(game);
                 
                 card.onclick = () => {
@@ -576,26 +572,26 @@
                     
                     window.dataLayer.push({
                         'event': 'whatsapp_click',
-                        'game': game.title
+                        'option': game.title
                     });
 
-                    const msg = `¡Hola Cayo! 🦁 Vi el juego ${game.title} en la página y quiero más información.`;
+                    const msg = `¡Hola! 🦁 Vi la opción ${game.title} en la página y quiero más información.`;
                     window.open(`https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(msg)}`, '_blank');
                 };
                 
                 grid.appendChild(card);
             }
 
-            function crossfadeGame() {
-                if(gameCatalog.length <= slotsCount) return;
+            function crossfadeOption() {
+                if(optionCatalog.length <= slotsCount) return;
                 const slotIndex = Math.floor(Math.random() * slotsCount);
                 const cardEl = grid.children[slotIndex];
-                let availableGames = gameCatalog.filter(g => !activeGames.some(active => active.title === g.title));
-                if(availableGames.length > 0) {
-                    let newGame = availableGames[Math.floor(Math.random() * availableGames.length)];
+                let availableOptions = optionCatalog.filter(g => !activeOptions.some(active => active.title === g.title));
+                if(availableOptions.length > 0) {
+                    let newGame = availableOptions[Math.floor(Math.random() * availableOptions.length)];
                     cardEl.classList.add('fade-out');
                     setTimeout(() => {
-                        cardEl.innerHTML = createCardHTML(newGame); activeGames[slotIndex] = newGame;
+                        cardEl.innerHTML = createCardHTML(newGame); activeOptions[slotIndex] = newGame;
                         
                         cardEl.onclick = () => {
                             if (typeof window.loadFBPixel === 'function') window.loadFBPixel();
@@ -603,10 +599,10 @@
                             
                             window.dataLayer.push({
                                 'event': 'whatsapp_click',
-                                'game': newGame.title
+                                'option': newGame.title
                             });
 
-                            const msg = `¡Hola Cayo! 🦁 Vi el juego ${newGame.title} en la página y quiero más información.`;
+                            const msg = `¡Hola! 🦁 Vi la opción ${newGame.title} en la página y quiero más información.`;
                             window.open(`https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(msg)}`, '_blank');
                         };
 
@@ -614,7 +610,7 @@
                     }, 500);
                 }
             }
-            setInterval(crossfadeGame, 2500);
+            setInterval(crossfadeOption, 2500);
 
             const peelLayer = document.getElementById('peel-layer');
             const touchArea = document.getElementById('touch-area');
