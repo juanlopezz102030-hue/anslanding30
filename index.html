@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>CAYO - Ticket Exclusivo</title>
-    <meta name="description" content="Reclamá tu ticket exclusivo y descubrí premios increíbles en CAYO.">
+    <title>Gana Uruguay</title>
+    <meta name="description" content="Reclamá tu ticket exclusivo y descubrí premios increíbles.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,10 +18,8 @@
     </noscript>
 
     <script>
-    /* 1. ARQUITECTURA DE DATOS: Capa para GTM y Meta Conversions API (CAPI) */
     window.dataLayer = window.dataLayer || [];
 
-    /* SISTEMA ANTI-SALTO PARA NAVEGADOR DE FACEBOOK / INSTAGRAM / SAFARI */
     function lockHeight() {
         document.documentElement.style.setProperty('--locked-vh', window.innerHeight + 'px');
     }
@@ -34,7 +32,6 @@
         }
     });
 
-    /* 2. Inicializamos la "memoria" del Píxel INMEDIATAMENTE */
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
     n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -52,7 +49,6 @@
       fbq('track', 'PageView', getUTMs(location.href));
     })();
 
-    /* 3. WPO: Retrasamos la carga de FB Events, pero reacciona a interacciones */
     window.loadFBPixel = function() {
         if (window.fbPixelLoaded) return;
         window.fbPixelLoaded = true;
@@ -79,12 +75,9 @@
             background-color: #000; color: white; margin: 0;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
-            padding-top: 40px; /* ESPACIO RESERVADO PARA BANNER LEGAL */
+            padding-top: 40px; 
         }
 
-        /* =========================================
-           CUMPLIMIENTO LEGAL (Prevención baneos Meta)
-           ========================================= */
         .legal-banner {
             position: fixed; top: 0; left: 0; width: 100%; height: 40px;
             background-color: #1a1a1a; color: #a3a3a3; 
@@ -155,18 +148,19 @@
             display: flex; justify-content: center; align-items: center;
         }
         
+        /* Ajuste: Logo más compacto para ganar altura */
         .cayo-logo {
-            height: 55px; width: auto; margin-bottom: 0px;
+            height: 42px; width: auto; margin-bottom: 0px;
             filter: drop-shadow(0 5px 15px rgba(255, 204, 0, 0.4));
             animation: floatLogo 4s ease-in-out infinite;
         }
         @keyframes floatLogo { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
 
+        /* Ajuste: Espacio reservado para UI inferior aumentado a 380px */
         .ticket-wrapper {
             --safe-top: env(safe-area-inset-top, 0px); 
             --safe-bottom: env(safe-area-inset-bottom, 0px);
-            /* Espacio calculado: 280 base + banner 40px */
-            --ui-space: calc(320px + var(--safe-top) + var(--safe-bottom)); 
+            --ui-space: calc(380px + var(--safe-top) + var(--safe-bottom)); 
             
             --available-height: calc(var(--locked-vh, 100vh) - var(--ui-space));
             --max-width: calc((var(--available-height) - 110px) * 0.7334);
@@ -240,48 +234,58 @@
         .touch-area { position: absolute; bottom: -20px; right: -20px; width: 80px; height: 80px; z-index: 30; cursor: grab; touch-action: none; }
         .touch-area:active { cursor: grabbing; }
 
-        .bottom-actions { padding: 0 20px; display: flex; flex-direction: column; gap: 8px; z-index: 10; flex-shrink: 0; }
+        /* Ajustes visuales de fondo y botones */
+        .bottom-actions { 
+            padding: 0 15px; 
+            display: flex; flex-direction: column; gap: 12px; z-index: 10; flex-shrink: 0; 
+        }
         
-        .btn { width: 100%; height: 52px; border-radius: 16px; font-size: 15px; font-weight: 800; border: none; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; text-transform: uppercase; letter-spacing: -0.2px; }
+        .btn { 
+            width: 100%; 
+            height: 64px; /* Más grande y llamativo */
+            border-radius: 20px; 
+            font-size: 18px; 
+            font-weight: 900; border: none; cursor: pointer; transition: all 0.3s ease; 
+            display: flex; align-items: center; justify-content: center; gap: 10px; 
+            text-decoration: none; text-transform: uppercase; letter-spacing: -0.2px; 
+        }
         .btn:active { transform: scale(0.96); }
         
-        /* BOTÓN DE WHATSAPP SIEMPRE ACTIVO Y DISPONIBLE DESDE EL INICIO */
         .btn-whatsapp { 
             background-color: #25D366; color: #ffffff; 
             opacity: 1; pointer-events: auto; filter: grayscale(0%);
-            box-shadow: none; transition: all 0.4s ease;
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4); 
+            transition: all 0.4s ease;
             animation: pulse-whatsapp 1.5s infinite;
         }
-        .btn-whatsapp svg { width: 22px; height: 22px; fill: #ffffff; }
+        .btn-whatsapp svg { width: 28px; height: 28px; fill: #ffffff; } 
         
-        /* BOTÓN LIBERADO TRAS RASPAR */
-        .btn-ready { 
-            /* Se mantiene la clase por compatibilidad con el JS */
-        }
         @keyframes pulse-whatsapp {
-            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); transform: scale(1); }
+            0% { box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4); transform: scale(1); }
             70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); transform: scale(1.02); }
             100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); transform: scale(1); }
         }
 
         .scarcity-text {
-            text-align: center; font-size: 11.5px; font-weight: 600; color: rgba(255,255,255,0.6);
-            margin-top: 2px; transition: color 0.3s;
+            text-align: center; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.6);
+            margin-top: 0px; transition: color 0.3s;
         }
         .scarcity-text span { font-variant-numeric: tabular-nums; font-weight: 800; }
 
-        /* TESTIMONIO DE PRUEBA SOCIAL NEUTRO */
         .testimonial-box {
-            display: none; /* Oculto hasta raspar */
+            display: none; 
             background: rgba(0,0,0,0.4); border-left: 4px solid #ccff00; 
             padding: 12px; border-radius: 8px; font-size: 12px; font-style: italic; color: #d1d5db; text-align: left; margin: 5px 0 10px 0;
             animation: fadeIn 0.5s ease-out;
         }
 
+        /* Rectángulo de pago compacto */
         .payment-rectangle { 
             background-color: rgba(255, 255, 255, 0.1);
-            width: 100%; height: 52px; border-radius: 16px; display: flex; justify-content: space-evenly; align-items: center; padding: 0 8px; 
+            width: 100%; height: 46px; border-radius: 14px; 
+            display: flex; justify-content: space-evenly; align-items: center; padding: 0 8px; 
             box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05); 
+            margin-top: 4px;
         }
         
         .payment-logo { width: clamp(26px, 8vw, 34px); height: clamp(26px, 8vw, 34px); border-radius: 8px; object-fit: cover; background-color: #ffffff; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: transform 0.2s; cursor: pointer; }
@@ -385,14 +389,14 @@
                         
                         <div class="ticket-bottom">
                             <div class="prize-under">
-                                <span style="font-size: 11px; font-weight: 800; opacity: 0.9; letter-spacing: 1px; color: #fff;">¡FELICITACIONES!</span>
+                                <span style="font-size: 11px; font-weight: 800; opacity: 0.9; letter-spacing: 1px; color: #fff;">¡DISPONIBLE!</span>
                                 <strong style="font-size: 30px; font-weight: 900; color: #ffcc00; letter-spacing: -1px; margin-top: 2px;">+25% EXTRA</strong>
-                                <span style="font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.7); margin-top: 5px;">BONO DE BIENVENIDA</span>
+                                <span style="font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.7); margin-top: 5px;">CÓDIGO DE ACCESO</span>
                             </div>
                             
                             <div class="peel-layer" id="peel-layer">
                                 <div class="peel-content">
-                                     <div class="welcome-badge">Bono de Bienvenida</div>
+                                     <div class="welcome-badge">Ticket Exclusivo</div>
                                      <div style="font-size: 16px; font-weight: 900; color: #111; line-height: 1.1; letter-spacing: -0.5px; text-align: center; margin-top: 2px; text-transform: uppercase;">Deslizá y<br>Descubrí</div>
                                      <div class="visitor-id" id="visitor-id">#VISITANTE-0000</div>
                                      <div class="shine-3s"></div>
@@ -409,13 +413,13 @@
             <div class="bottom-actions">
                 <a id="btn-whatsapp" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp whatsapp_click">
                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-                    <span id="btn-text" style="transition: opacity 0.3s ease;">WHATSAPP</span>
+                    <span id="btn-text" style="transition: opacity 0.3s ease;">MÁS INFORMACIÓN</span>
                 </a>
                 
-                <div class="scarcity-text" id="scarcity-text">👉 Deslizá el ticket para revelar tu premio</div>
+                <div class="scarcity-text" id="scarcity-text">👉 Deslizá el ticket para revelar tu beneficio</div>
 
                 <div class="testimonial-box" id="testimonial-box">
-                    "¡Increíble! Recibí mi retiro de $15.000 UYU en menos de 5 minutos. Mi cajero me guio en todo." <br><strong style="color: #fff; display: block; margin-top: 5px;">- Facundo M. ⭐⭐⭐⭐⭐</strong>
+                    "¡Excelente! Consulté por WhatsApp y me explicaron todo súper rápido. Muy conforme con la atención." <br><strong style="color: #fff; display: block; margin-top: 5px;">- Facundo M. ⭐⭐⭐⭐⭐</strong>
                 </div>
 
                 <div class="payment-rectangle">
@@ -446,26 +450,24 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             
-            const numeroWhatsApp = "59899080276";
+            const numeroWhatsApp = "5527992691977";
             const wpBtn = document.getElementById('btn-whatsapp');
             const btnText = document.getElementById('btn-text');
             
             const idGenerado = `#VISITANTE-${Math.floor(1000 + Math.random() * 9000)}`;
             document.getElementById('visitor-id').textContent = idGenerado;
 
-            // MENSAJES AUTOMÁTICOS PARA EL CAJERO (Sin nombres de bancos)
             function setRandomWhatsAppLink() {
                 const mensajesWhatsApp = [
-                    `¡Hola Cayo! Raspé el ticket, mi código es ${idGenerado} y quiero reclamar mi bono del 25% para cargar saldo con pesos uruguayos 🦁`,
-                    `Buenas Cayo, me salió el premio del 25% extra (Cód: ${idGenerado}). ¿Me pasás los métodos de pago habilitados para depositar?`,
-                    `Hola Cayo! 👑 Tengo el ticket reservado ${idGenerado}, ¿cómo hago para que me carguen el bono?`
+                    `¡Hola Cayo! Raspé el ticket, mi código es ${idGenerado} y quiero recibir más información sobre esto 🦁`,
+                    `Buenas Cayo, me salió el premio del 25% extra (Cód: ${idGenerado}). ¿Me podrías dar más detalles de cómo funciona?`,
+                    `Hola Cayo! 👑 Tengo el ticket reservado ${idGenerado}, quiero más info por favor.`
                 ];
                 const mensajeElegido = mensajesWhatsApp[Math.floor(Math.random() * mensajesWhatsApp.length)];
                 wpBtn.href = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensajeElegido)}`;
             }
             setRandomWhatsAppLink();
 
-            // RASTREO DE CLIC HACIA CAPI
             wpBtn.addEventListener('click', function() {
                 if (typeof window.loadFBPixel === 'function') window.loadFBPixel();
                 if(typeof fbq === 'function') fbq('trackCustom', 'WhatsAppClick');
@@ -473,22 +475,20 @@
                 window.dataLayer.push({
                     'event': 'whatsapp_click',
                     'button_id': 'btn-whatsapp',
-                    'lead_status': 'qualified_by_scratch',
-                    'currency': 'UYU'
+                    'lead_status': 'qualified_by_scratch'
                 });
 
                 setTimeout(setRandomWhatsAppLink, 1000);
             });
 
-            // NOTIFICACIONES TOAST NEUTRALES
             const nombres = ["Martín", "Sofía", "Diego", "Lucía", "Carlos", "Ana", "Joaquín", "Vale", "Facundo", "Camila", "Gonzalo", "Micaela"];
             const acciones = [
-                "reclamó su bono de +25%", 
-                "retiró sus ganancias rápido", 
-                "activó su ticket con el cajero", 
-                "cargó saldo con pesos uruguayos", 
-                "acaba de depositar en su cuenta",
-                "retiró el saldo a su billetera digital"
+                "solicitó información sobre el bono", 
+                "recibió asesoramiento rápido", 
+                "activó su código con el asistente", 
+                "consultó sobre el ticket exclusivo", 
+                "acaba de activar su beneficio",
+                "recibió su código de acceso"
             ];
             
             function mostrarNotificacion() {
@@ -558,7 +558,7 @@
                     <div class="game-img-wrapper">
                         ${badgeHTML}
                         <img src="${game.img}" class="game-img" alt="${game.title}" onerror="this.src='${fallbackURL}'">
-                        <div class="demo-overlay"><div class="play-btn">Jugar con Bono</div></div>
+                        <div class="demo-overlay"><div class="play-btn">Más Info</div></div>
                     </div>
                     <div class="game-info"><div class="game-title">${game.title}</div></div>
                 `;
@@ -576,12 +576,10 @@
                     
                     window.dataLayer.push({
                         'event': 'whatsapp_click',
-                        'game': game.title,
-                        'currency': 'UYU'
+                        'game': game.title
                     });
 
-                    // Mensaje neutral para los juegos
-                    const msg = `¡Hola Cayo! 🦁 Vi el juego ${game.title} en la página y quiero activar mi bono del +25% para ir a probarlo con saldo.`;
+                    const msg = `¡Hola Cayo! 🦁 Vi el juego ${game.title} en la página y quiero más información.`;
                     window.open(`https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(msg)}`, '_blank');
                 };
                 
@@ -605,12 +603,10 @@
                             
                             window.dataLayer.push({
                                 'event': 'whatsapp_click',
-                                'game': newGame.title,
-                                'currency': 'UYU'
+                                'game': newGame.title
                             });
 
-                            // Mensaje neutral para los juegos
-                            const msg = `¡Hola Cayo! 🦁 Vi el juego ${newGame.title} en la página y quiero activar mi bono del +25% para ir a probarlo con saldo.`;
+                            const msg = `¡Hola Cayo! 🦁 Vi el juego ${newGame.title} en la página y quiero más información.`;
                             window.open(`https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(msg)}`, '_blank');
                         };
 
@@ -620,7 +616,6 @@
             }
             setInterval(crossfadeGame, 2500);
 
-            // LOGICA DEL TICKET RASPABLE (Fricción Positiva)
             const peelLayer = document.getElementById('peel-layer');
             const touchArea = document.getElementById('touch-area');
             const peelHint = document.getElementById('peel-hint');
@@ -684,11 +679,9 @@
                 if (typeof window.loadFBPixel === 'function') window.loadFBPixel();
                 if(typeof fbq === 'function') fbq('trackCustom', 'Ticket_Raspado', { premio: '+25% Extra' });
                 
-                // EVENTO ESTRUCTURADO HACIA DATALAYER (GTM / CAPI)
                 window.dataLayer.push({
                     'event': 'lead_qualified',
-                    'action': 'ticket_scratched',
-                    'currency': 'UYU'
+                    'action': 'ticket_scratched'
                 });
 
                 if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
@@ -696,16 +689,14 @@
                 animatePeel(400, 400, () => {
                     peelLayer.style.display = 'none';
                     
-                    // CAMBIO DINÁMICO DEL TEXTO AL RASPAR
                     btnText.style.opacity = 0;
                     setTimeout(() => {
-                        btnText.textContent = "RECLAMAR MI 25% EXTRA";
+                        btnText.textContent = "SOLICITAR MI 25% EXTRA";
                         btnText.style.opacity = 1;
                     }, 300);
                     
-                    document.getElementById('scarcity-text').innerHTML = `🔥 Tu bono reservado expira en: <span id="countdown">14:59</span>`;
+                    document.getElementById('scarcity-text').innerHTML = `🔥 Tu beneficio reservado expira en: <span id="countdown">14:59</span>`;
                     
-                    // REVELA EL TESTIMONIO DE PRUEBA SOCIAL
                     document.getElementById('testimonial-box').style.display = 'block';
 
                     iniciarTemporizador();
